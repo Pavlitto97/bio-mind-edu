@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'core/theme/app_theme.dart';
+import 'features/ar_lesson/presentation/lessons_list_page.dart';
 
 /// Main BioMindEDU application widget
 class BioMindEduApp extends ConsumerWidget {
@@ -13,36 +14,7 @@ class BioMindEduApp extends ConsumerWidget {
       title: 'BioMindEDU',
       debugShowCheckedModeBanner: false,
       theme: AppTheme.lightTheme,
-      home: const Scaffold(
-        body: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Icon(
-                Icons.science,
-                size: 100,
-                color: Colors.green,
-              ),
-              SizedBox(height: 20),
-              Text(
-                'BioMindEDU',
-                style: TextStyle(
-                  fontSize: 32,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              SizedBox(height: 10),
-              Text(
-                'AR Education for Kids',
-                style: TextStyle(
-                  fontSize: 18,
-                  color: Colors.grey,
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
+      home: const LessonsListPage(),
     );
   }
 }

@@ -20,11 +20,13 @@ void main() {
       ),
     );
 
-    // Verify that the app title is displayed
-    expect(find.text('BioMindEDU'), findsOneWidget);
-    expect(find.text('AR Education for Kids'), findsOneWidget);
+    // Wait for async operations to complete
+    await tester.pumpAndSettle();
+
+    // Verify that the app bar with title is displayed
+    expect(find.text('BioMind EDU'), findsOneWidget);
     
-    // Verify that the icon is displayed
-    expect(find.byIcon(Icons.science), findsOneWidget);
+    // Verify that settings icon is present
+    expect(find.byIcon(Icons.settings), findsOneWidget);
   });
 }

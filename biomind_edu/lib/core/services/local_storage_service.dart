@@ -253,6 +253,37 @@ class LocalStorageService {
     await _progressBox?.clear();
   }
 
+  // ============ USER PROFILE ============
+
+  /// Save user profile
+  Future<void> saveUserProfile(UserProfile profile) async {
+    await _settingsBox?.put('user_profile', profile.toJson());
+  }
+
+  /// Get user profile
+  UserProfile? getUserProfile() {
+    final json = _settingsBox?.get('user_profile');
+    if (json == null) return null;
+    return UserProfile.fromJson(Map<String, dynamic>.from(json as Map));
+  }
+
+  /// Update user profile preference
+  Future<void> updateUserPreference(String key, dynamic value) async {
+    final profile = getUserProfile();
+    if (profile == null) return;
+
+    final updatedPreferences = {...profile.preferences, key: value};
+    final updatedProfile = profile.copyWith(preferences: updatedPreferences);
+    await saveUserProfile(updatedProfile);
+  }
+
+  /// Delete user profile
+  Future<void> deleteUserProfile() async {
+    await _settingsBox?.delete('user_profile');
+  }
+
+  // ============================================================
+
   /// Close all boxes
   Future<void> dispose() async {
     await _lessonsBox?.close();
