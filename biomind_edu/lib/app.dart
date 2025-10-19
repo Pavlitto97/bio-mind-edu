@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'core/theme/app_theme.dart';
 import 'features/ar_lesson/presentation/lessons_list_page.dart';
+import 'features/ar_lesson/presentation/ar_lesson_page.dart';
 
 /// Main BioMindEDU application widget
 class BioMindEduApp extends ConsumerWidget {
@@ -15,6 +16,17 @@ class BioMindEduApp extends ConsumerWidget {
       debugShowCheckedModeBanner: false,
       theme: AppTheme.lightTheme,
       home: const LessonsListPage(),
+      onGenerateRoute: (settings) {
+        switch (settings.name) {
+          case '/ar-lesson':
+            final lessonId = settings.arguments as String;
+            return MaterialPageRoute(
+              builder: (context) => ARLessonPage(lessonId: lessonId),
+            );
+          default:
+            return null;
+        }
+      },
     );
   }
 }

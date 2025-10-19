@@ -5,6 +5,7 @@ import 'package:hive_flutter/hive_flutter.dart';
 
 import 'app.dart';
 import 'core/services/local_storage_service.dart';
+import 'shared/data/sample_lesson_data.dart';
 
 /// Main entry point for BioMindEDU application
 void main() async {
@@ -17,7 +18,12 @@ void main() async {
   await Hive.initFlutter();
   
   // Initialize Local Storage Service
-  await LocalStorageService().initialize();
+  final storage = LocalStorageService();
+  await storage.initialize();
+  
+  // Initialize sample lesson data for testing
+  // TODO: Remove when actual lesson content is ready
+  await SampleLessonData.initializeSampleData(storage.saveLesson);
   
   // TODO: Initialize Firebase when project is created
   // await Firebase.initializeApp();
