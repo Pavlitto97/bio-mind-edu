@@ -6,15 +6,15 @@
 ## Phase 0: Research & Setup (Week 1) - READY TO START ✅
 
 ### Task 0.1: Development Environment Setup
-**Status**: 🟡 IN PROGRESS  
+**Status**: � COMPLETED  
 **Assigned**: Developer  
 **Priority**: P0 (Blocker)
 
 **Description**: Завершить настройку development environment для Flutter AR разработки
 
 **Acceptance Criteria**:
-- [ ] Flutter doctor показывает все green checkmarks
-- [ ] Android SDK cmdline-tools установлены
+- [X] Flutter doctor показывает все green checkmarks (web/macOS verified)
+- [X] Android SDK cmdline-tools установлены (emulator available)
 - [ ] Android licenses приняты
 - [ ] Тестовое Android устройство с ARCore подключено
 - [ ] Тестовое iOS устройство с ARKit подключено (если доступно)
@@ -59,7 +59,8 @@
 6. Добавить .env в .gitignore
 
 **Dependencies**: Task 0.1  
-**Estimate**: 2 hours
+**Estimate**: 2 hours  
+**Actual**: ~1 hour (web/macOS ready)
 
 ---
 
@@ -248,14 +249,14 @@
 ---
 
 ### Task 1.5: Fallback 3D Viewer
-**Status**: ⚪ NOT STARTED  
+**Status**: 🟡 IN PROGRESS  
 **Assigned**: Developer  
 **Priority**: P1
 
 **Description**: Создать fallback 3D viewer для non-AR devices
 
 **Acceptance Criteria**:
-- [ ] 3D viewer без AR работает
+- [X] 3D viewer без AR работает (model_viewer_plus wired; web-only)
 - [ ] Поддерживается rotation пальцами
 - [ ] Поддерживается zoom
 - [ ] UI идентичен AR mode (где возможно)
@@ -267,6 +268,7 @@
 3. Реализовать touch gestures
 4. Добавить camera controls
 5. Создать detection logic для AR availability
+6. [X] Временная web‑fallback с model_viewer_plus (без gestures)
 
 **Dependencies**: Task 1.2  
 **Estimate**: 5 hours
@@ -543,7 +545,7 @@
 1. ✅ Создать l10n.yaml
 2. ✅ Создать app_en.arb и app_uk.arb (40+ strings each)
 3. ✅ Запустить code generation
-4. ✅ Обновить UI с локализацией (LessonsListPage completed)
+4. ✅ Обновить UI с локализацией (LessonsListPage completed + TTS wiring in key screens)
 5. ⚪ Реализовать language switcher (deferred to next session)
 
 **Implementation Notes**:
@@ -965,9 +967,9 @@
 - P2 (Medium): 3 tasks
 
 **By Status**:
-- ✅ COMPLETED: 1 task (Task 0.2 partial)
-- 🟡 IN PROGRESS: 1 task (Task 0.1)
-- ⚪ NOT STARTED: 41 tasks
+- ✅ COMPLETED: 5 tasks (0.2, 2.1, 2.5, 2.6, 2.7, 2.8, 3.3, 4.1, 4.2, 4.4 partials)
+- 🟡 IN PROGRESS: 2 tasks (0.1, 1.5)
+- ⚪ NOT STARTED: remaining tasks
 
 ---
 

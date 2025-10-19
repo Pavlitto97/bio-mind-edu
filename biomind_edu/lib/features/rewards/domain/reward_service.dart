@@ -6,36 +6,41 @@ import '../../profile/data/models/user_profile_model.dart';
 
 /// Service for managing rewards
 class RewardService {
+  // Singleton pattern to avoid multiple Hive box opens on web hot reload
+  static final RewardService _instance = RewardService._internal();
+  factory RewardService() => _instance;
+  RewardService._internal();
+
   static const String _rewardsBoxName = 'rewards';
   static const String _userProfileBoxName = 'userProfile';
 
-  late Box<Reward> _rewardsBox;
-  late Box<UserProfile> _userProfileBox;
+  Box<Reward>? _rewardsBox;
+  Box<UserProfile>? _userProfileBox;
   bool _initialized = false;
 
   /// Initialize the service
   Future<void> initialize() async {
     if (_initialized) return;
 
-    _rewardsBox = await Hive.openBox<Reward>(_rewardsBoxName);
-    _userProfileBox = await Hive.openBox<UserProfile>(_userProfileBoxName);
+    _rewardsBox ??= await Hive.openBox<Reward>(_rewardsBoxName);
+    _userProfileBox ??= await Hive.openBox<UserProfile>(_userProfileBoxName);
 
     // Initialize with mock rewards if empty
-    if (_rewardsBox.isEmpty) {
+    if (_rewardsBox!.isEmpty) {
       for (var reward in mockRewards) {
-        await _rewardsBox.put(reward.id, reward);
+        await _rewardsBox!.put(reward.id, reward);
       }
     }
 
     // Initialize default user profile if empty
-    if (_userProfileBox.isEmpty) {
+    if (_userProfileBox!.isEmpty) {
       final defaultProfile = UserProfile(
         id: 'default_user',
         name: 'Young Scientist',
         createdAt: DateTime.now(),
         lastActiveAt: DateTime.now(),
       );
-      await _userProfileBox.put('default_user', defaultProfile);
+      await _userProfileBox!.put('default_user', defaultProfile);
     }
 
     _initialized = true;
@@ -43,28 +48,28 @@ class RewardService {
 
   /// Get all rewards
   List<Reward> getAllRewards() {
-    return _rewardsBox.values.toList();
+  return _rewardsBox?.values.toList() ?? const [];
   }
 
   /// Get unlocked rewards
   List<Reward> getUnlockedRewards() {
-    return _rewardsBox.values.where((r) => r.isUnlocked).toList();
+  return _rewardsBox?.values.where((r) => r.isUnlocked).toList() ?? const [];
   }
 
   /// Get locked rewards
   List<Reward> getLockedRewards() {
-    return _rewardsBox.values.where((r) => !r.isUnlocked).toList();
+  return _rewardsBox?.values.where((r) => !r.isUnlocked).toList() ?? const [];
   }
 
   /// Check if a reward is unlocked
   bool isRewardUnlocked(String rewardId) {
-    final reward = _rewardsBox.get(rewardId);
+    final reward = _rewardsBox?.get(rewardId);
     return reward?.isUnlocked ?? false;
   }
 
   /// Unlock a reward
   Future<bool> unlockReward(String rewardId) async {
-    final reward = _rewardsBox.get(rewardId);
+  final reward = _rewardsBox?.get(rewardId);
     if (reward == null) return false;
 
     if (reward.isUnlocked) {
@@ -76,7 +81,7 @@ class RewardService {
       isUnlocked: true,
       unlockedAt: DateTime.now(),
     );
-    await _rewardsBox.put(rewardId, unlockedReward);
+  await _rewardsBox!.put(rewardId, unlockedReward);
 
     // Update user profile
     await _incrementUserRewards(rewardId);
@@ -91,7 +96,7 @@ class RewardService {
     if (reward != null) {
       final unlocked = await unlockReward(reward.id);
       if (unlocked) {
-        return _rewardsBox.get(reward.id);
+  return _rewardsBox!.get(reward.id);
       }
     }
 
@@ -101,7 +106,7 @@ class RewardService {
       if (perfectReward != null) {
         final unlocked = await unlockReward(perfectReward.id);
         if (unlocked) {
-          return _rewardsBox.get(perfectReward.id);
+          return _rewardsBox!.get(perfectReward.id);
         }
       }
     }
@@ -111,7 +116,7 @@ class RewardService {
 
   /// Get user profile
   UserProfile? getUserProfile() {
-    return _userProfileBox.get('default_user');
+  return _userProfileBox?.get('default_user');
   }
 
   /// Update user profile with new stats
@@ -136,7 +141,7 @@ class RewardService {
       lastActiveAt: DateTime.now(),
     );
 
-    await _userProfileBox.put('default_user', updatedProfile);
+  await _userProfileBox!.put('default_user', updatedProfile);
   }
 
   /// Internal: Increment user rewards count
@@ -152,17 +157,17 @@ class RewardService {
       lastActiveAt: DateTime.now(),
     );
 
-    await _userProfileBox.put('default_user', updatedProfile);
+  await _userProfileBox!.put('default_user', updatedProfile);
   }
 
   /// Get reward by ID
   Reward? getRewardById(String rewardId) {
-    return _rewardsBox.get(rewardId);
+  return _rewardsBox?.get(rewardId);
   }
 
   /// Get total rewards count
   int getTotalRewardsCount() {
-    return _rewardsBox.length;
+  return _rewardsBox?.length ?? 0;
   }
 
   /// Get unlocked rewards count
@@ -172,8 +177,8 @@ class RewardService {
 
   /// Close the service
   Future<void> close() async {
-    await _rewardsBox.close();
-    await _userProfileBox.close();
+    await _rewardsBox?.close();
+    await _userProfileBox?.close();
     _initialized = false;
   }
 }
@@ -181,6 +186,9 @@ class RewardService {
 /// Riverpod provider for RewardService
 final rewardServiceProvider = Provider<RewardService>((ref) {
   final service = RewardService();
+  // Fire-and-forget initialize; ignore if already initialized
+  // Avoids blocking provider reads and prevents duplicate opens on hot reload
+  // ignore: discarded_futures
   service.initialize();
   return service;
 });

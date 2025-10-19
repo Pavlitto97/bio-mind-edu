@@ -71,7 +71,8 @@ class StorageConstants {
   /// Hive box names
   static const String lessonsBox = 'lessons';
   static const String progressBox = 'progress';
-  static const String rewardsBox = 'rewards';
+  // Use a JSON-based rewards box name distinct from typed RewardService box
+  static const String rewardsBox = 'rewards_json';
   static const String settingsBox = 'settings';
 
   /// Preference keys
