@@ -1,0 +1,379 @@
+{
+  "@@locale": "en",
+  
+  "appTitle": "BioMind EDU",
+  "@appTitle": {
+    "description": "The title of the application"
+  },
+  
+  "lessonsTitle": "Biology Lessons",
+  "@lessonsTitle": {
+    "description": "Title for lessons list page"
+  },
+  
+  "noLessonsAvailable": "No lessons available yet",
+  "@noLessonsAvailable": {
+    "description": "Message when no lessons are found"
+  },
+  
+  "checkBackSoon": "Check back soon for exciting biology lessons!",
+  "@checkBackSoon": {
+    "description": "Encouragement message for empty lessons"
+  },
+  
+  "failedToLoadLessons": "Failed to load lessons",
+  "@failedToLoadLessons": {
+    "description": "Error message when lessons fail to load"
+  },
+  
+  "settings": "Settings",
+  "@settings": {
+    "description": "Settings menu item"
+  },
+  
+  "lessonCellStructure": "Cell Structure",
+  "@lessonCellStructure": {
+    "description": "Title for cell structure lesson"
+  },
+  
+  "lessonCellDescription": "Explore the amazing world inside a living cell",
+  "@lessonCellDescription": {
+    "description": "Description for cell structure lesson"
+  },
+  
+  "lessonPlantLife": "Plant Life",
+  "@lessonPlantLife": {
+    "description": "Title for plant life lesson"
+  },
+  
+  "lessonPlantDescription": "Discover how plants grow and make food",
+  "@lessonPlantDescription": {
+    "description": "Description for plant life lesson"
+  },
+  
+  "lessonHumanHeart": "Human Heart",
+  "@lessonHumanHeart": {
+    "description": "Title for human heart lesson"
+  },
+  
+  "lessonHeartDescription": "Learn how your heart pumps blood through your body",
+  "@lessonHeartDescription": {
+    "description": "Description for human heart lesson"
+  },
+  
+  "difficultyBeginner": "Beginner",
+  "@difficultyBeginner": {
+    "description": "Beginner difficulty level"
+  },
+  
+  "difficultyIntermediate": "Intermediate",
+  "@difficultyIntermediate": {
+    "description": "Intermediate difficulty level"
+  },
+  
+  "startLesson": "Start Lesson",
+  "@startLesson": {
+    "description": "Button to start a lesson"
+  },
+  
+  "continueLesson": "Continue Lesson",
+  "@continueLesson": {
+    "description": "Button to continue an in-progress lesson"
+  },
+  
+  "lessonCompleted": "Lesson Completed!",
+  "@lessonCompleted": {
+    "description": "Message when lesson is completed"
+  },
+  
+  "interactiveTask": "Interactive Task",
+  "@interactiveTask": {
+    "description": "Title for interactive task section"
+  },
+  
+  "dragToMatch": "Drag to Match",
+  "@dragToMatch": {
+    "description": "Instructions for drag-and-drop task"
+  },
+  
+  "timeRemaining": "Time: {seconds}s",
+  "@timeRemaining": {
+    "description": "Time remaining in task",
+    "placeholders": {
+      "seconds": {
+        "type": "int",
+        "example": "30"
+      }
+    }
+  },
+  
+  "correct": "Correct!",
+  "@correct": {
+    "description": "Feedback for correct answer"
+  },
+  
+  "tryAgain": "Try Again",
+  "@tryAgain": {
+    "description": "Feedback for incorrect answer"
+  },
+  
+  "assessment": "Assessment",
+  "@assessment": {
+    "description": "Title for assessment section"
+  },
+  
+  "question": "Question {current} of {total}",
+  "@question": {
+    "description": "Question progress indicator",
+    "placeholders": {
+      "current": {
+        "type": "int",
+        "example": "1"
+      },
+      "total": {
+        "type": "int",
+        "example": "5"
+      }
+    }
+  },
+  
+  "submit": "Submit",
+  "@submit": {
+    "description": "Submit button"
+  },
+  
+  "next": "Next",
+  "@next": {
+    "description": "Next button"
+  },
+  
+  "finish": "Finish",
+  "@finish": {
+    "description": "Finish button"
+  },
+  
+  "results": "Results",
+  "@results": {
+    "description": "Results page title"
+  },
+  
+  "yourScore": "Your Score",
+  "@yourScore": {
+    "description": "Score label"
+  },
+  
+  "scorePercentage": "{score}%",
+  "@scorePercentage": {
+    "description": "Score percentage",
+    "placeholders": {
+      "score": {
+        "type": "int",
+        "example": "85"
+      }
+    }
+  },
+  
+  "starsEarned": "{stars} Stars",
+  "@starsEarned": {
+    "description": "Stars earned",
+    "placeholders": {
+      "stars": {
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
+  
+  "excellent": "Excellent!",
+  "@excellent": {
+    "description": "Feedback for excellent performance"
+  },
+  
+  "greatJob": "Great Job!",
+  "@greatJob": {
+    "description": "Feedback for good performance"
+  },
+  
+  "goodEffort": "Good Effort!",
+  "@goodEffort": {
+    "description": "Feedback for passing performance"
+  },
+  
+  "keepPracticing": "Keep Practicing!",
+  "@keepPracticing": {
+    "description": "Feedback for poor performance"
+  },
+  
+  "rewards": "Rewards",
+  "@rewards": {
+    "description": "Rewards page title"
+  },
+  
+  "myRewards": "My Rewards",
+  "@myRewards": {
+    "description": "My rewards collection title"
+  },
+  
+  "rewardsUnlocked": "{count} Rewards Unlocked",
+  "@rewardsUnlocked": {
+    "description": "Rewards unlocked count",
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "5"
+      }
+    }
+  },
+  
+  "lessonsCompleted": "{count} Lessons",
+  "@lessonsCompleted": {
+    "description": "Lessons completed count",
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
+  
+  "testsCompleted": "{count} Tests",
+  "@testsCompleted": {
+    "description": "Tests completed count",
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
+  
+  "locked": "Locked",
+  "@locked": {
+    "description": "Status for locked items"
+  },
+  
+  "unlocked": "Unlocked!",
+  "@unlocked": {
+    "description": "Status for newly unlocked items"
+  },
+  
+  "congratulations": "Congratulations!",
+  "@congratulations": {
+    "description": "Congratulations message"
+  },
+  
+  "newRewardUnlocked": "New Reward Unlocked!",
+  "@newRewardUnlocked": {
+    "description": "Message when a new reward is unlocked"
+  },
+  
+  "viewRewards": "View Rewards",
+  "@viewRewards": {
+    "description": "Button to view rewards collection"
+  },
+  
+  "backToLessons": "Back to Lessons",
+  "@backToLessons": {
+    "description": "Button to return to lessons"
+  },
+  
+  "language": "Language",
+  "@language": {
+    "description": "Language settings"
+  },
+  
+  "english": "English",
+  "@english": {
+    "description": "English language option"
+  },
+  
+  "ukrainian": "Українська",
+  "@ukrainian": {
+    "description": "Ukrainian language option"
+  },
+  
+  "progressTitle": "Learning Progress",
+  "@progressTitle": {
+    "description": "Title for progress page"
+  },
+  
+  "overallProgress": "Overall Progress",
+  "@overallProgress": {
+    "description": "Overall progress section title"
+  },
+  
+  "averageScore": "Avg Score",
+  "@averageScore": {
+    "description": "Average score label"
+  },
+  
+  "totalTime": "Time",
+  "@totalTime": {
+    "description": "Total time label"
+  },
+  
+  "completionRate": "Completion Rate",
+  "@completionRate": {
+    "description": "Completion rate label"
+  },
+  
+  "lessonHistory": "Lesson History",
+  "@lessonHistory": {
+    "description": "Lesson history section title"
+  },
+  
+  "testResults": "Test Results",
+  "@testResults": {
+    "description": "Test results section title"
+  },
+  
+  "noLessonsYet": "No lessons started yet",
+  "@noLessonsYet": {
+    "description": "Message when no lesson history"
+  },
+  
+  "noTestsYet": "No tests completed yet",
+  "@noTestsYet": {
+    "description": "Message when no test results"
+  },
+  
+  "completed": "Completed",
+  "@completed": {
+    "description": "Completed status"
+  },
+  
+  "inProgress": "In Progress",
+  "@inProgress": {
+    "description": "In progress status"
+  },
+  
+  "notStarted": "Not Started",
+  "@notStarted": {
+    "description": "Not started status"
+  },
+  
+  "attempt": "attempt",
+  "@attempt": {
+    "description": "Singular attempt"
+  },
+  
+  "attempts": "attempts",
+  "@attempts": {
+    "description": "Plural attempts"
+  },
+  
+  "errorLoadingProgress": "Error loading progress",
+  "@errorLoadingProgress": {
+    "description": "Error message for progress loading"
+  },
+  
+  "errorLoadingHistory": "Error loading history",
+  "@errorLoadingHistory": {
+    "description": "Error message for history loading"
+  },
+  
+  "errorLoadingResults": "Error loading results",
+  "@errorLoadingResults": {
+    "description": "Error message for results loading"
+  }
+}

@@ -1,6 +1,16 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:biomind_edu/shared/models/progress.dart';
 import 'package:biomind_edu/core/services/local_storage_service.dart';
+import 'package:biomind_edu/core/services/progress_service.dart';
+import 'package:biomind_edu/features/rewards/domain/reward_service.dart';
+
+/// Provider for ProgressService
+final progressServiceProvider = Provider<ProgressService>((ref) {
+  return ProgressService(
+    storage: LocalStorageService(),
+    rewardService: ref.watch(rewardServiceProvider),
+  );
+});
 
 /// Provider для получения всех записей прогресса
 final allProgressProvider = FutureProvider<List<LessonProgress>>((ref) async {
@@ -63,58 +73,20 @@ final userProfileNotifierProvider = StateNotifierProvider<UserProfileNotifier, U
   return UserProfileNotifier(LocalStorageService());
 });
 
-/// Статистика по всему прогрессу
-class ProgressStatistics {
-  final int totalLessons;
-  final int completedLessons;
-  final int inProgressLessons;
-  final double averageScore;
-  final int totalRewards;
-  final Duration totalLearningTime;
-  
-  const ProgressStatistics({
-    required this.totalLessons,
-    required this.completedLessons,
-    required this.inProgressLessons,
-    required this.averageScore,
-    required this.totalRewards,
-    required this.totalLearningTime,
-  });
-  
-  double get completionPercentage => 
-      totalLessons > 0 ? (completedLessons / totalLessons) * 100 : 0;
-}
-
-/// Provider для статистики прогресса
+/// Provider для статистики прогресса (using ProgressService)
 final progressStatisticsProvider = FutureProvider<ProgressStatistics>((ref) async {
-  final allProgress = await ref.watch(allProgressProvider.future);
-  final rewards = await ref.watch(unlockedRewardsProvider.future);
-  
-  final completed = allProgress.where((p) => p.status == 'completed').toList();
-  final inProgress = allProgress.where((p) => p.status == 'in_progress').toList();
-  
-  // Calculate average score from completed lessons
-  double avgScore = 0;
-  if (completed.isNotEmpty) {
-    final scores = completed.where((p) => p.testScore != null).map((p) => p.testScore!);
-    if (scores.isNotEmpty) {
-      final totalScore = scores.fold<double>(0, (sum, score) => sum + score);
-      avgScore = totalScore / scores.length;
-    }
-  }
-  
-  // Calculate total learning time from completed lessons
-  Duration totalTime = Duration.zero;
-  for (final progress in allProgress) {
-    totalTime += Duration(seconds: progress.timeSpentSeconds);
-  }
-  
-  return ProgressStatistics(
-    totalLessons: allProgress.length,
-    completedLessons: completed.length,
-    inProgressLessons: inProgress.length,
-    averageScore: avgScore,
-    totalRewards: rewards.length,
-    totalLearningTime: totalTime,
-  );
+  final progressService = ref.watch(progressServiceProvider);
+  return progressService.getOverallProgress();
+});
+
+/// Provider для истории уроков
+final lessonHistoryProvider = FutureProvider<List<LessonProgressHistory>>((ref) async {
+  final progressService = ref.watch(progressServiceProvider);
+  return progressService.getLessonHistory(limit: 10);
+});
+
+/// Provider для результатов тестов
+final testResultsProvider = FutureProvider<List<TestResult>>((ref) async {
+  final progressService = ref.watch(progressServiceProvider);
+  return progressService.getTestResults();
 });

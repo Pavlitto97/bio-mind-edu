@@ -173,13 +173,17 @@ class _ARLessonPageState extends ConsumerState<ARLessonPage> {
       lesson: lesson,
       isArSupported: _isArSupported,
       onModelLoaded: () {
-        ref.read(lessonSessionProvider(widget.lessonId).notifier)
-            .setModelLoaded(true);
+        if (mounted) {
+          ref.read(lessonSessionProvider(widget.lessonId).notifier)
+              .setModelLoaded(true);
+        }
       },
       onError: (String error) {
-        setState(() {
-          _errorMessage = error;
-        });
+        if (mounted) {
+          setState(() {
+            _errorMessage = error;
+          });
+        }
       },
     );
   }
@@ -300,6 +304,8 @@ class _ARLessonPageState extends ConsumerState<ARLessonPage> {
   }
 
   void _handleAnnotationTap(LessonAnnotation annotation) {
+    if (!mounted) return;
+    
     // Mark annotation as viewed
     ref.read(lessonSessionProvider(widget.lessonId).notifier)
         .addViewedAnnotation(annotation.id);
@@ -318,9 +324,11 @@ class _ARLessonPageState extends ConsumerState<ARLessonPage> {
         annotation: annotation,
         onClose: () {
           Navigator.of(context).pop();
-          setState(() {
-            _selectedAnnotation = null;
-          });
+          if (mounted) {
+            setState(() {
+              _selectedAnnotation = null;
+            });
+          }
         },
       ),
     );

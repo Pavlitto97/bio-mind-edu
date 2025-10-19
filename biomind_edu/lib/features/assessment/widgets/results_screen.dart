@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../shared/models/assessment.dart';
+import '../../../shared/providers/progress_provider.dart';
 
 /// Results screen showing test performance and scores
-class ResultsScreen extends StatefulWidget {
+class ResultsScreen extends ConsumerStatefulWidget {
   final TestResult testResult;
   final AssessmentTest test;
+  final String lessonId;
   final VoidCallback onRetry;
   final VoidCallback onClose;
 
@@ -12,18 +16,20 @@ class ResultsScreen extends StatefulWidget {
     super.key,
     required this.testResult,
     required this.test,
+    required this.lessonId,
     required this.onRetry,
     required this.onClose,
   });
 
   @override
-  State<ResultsScreen> createState() => _ResultsScreenState();
+  ConsumerState<ResultsScreen> createState() => _ResultsScreenState();
 }
 
-class _ResultsScreenState extends State<ResultsScreen>
+class _ResultsScreenState extends ConsumerState<ResultsScreen>
     with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   late Animation<double> _scaleAnimation;
+  bool _rewardUnlocked = false;
 
   @override
   void initState() {
@@ -39,13 +45,60 @@ class _ResultsScreenState extends State<ResultsScreen>
       curve: Curves.elasticOut,
     );
 
-    _controller.forward();
+    _controller.forward().then((_) {
+      // Provide haptic feedback when animation completes
+      if (widget.testResult.isPassed) {
+        HapticFeedback.heavyImpact();
+      } else {
+        HapticFeedback.lightImpact();
+      }
+    });
+
+    // Check and unlock reward after animation
+    _checkAndUnlockReward();
   }
 
   @override
   void dispose() {
     _controller.dispose();
     super.dispose();
+  }
+
+  /// Check if user earned a reward and unlock it using ProgressService
+  void _checkAndUnlockReward() async {
+    // Only unlock reward if test passed (score >= 80%)
+    if (!widget.testResult.isPassed || widget.testResult.score < 0.8) {
+      return;
+    }
+
+    // Wait for initial animation to complete
+    await Future<void>.delayed(const Duration(milliseconds: 1000));
+
+    if (!mounted) return;
+
+    final progressService = ref.read(progressServiceProvider);
+    
+    // Calculate stars and time spent
+    final stars = _getStars();
+    final timeSpent = widget.testResult.timeTakenSeconds;
+    
+    // Update progress and unlock reward (ProgressService handles both)
+    await progressService.updateTestScore(
+      lessonId: widget.lessonId,
+      score: widget.testResult.score * 100, // Convert to percentage
+      stars: stars,
+      timeSpentSeconds: timeSpent,
+    );
+
+    // Note: Reward celebration will be handled by the lesson completion flow
+    // ProgressService already unlocked the reward via RewardService.unlockLessonReward()
+    if (mounted) {
+      setState(() {
+        _rewardUnlocked = true;
+      });
+      // Provide success haptic feedback for reward unlock
+      HapticFeedback.mediumImpact();
+    }
   }
 
   int _getStars() {
@@ -307,6 +360,23 @@ class _ResultsScreenState extends State<ResultsScreen>
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
+                      // View Rewards button (only if reward unlocked)
+                      if (_rewardUnlocked) ...[
+                        ElevatedButton.icon(
+                          onPressed: () {
+                            Navigator.pushNamed(context, '/rewards');
+                          },
+                          icon: const Icon(Icons.emoji_events),
+                          label: const Text('View My Rewards'),
+                          style: ElevatedButton.styleFrom(
+                            padding: const EdgeInsets.symmetric(vertical: 16),
+                            backgroundColor: Colors.amber,
+                            foregroundColor: Colors.black87,
+                          ),
+                        ),
+                        const SizedBox(height: 12),
+                      ],
+                      
                       ElevatedButton.icon(
                         onPressed: widget.onClose,
                         icon: const Icon(Icons.home),

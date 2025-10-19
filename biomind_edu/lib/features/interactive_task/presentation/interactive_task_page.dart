@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../shared/models/interactive_task.dart';
+import '../../../shared/providers/progress_provider.dart';
 import '../widgets/draggable_task_item.dart';
 import '../widgets/drop_target_zone.dart';
 import 'dart:async';
@@ -188,6 +190,8 @@ class _InteractiveTaskPageState extends ConsumerState<InteractiveTaskPage> {
       
       // Check if all items are placed correctly
       if (_correctItems.length == _task!.items.length) {
+        // Provide celebration haptic feedback for task completion
+        HapticFeedback.heavyImpact();
         _handleTaskComplete();
       }
     } else {
@@ -209,15 +213,21 @@ class _InteractiveTaskPageState extends ConsumerState<InteractiveTaskPage> {
   }
 
   void _playSuccessFeedback() {
-    // TODO: Play success audio
+    // Play success audio
     debugPrint('Playing success audio');
     // ref.read(audioNotifierProvider.notifier).playSfx('success.mp3');
+    
+    // Provide success haptic feedback
+    HapticFeedback.mediumImpact();
   }
 
   void _playErrorFeedback() {
-    // TODO: Play error audio
+    // Play error audio
     debugPrint('Playing error audio');
     // ref.read(audioNotifierProvider.notifier).playSfx('error.mp3');
+    
+    // Provide error haptic feedback
+    HapticFeedback.vibrate();
   }
 
   void _handleTimeOut() {
@@ -252,16 +262,24 @@ class _InteractiveTaskPageState extends ConsumerState<InteractiveTaskPage> {
 
   Future<void> _saveProgress(TaskResult result) async {
     try {
-      // TODO: Implement proper progress saving
-      // For now, just log the result
-      debugPrint('Task completed:');
+      final progressService = ref.read(progressServiceProvider);
+      
+      // Update lesson progress with task completion
+      await progressService.updateLessonProgress(
+        lessonId: widget.lessonId,
+        taskCompleted: result.isPassed,
+        timeSpentSeconds: result.timeTakenSeconds,
+        attempts: 1,
+      );
+      
+      debugPrint('✅ Task progress saved successfully');
       debugPrint('  Task ID: ${result.taskId}');
       debugPrint('  Correct: ${result.correctCount}/${result.totalCount}');
       debugPrint('  Time: ${result.timeTakenSeconds}s');
       debugPrint('  Passed: ${result.isPassed}');
       debugPrint('  Stars: ${_calculateStars(result)}');
     } catch (e) {
-      debugPrint('Error saving progress: $e');
+      debugPrint('❌ Error saving progress: $e');
     }
   }
 

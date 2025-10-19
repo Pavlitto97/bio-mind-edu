@@ -1,0 +1,152 @@
+{
+  "@@locale": "uk",
+  
+  "appTitle": "BioMind EDU",
+  "lessonsTitle": "Уроки біології",
+  "noLessonsAvailable": "Уроків поки немає",
+  "checkBackSoon": "Незабаром з'являться цікаві уроки біології!",
+  "failedToLoadLessons": "Не вдалося завантажити уроки",
+  "settings": "Налаштування",
+  
+  "lessonCellStructure": "Будова клітини",
+  "lessonCellDescription": "Досліджуй дивовижний світ всередині живої клітини",
+  "lessonPlantLife": "Життя рослин",
+  "lessonPlantDescription": "Дізнайся, як рослини ростуть і виробляють їжу",
+  "lessonHumanHeart": "Серце людини",
+  "lessonHeartDescription": "Дізнайся, як твоє серце перекачує кров по тілу",
+  
+  "difficultyBeginner": "Початковий",
+  "difficultyIntermediate": "Середній",
+  
+  "startLesson": "Почати урок",
+  "continueLesson": "Продовжити урок",
+  "lessonCompleted": "Урок завершено!",
+  
+  "interactiveTask": "Інтерактивне завдання",
+  "dragToMatch": "Перетягни для з'єднання",
+  "timeRemaining": "Час: {seconds}с",
+  "correct": "Правильно!",
+  "tryAgain": "Спробуй ще раз",
+  
+  "assessment": "Оцінювання",
+  "question": "Питання {current} з {total}",
+  "submit": "Надіслати",
+  "next": "Далі",
+  "finish": "Завершити",
+  
+  "results": "Результати",
+  "yourScore": "Твій результат",
+  "scorePercentage": "{score}%",
+  "starsEarned": "{stars} зірок",
+  
+  "excellent": "Чудово!",
+  "greatJob": "Відмінна робота!",
+  "goodEffort": "Добре!",
+  "keepPracticing": "Продовжуй вправлятися!",
+  
+  "rewards": "Нагороди",
+  "myRewards": "Мої нагороди",
+  "rewardsUnlocked": "Нагороди відкрито: {count}",
+  "lessonsCompleted": "Уроків: {count}",
+  "testsCompleted": "Тестів: {count}",
+  
+  "locked": "Заблоковано",
+  "unlocked": "Відкрито!",
+  "congratulations": "Вітаємо!",
+  "newRewardUnlocked": "Нова нагорода відкрита!",
+  
+  "viewRewards": "Переглянути нагороди",
+  "backToLessons": "Назад до уроків",
+  
+  "language": "Мова",
+  "english": "English",
+    "ukrainian": "Українська",
+  "@ukrainian": {
+    "description": "Ukrainian language option"
+  },
+  
+  "progressTitle": "Прогрес навчання",
+  "@progressTitle": {
+    "description": "Title for progress page"
+  },
+  
+  "overallProgress": "Загальний прогрес",
+  "@overallProgress": {
+    "description": "Overall progress section title"
+  },
+  
+  "averageScore": "Середній бал",
+  "@averageScore": {
+    "description": "Average score label"
+  },
+  
+  "totalTime": "Час",
+  "@totalTime": {
+    "description": "Total time label"
+  },
+  
+  "completionRate": "Рівень завершення",
+  "@completionRate": {
+    "description": "Completion rate label"
+  },
+  
+  "lessonHistory": "Історія уроків",
+  "@lessonHistory": {
+    "description": "Lesson history section title"
+  },
+  
+  "testResults": "Результати тестів",
+  "@testResults": {
+    "description": "Test results section title"
+  },
+  
+  "noLessonsYet": "Ще не розпочато жодного уроку",
+  "@noLessonsYet": {
+    "description": "Message when no lesson history"
+  },
+  
+  "noTestsYet": "Ще не завершено жодного тесту",
+  "@noTestsYet": {
+    "description": "Message when no test results"
+  },
+  
+  "completed": "Завершено",
+  "@completed": {
+    "description": "Completed status"
+  },
+  
+  "inProgress": "Виконується",
+  "@inProgress": {
+    "description": "In progress status"
+  },
+  
+  "notStarted": "Не розпочато",
+  "@notStarted": {
+    "description": "Not started status"
+  },
+  
+  "attempt": "спроба",
+  "@attempt": {
+    "description": "Singular attempt"
+  },
+  
+  "attempts": "спроб",
+  "@attempts": {
+    "description": "Plural attempts"
+  },
+  
+  "errorLoadingProgress": "Помилка завантаження прогресу",
+  "@errorLoadingProgress": {
+    "description": "Error message for progress loading"
+  },
+  
+  "errorLoadingHistory": "Помилка завантаження історії",
+  "@errorLoadingHistory": {
+    "description": "Error message for history loading"
+  },
+  
+  "errorLoadingResults": "Помилка завантаження результатів",
+  "@errorLoadingResults": {
+    "description": "Error message for results loading"
+  }
+}

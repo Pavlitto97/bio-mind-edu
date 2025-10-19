@@ -309,6 +309,7 @@ class _AssessmentPageState extends ConsumerState<AssessmentPage> {
       return ResultsScreen(
         testResult: _testResult,
         test: _test,
+        lessonId: widget.lessonId,
         onRetry: () {
           setState(() {
             _currentQuestionIndex = 0;

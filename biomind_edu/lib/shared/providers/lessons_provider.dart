@@ -1,6 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:biomind_edu/shared/models/lesson.dart';
 import 'package:biomind_edu/core/services/local_storage_service.dart';
+import 'package:biomind_edu/shared/data/sample_lesson_data.dart';
 
 /// Provider для LocalStorageService
 final localStorageServiceProvider = Provider<LocalStorageService>((ref) {
@@ -8,15 +9,21 @@ final localStorageServiceProvider = Provider<LocalStorageService>((ref) {
 });
 
 /// Provider для получения всех уроков
+/// WEB MODE: Loading directly from SampleLessonData instead of Hive storage
 final lessonsProvider = FutureProvider<List<Lesson>>((ref) async {
-  final storage = ref.watch(localStorageServiceProvider);
-  return storage.getAllLessons();
+  // For web demo - return sample data directly
+  return SampleLessonData.allLessons;
 });
 
 /// Provider для получения конкретного урока по ID
+/// WEB MODE: Loading directly from SampleLessonData instead of Hive storage
 final lessonByIdProvider = FutureProvider.family<Lesson?, String>((ref, lessonId) async {
-  final storage = ref.watch(localStorageServiceProvider);
-  return storage.getLesson(lessonId);
+  // For web demo - find in sample data directly
+  try {
+    return SampleLessonData.allLessons.firstWhere((lesson) => lesson.id == lessonId);
+  } catch (e) {
+    return null;
+  }
 });
 
 /// Provider для отслеживания текущего активного урока
