@@ -17,7 +17,7 @@ final List<Reward> mockRewards = [
     imageUrl: 'assets/images/rewards/cell_trophy.png',
     category: RewardCategory.trophy,
   ),
-  
+
   // Plant lesson rewards
   const Reward(
     id: 'reward_plant_friend',
@@ -33,7 +33,7 @@ final List<Reward> mockRewards = [
     imageUrl: 'assets/images/rewards/plant_sticker.png',
     category: RewardCategory.sticker,
   ),
-  
+
   // Heart lesson rewards
   const Reward(
     id: 'reward_heart_hero',
@@ -49,7 +49,7 @@ final List<Reward> mockRewards = [
     imageUrl: 'assets/images/rewards/heart_trophy.png',
     category: RewardCategory.trophy,
   ),
-  
+
   // Achievement rewards
   const Reward(
     id: 'reward_first_steps',

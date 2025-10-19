@@ -42,7 +42,7 @@ class _AnimatedLessonCardState extends ConsumerState<AnimatedLessonCard>
   @override
   void initState() {
     super.initState();
-    
+
     _controller = AnimationController(
       vsync: this,
       duration: Duration(milliseconds: 400 + (widget.index * 100)),
@@ -51,18 +51,12 @@ class _AnimatedLessonCardState extends ConsumerState<AnimatedLessonCard>
     _scaleAnimation = Tween<double>(
       begin: 0.8,
       end: 1.0,
-    ).animate(CurvedAnimation(
-      parent: _controller,
-      curve: Curves.easeOutBack,
-    ));
+    ).animate(CurvedAnimation(parent: _controller, curve: Curves.easeOutBack));
 
     _slideAnimation = Tween<Offset>(
       begin: const Offset(0, 0.5),
       end: Offset.zero,
-    ).animate(CurvedAnimation(
-      parent: _controller,
-      curve: Curves.easeOut,
-    ));
+    ).animate(CurvedAnimation(parent: _controller, curve: Curves.easeOut));
 
     // Start entrance animation
     _controller.forward();
@@ -80,19 +74,21 @@ class _AnimatedLessonCardState extends ConsumerState<AnimatedLessonCard>
     final storage = LocalStorageService();
     final progress = storage.getProgress(widget.lessonId);
     final rewardService = ref.watch(rewardServiceProvider);
-    
+
     // Check if lesson has unlocked rewards (safely handle uninitialized service)
     bool hasReward = false;
     try {
-      final lessonReward = rewardService.getRewardById('reward_${widget.lessonId}_explorer');
+      final lessonReward = rewardService.getRewardById(
+        'reward_${widget.lessonId}_explorer',
+      );
       hasReward = lessonReward?.isUnlocked ?? false;
     } catch (e) {
       // RewardService not initialized yet
       hasReward = false;
     }
-    
+
     final isCompleted = progress?.status == 'completed';
-    
+
     // Calculate progress percentage
     double progressValue = 0.0;
     if (progress != null) {
@@ -125,151 +121,150 @@ class _AnimatedLessonCardState extends ConsumerState<AnimatedLessonCard>
             child: InkWell(
               onTap: widget.isLocked ? null : widget.onTap,
               child: Stack(
-              children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    // Thumbnail with overlay
-                    Expanded(
-                      flex: 3,
-                      child: Stack(
-                        fit: StackFit.expand,
-                        children: [
-                          // Background
-                          Container(
-                            decoration: BoxDecoration(
-                              gradient: LinearGradient(
-                                begin: Alignment.topLeft,
-                                end: Alignment.bottomRight,
-                                colors: _getGradientColors(),
-                              ),
-                            ),
-                            child: widget.thumbnailPath != null
-                                ? Image.asset(
-                                    widget.thumbnailPath!,
-                                    fit: BoxFit.cover,
-                                    errorBuilder: (context, error, stackTrace) =>
-                                        _buildPlaceholder(),
-                                  )
-                                : _buildPlaceholder(),
-                          ),
-                          
-                          // Locked overlay
-                          if (widget.isLocked)
-                            Container(
-                              color: Colors.black54,
-                              child: const Center(
-                                child: Icon(
-                                  Icons.lock,
-                                  size: 48,
-                                  color: Colors.white70,
-                                ),
-                              ),
-                            ),
-                          
-                          // Completion badge
-                          if (isCompleted && !widget.isLocked)
-                            Positioned(
-                              top: 8,
-                              right: 8,
-                              child: Container(
-                                padding: const EdgeInsets.all(8),
-                                decoration: const BoxDecoration(
-                                  color: Colors.green,
-                                  shape: BoxShape.circle,
-                                ),
-                                child: const Icon(
-                                  Icons.check,
-                                  color: Colors.white,
-                                  size: 20,
-                                ),
-                              ),
-                            ),
-                          
-                          // Reward badge
-                          if (hasReward && !widget.isLocked)
-                            Positioned(
-                              top: 8,
-                              left: 8,
-                              child: Container(
-                                padding: const EdgeInsets.all(8),
-                                decoration: const BoxDecoration(
-                                  color: Colors.amber,
-                                  shape: BoxShape.circle,
-                                ),
-                                child: const Icon(
-                                  Icons.emoji_events,
-                                  color: Colors.white,
-                                  size: 20,
-                                ),
-                              ),
-                            ),
-                        ],
-                      ),
-                    ),
-                    
-                    // Info section
-                    Expanded(
-                      flex: 2,
-                      child: Container(
-                        padding: const EdgeInsets.all(12),
-                        decoration: BoxDecoration(
-                          color: theme.cardColor,
-                        ),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      // Thumbnail with overlay
+                      Expanded(
+                        flex: 3,
+                        child: Stack(
+                          fit: StackFit.expand,
                           children: [
-                            // Title
-                            Text(
-                              _getLocalizedTitle(),
-                              style: theme.textTheme.titleMedium?.copyWith(
-                                fontWeight: FontWeight.bold,
-                                color: widget.isLocked
-                                    ? Colors.grey
-                                    : theme.textTheme.titleMedium?.color,
+                            // Background
+                            Container(
+                              decoration: BoxDecoration(
+                                gradient: LinearGradient(
+                                  begin: Alignment.topLeft,
+                                  end: Alignment.bottomRight,
+                                  colors: _getGradientColors(),
+                                ),
                               ),
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
+                              child: widget.thumbnailPath != null
+                                  ? Image.asset(
+                                      widget.thumbnailPath!,
+                                      fit: BoxFit.cover,
+                                      errorBuilder:
+                                          (context, error, stackTrace) =>
+                                              _buildPlaceholder(),
+                                    )
+                                  : _buildPlaceholder(),
                             ),
-                            
-                            const SizedBox(height: 4),
-                            
-                            // Description
-                            Text(
-                              _getLocalizedDescription(),
-                              style: theme.textTheme.bodySmall?.copyWith(
-                                color: widget.isLocked
-                                    ? Colors.grey
-                                    : theme.textTheme.bodySmall?.color,
-                              ),
-                              maxLines: 2,
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                            
-                            const Spacer(),
-                            
-                            // Bottom row: difficulty + progress
-                            Row(
-                              children: [
-                                _buildDifficultyChip(context),
-                                const SizedBox(width: 8),
-                                if (progressValue > 0)
-                                  Expanded(
-                                    child: _buildProgressBar(progressValue),
+
+                            // Locked overlay
+                            if (widget.isLocked)
+                              Container(
+                                color: Colors.black54,
+                                child: const Center(
+                                  child: Icon(
+                                    Icons.lock,
+                                    size: 48,
+                                    color: Colors.white70,
                                   ),
-                              ],
-                            ),
+                                ),
+                              ),
+
+                            // Completion badge
+                            if (isCompleted && !widget.isLocked)
+                              Positioned(
+                                top: 8,
+                                right: 8,
+                                child: Container(
+                                  padding: const EdgeInsets.all(8),
+                                  decoration: const BoxDecoration(
+                                    color: Colors.green,
+                                    shape: BoxShape.circle,
+                                  ),
+                                  child: const Icon(
+                                    Icons.check,
+                                    color: Colors.white,
+                                    size: 20,
+                                  ),
+                                ),
+                              ),
+
+                            // Reward badge
+                            if (hasReward && !widget.isLocked)
+                              Positioned(
+                                top: 8,
+                                left: 8,
+                                child: Container(
+                                  padding: const EdgeInsets.all(8),
+                                  decoration: const BoxDecoration(
+                                    color: Colors.amber,
+                                    shape: BoxShape.circle,
+                                  ),
+                                  child: const Icon(
+                                    Icons.emoji_events,
+                                    color: Colors.white,
+                                    size: 20,
+                                  ),
+                                ),
+                              ),
                           ],
                         ),
                       ),
-                    ),
-                  ],
-                ),
-              ],
+
+                      // Info section
+                      Expanded(
+                        flex: 2,
+                        child: Container(
+                          padding: const EdgeInsets.all(12),
+                          decoration: BoxDecoration(color: theme.cardColor),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              // Title
+                              Text(
+                                _getLocalizedTitle(),
+                                style: theme.textTheme.titleMedium?.copyWith(
+                                  fontWeight: FontWeight.bold,
+                                  color: widget.isLocked
+                                      ? Colors.grey
+                                      : theme.textTheme.titleMedium?.color,
+                                ),
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+
+                              const SizedBox(height: 4),
+
+                              // Description
+                              Text(
+                                _getLocalizedDescription(),
+                                style: theme.textTheme.bodySmall?.copyWith(
+                                  color: widget.isLocked
+                                      ? Colors.grey
+                                      : theme.textTheme.bodySmall?.color,
+                                ),
+                                maxLines: 2,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+
+                              const Spacer(),
+
+                              // Bottom row: difficulty + progress
+                              Row(
+                                children: [
+                                  _buildDifficultyChip(context),
+                                  const SizedBox(width: 8),
+                                  if (progressValue > 0)
+                                    Expanded(
+                                      child: _buildProgressBar(progressValue),
+                                    ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
             ),
           ),
         ),
-      ),
       ),
     );
   }
@@ -287,10 +282,14 @@ class _AnimatedLessonCardState extends ConsumerState<AnimatedLessonCard>
     // TODO: Implement proper localization
     final parts = widget.titleKey.split('.');
     final title = parts.isNotEmpty ? parts.last : widget.titleKey;
-    return title.replaceAll('_', ' ').split(' ').map((word) {
-      if (word.isEmpty) return word;
-      return word[0].toUpperCase() + word.substring(1).toLowerCase();
-    }).join(' ');
+    return title
+        .replaceAll('_', ' ')
+        .split(' ')
+        .map((word) {
+          if (word.isEmpty) return word;
+          return word[0].toUpperCase() + word.substring(1).toLowerCase();
+        })
+        .join(' ');
   }
 
   String _getLocalizedDescription() {
@@ -369,10 +368,7 @@ class _AnimatedLessonCardState extends ConsumerState<AnimatedLessonCard>
         const SizedBox(height: 2),
         Text(
           '${(progress * 100).toInt()}%',
-          style: TextStyle(
-            fontSize: 10,
-            color: Colors.grey.shade600,
-          ),
+          style: TextStyle(fontSize: 10, color: Colors.grey.shade600),
         ),
       ],
     );

@@ -16,7 +16,7 @@ class QuestionCard extends StatelessWidget {
 
   IconData _getIconData(String? iconName) {
     if (iconName == null) return Icons.circle;
-    
+
     switch (iconName) {
       case 'science':
         return Icons.science;
@@ -61,11 +61,7 @@ class QuestionCard extends StatelessWidget {
                 borderRadius: BorderRadius.circular(16),
               ),
               child: Center(
-                child: Icon(
-                  Icons.image,
-                  size: 64,
-                  color: Colors.grey[400],
-                ),
+                child: Icon(Icons.image, size: 64, color: Colors.grey[400]),
               ),
             ),
             const SizedBox(height: 24),
@@ -90,9 +86,9 @@ class QuestionCard extends StatelessWidget {
                   child: Text(
                     question.questionKey,
                     style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                          color: Theme.of(context).colorScheme.onPrimaryContainer,
-                          fontWeight: FontWeight.bold,
-                        ),
+                      color: Theme.of(context).colorScheme.onPrimaryContainer,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                 ),
               ],
@@ -104,7 +100,7 @@ class QuestionCard extends StatelessWidget {
           // Answer options
           ...question.options.map((option) {
             final isSelected = selectedAnswerIds.contains(option.id);
-            
+
             return Padding(
               padding: const EdgeInsets.only(bottom: 16),
               child: _AnswerOptionCard(
@@ -218,11 +214,11 @@ class _AnswerOptionCard extends StatelessWidget {
               child: Text(
                 option.textKey,
                 style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                      fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
-                      color: isSelected
-                          ? Theme.of(context).colorScheme.onPrimaryContainer
-                          : Colors.black87,
-                    ),
+                  fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+                  color: isSelected
+                      ? Theme.of(context).colorScheme.onPrimaryContainer
+                      : Colors.black87,
+                ),
               ),
             ),
 

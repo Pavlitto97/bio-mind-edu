@@ -4,10 +4,10 @@ import 'package:flutter/foundation.dart';
 enum ARSupport {
   /// Device fully supports AR (ARCore/ARKit available)
   fullSupport,
-  
+
   /// Device doesn't support AR (fallback to 3D viewer)
   noSupport,
-  
+
   /// AR support is unknown (needs checking)
   unknown,
 }
@@ -16,32 +16,32 @@ enum ARSupport {
 enum ARSessionState {
   /// AR session not initialized
   notInitialized,
-  
+
   /// AR session is initializing
   initializing,
-  
+
   /// AR session is running
   running,
-  
+
   /// AR session is paused
   paused,
-  
+
   /// AR session stopped
   stopped,
-  
+
   /// AR session error
   error,
 }
 
 /// AR Manager Service
-/// 
+///
 /// Manages AR session lifecycle, permissions, and state.
 /// Implements singleton pattern for global access.
 class ARManager {
   static final ARManager _instance = ARManager._internal();
-  
+
   factory ARManager() => _instance;
-  
+
   ARManager._internal();
 
   /// Current AR session state
@@ -61,26 +61,26 @@ class ARManager {
     try {
       // TODO: Implement AR support detection using ar_flutter_plugin
       // This will check for ARCore (Android) or ARKit (iOS) availability
-      
+
       if (defaultTargetPlatform == TargetPlatform.android) {
         // Check ARCore availability
         // final bool hasARCore = await ARCoreAvailability.check();
         // _arSupport = hasARCore ? ARSupport.fullSupport : ARSupport.noSupport;
-        
+
         // Placeholder: assume support on Android 7.0+
         _arSupport = ARSupport.fullSupport;
       } else if (defaultTargetPlatform == TargetPlatform.iOS) {
         // Check ARKit availability (iOS 12.0+)
         // final bool hasARKit = await ARKitAvailability.check();
         // _arSupport = hasARKit ? ARSupport.fullSupport : ARSupport.noSupport;
-        
+
         // Placeholder: assume support on iOS 12.0+
         _arSupport = ARSupport.fullSupport;
       } else {
         // Web and other platforms don't support AR
         _arSupport = ARSupport.noSupport;
       }
-      
+
       return _arSupport;
     } catch (e) {
       _errorMessage = 'Failed to check AR support: $e';
@@ -134,7 +134,7 @@ class ARManager {
     try {
       // TODO: Pause ar_flutter_plugin session
       // await ARSession.pause();
-      
+
       _sessionState = ARSessionState.paused;
     } catch (e) {
       _errorMessage = 'Failed to pause AR session: $e';
@@ -150,7 +150,7 @@ class ARManager {
     try {
       // TODO: Resume ar_flutter_plugin session
       // await ARSession.resume();
-      
+
       _sessionState = ARSessionState.running;
     } catch (e) {
       _errorMessage = 'Failed to resume AR session: $e';
@@ -168,7 +168,7 @@ class ARManager {
       // TODO: Stop and dispose ar_flutter_plugin session
       // await ARSession.stop();
       // await ARSession.dispose();
-      
+
       _sessionState = ARSessionState.stopped;
     } catch (e) {
       _errorMessage = 'Failed to stop AR session: $e';
@@ -181,7 +181,7 @@ class ARManager {
       // TODO: Request camera permission
       // final status = await Permission.camera.request();
       // return status.isGranted;
-      
+
       // Placeholder: assume permission granted
       return true;
     } catch (e) {

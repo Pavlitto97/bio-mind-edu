@@ -14,7 +14,8 @@ class RewardUnlockCelebration extends StatefulWidget {
   });
 
   @override
-  State<RewardUnlockCelebration> createState() => _RewardUnlockCelebrationState();
+  State<RewardUnlockCelebration> createState() =>
+      _RewardUnlockCelebrationState();
 }
 
 class _RewardUnlockCelebrationState extends State<RewardUnlockCelebration>
@@ -22,14 +23,14 @@ class _RewardUnlockCelebrationState extends State<RewardUnlockCelebration>
   late AnimationController _scaleController;
   late AnimationController _rotationController;
   late AnimationController _particleController;
-  
+
   late Animation<double> _scaleAnimation;
   late Animation<double> _rotationAnimation;
 
   @override
   void initState() {
     super.initState();
-    
+
     // Scale animation for the reward icon
     _scaleController = AnimationController(
       duration: const Duration(milliseconds: 800),
@@ -45,13 +46,9 @@ class _RewardUnlockCelebrationState extends State<RewardUnlockCelebration>
       duration: const Duration(milliseconds: 600),
       vsync: this,
     );
-    _rotationAnimation = Tween<double>(
-      begin: 0.0,
-      end: 2 * math.pi,
-    ).animate(CurvedAnimation(
-      parent: _rotationController,
-      curve: Curves.easeInOut,
-    ));
+    _rotationAnimation = Tween<double>(begin: 0.0, end: 2 * math.pi).animate(
+      CurvedAnimation(parent: _rotationController, curve: Curves.easeInOut),
+    );
 
     // Particle animation
     _particleController = AnimationController(
@@ -68,7 +65,7 @@ class _RewardUnlockCelebrationState extends State<RewardUnlockCelebration>
     _scaleController.forward();
     _rotationController.forward();
     _particleController.forward();
-    
+
     // Auto-dismiss after animations complete
     await Future<void>.delayed(const Duration(milliseconds: 2500));
     if (mounted) {
@@ -234,14 +231,14 @@ class _ParticlePainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     final paint = Paint()..style = PaintingStyle.fill;
-    
+
     final center = Offset(size.width / 2, size.height / 2);
     final particleCount = 20;
 
     for (var i = 0; i < particleCount; i++) {
       final angle = (2 * math.pi / particleCount) * i;
       final distance = animation * 100;
-      
+
       final x = center.dx + math.cos(angle) * distance;
       final y = center.dy + math.sin(angle) * distance;
 
@@ -250,11 +247,7 @@ class _ParticlePainter extends CustomPainter {
       paint.color = _getParticleColor(i).withOpacity(opacity);
 
       // Draw particle
-      canvas.drawCircle(
-        Offset(x, y),
-        4 * (1 - animation * 0.5),
-        paint,
-      );
+      canvas.drawCircle(Offset(x, y), 4 * (1 - animation * 0.5), paint);
     }
   }
 
@@ -276,10 +269,7 @@ class _ParticlePainter extends CustomPainter {
 }
 
 /// Show reward unlock celebration as an overlay
-void showRewardUnlockCelebration(
-  BuildContext context,
-  Reward reward,
-) {
+void showRewardUnlockCelebration(BuildContext context, Reward reward) {
   showDialog<void>(
     context: context,
     barrierDismissible: false,

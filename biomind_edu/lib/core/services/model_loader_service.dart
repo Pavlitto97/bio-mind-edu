@@ -6,12 +6,7 @@ import 'package:flutter/services.dart';
 import '../constants/app_constants.dart';
 
 /// Model loading state
-enum ModelLoadingState {
-  notLoaded,
-  loading,
-  loaded,
-  error,
-}
+enum ModelLoadingState { notLoaded, loading, loaded, error }
 
 /// Cached 3D model data
 class CachedModel {
@@ -29,14 +24,14 @@ class CachedModel {
 }
 
 /// Model Loader Service
-/// 
+///
 /// Handles loading, caching, and management of 3D models.
 /// Implements in-memory caching to avoid redundant loads.
 class ModelLoaderService {
   static final ModelLoaderService _instance = ModelLoaderService._internal();
-  
+
   factory ModelLoaderService() => _instance;
-  
+
   ModelLoaderService._internal();
 
   /// In-memory cache of loaded models
@@ -60,7 +55,10 @@ class ModelLoaderService {
 
   /// Get cached model size in MB
   double getCachedSize() {
-    int totalBytes = _cache.values.fold(0, (sum, model) => sum + model.sizeInBytes);
+    int totalBytes = _cache.values.fold(
+      0,
+      (sum, model) => sum + model.sizeInBytes,
+    );
     return totalBytes / (1024 * 1024);
   }
 
@@ -78,7 +76,7 @@ class ModelLoaderService {
 
     // Start loading
     _loadingStates[modelId] = ModelLoadingState.loading;
-    
+
     final Future<ByteData?> loadFuture = _performLoad(modelId);
     _activeLoads[modelId] = loadFuture;
 
@@ -108,7 +106,7 @@ class ModelLoaderService {
       );
 
       _loadingStates[modelId] = ModelLoadingState.loaded;
-      
+
       return data;
     } catch (e) {
       _loadingStates[modelId] = ModelLoadingState.error;
@@ -129,7 +127,7 @@ class ModelLoaderService {
 
     // Update progress during loading
     onProgress(0.0);
-    
+
     _loadingStates[modelId] = ModelLoadingState.loading;
     onProgress(0.3);
 
@@ -146,7 +144,7 @@ class ModelLoaderService {
   /// Preload multiple models
   Future<Map<String, bool>> preloadModels(List<String> modelIds) async {
     final Map<String, bool> results = {};
-    
+
     // Load models sequentially to avoid overloading
     for (final modelId in modelIds) {
       final data = await loadModel(modelId);

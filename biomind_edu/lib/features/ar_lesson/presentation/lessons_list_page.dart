@@ -26,9 +26,7 @@ class LessonsListPage extends ConsumerWidget {
             icon: Icons.analytics,
             onPressed: () {
               Navigator.of(context).push(
-                FadePageRoute<void>(
-                  builder: (context) => const ProgressPage(),
-                ),
+                FadePageRoute<void>(builder: (context) => const ProgressPage()),
               );
             },
             tooltip: l10n.progressTitle,
@@ -38,9 +36,7 @@ class LessonsListPage extends ConsumerWidget {
             icon: Icons.emoji_events,
             onPressed: () {
               Navigator.of(context).push(
-                ScalePageRoute<void>(
-                  builder: (context) => const RewardsPage(),
-                ),
+                ScalePageRoute<void>(builder: (context) => const RewardsPage()),
               );
             },
             tooltip: l10n.myRewards,
@@ -61,21 +57,14 @@ class LessonsListPage extends ConsumerWidget {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Icon(
-                    Icons.science,
-                    size: 100,
-                    color: Colors.grey[400],
-                  ),
+                  Icon(Icons.science, size: 100, color: Colors.grey[400]),
                   const SizedBox(height: 16),
                   Text(
                     l10n.noLessonsAvailable,
                     style: Theme.of(context).textTheme.headlineSmall,
                   ),
                   const SizedBox(height: 8),
-                  Text(
-                    l10n.checkBackSoon,
-                    textAlign: TextAlign.center,
-                  ),
+                  Text(l10n.checkBackSoon, textAlign: TextAlign.center),
                 ],
               ),
             );
@@ -103,10 +92,9 @@ class LessonsListPage extends ConsumerWidget {
                 index: index,
                 onTap: () {
                   // Navigate to AR lesson screen
-                  Navigator.of(context).pushNamed(
-                    '/ar-lesson',
-                    arguments: lesson.id,
-                  );
+                  Navigator.of(
+                    context,
+                  ).pushNamed('/ar-lesson', arguments: lesson.id);
                 },
               );
             },
@@ -122,30 +110,21 @@ class LessonsListPage extends ConsumerWidget {
           ),
           itemCount: 6,
           itemBuilder: (context, index) {
-            return const SkeletonCard(
-              height: 200,
-            );
+            return const SkeletonCard(height: 200);
           },
         ),
         error: (error, stack) => Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const Icon(
-                Icons.error_outline,
-                size: 64,
-                color: Colors.red,
-              ),
+              const Icon(Icons.error_outline, size: 64, color: Colors.red),
               const SizedBox(height: 16),
               Text(
                 l10n.failedToLoadLessons,
                 style: Theme.of(context).textTheme.headlineSmall,
               ),
               const SizedBox(height: 8),
-              Text(
-                error.toString(),
-                textAlign: TextAlign.center,
-              ),
+              Text(error.toString(), textAlign: TextAlign.center),
             ],
           ),
         ),

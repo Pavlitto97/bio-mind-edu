@@ -92,7 +92,7 @@ class _AssessmentPageState extends ConsumerState<AssessmentPage> {
     for (final question in _test.questions) {
       final userAnswer = _userAnswers[question.id] ?? [];
       final correctAnswer = question.correctAnswerIds;
-      
+
       // Check if answer is correct
       final isCorrect = _listsEqual(userAnswer, correctAnswer);
       if (isCorrect) {
@@ -101,13 +101,15 @@ class _AssessmentPageState extends ConsumerState<AssessmentPage> {
       }
       totalPoints += question.points;
 
-      questionResults.add(QuestionResult(
-        questionId: question.id,
-        userAnswerIds: userAnswer,
-        correctAnswerIds: correctAnswer,
-        isCorrect: isCorrect,
-        pointsEarned: isCorrect ? question.points : 0,
-      ));
+      questionResults.add(
+        QuestionResult(
+          questionId: question.id,
+          userAnswerIds: userAnswer,
+          correctAnswerIds: correctAnswer,
+          isCorrect: isCorrect,
+          pointsEarned: isCorrect ? question.points : 0,
+        ),
+      );
     }
 
     final score = totalPoints > 0 ? earnedPoints / totalPoints : 0.0;
@@ -195,11 +197,7 @@ class _AssessmentPageState extends ConsumerState<AssessmentPage> {
               textKey: 'Cell Membrane',
               iconName: 'circle',
             ),
-            AnswerOption(
-              id: 'wall',
-              textKey: 'Cell Wall',
-              iconName: 'square',
-            ),
+            AnswerOption(id: 'wall', textKey: 'Cell Wall', iconName: 'square'),
             AnswerOption(
               id: 'cytoplasm',
               textKey: 'Cytoplasm',
@@ -369,9 +367,9 @@ class _AssessmentPageState extends ConsumerState<AssessmentPage> {
             padding: const EdgeInsets.all(16),
             child: Text(
               'Question ${_currentQuestionIndex + 1} of ${_test.questions.length}',
-              style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    color: Colors.grey[600],
-                  ),
+              style: Theme.of(
+                context,
+              ).textTheme.titleMedium?.copyWith(color: Colors.grey[600]),
             ),
           ),
 

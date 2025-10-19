@@ -17,10 +17,15 @@ final lessonsProvider = FutureProvider<List<Lesson>>((ref) async {
 
 /// Provider для получения конкретного урока по ID
 /// WEB MODE: Loading directly from SampleLessonData instead of Hive storage
-final lessonByIdProvider = FutureProvider.family<Lesson?, String>((ref, lessonId) async {
+final lessonByIdProvider = FutureProvider.family<Lesson?, String>((
+  ref,
+  lessonId,
+) async {
   // For web demo - find in sample data directly
   try {
-    return SampleLessonData.allLessons.firstWhere((lesson) => lesson.id == lessonId);
+    return SampleLessonData.allLessons.firstWhere(
+      (lesson) => lesson.id == lessonId,
+    );
   } catch (e) {
     return null;
   }
@@ -36,7 +41,7 @@ class LessonSessionState {
   final bool isModelLoaded;
   final String? error;
   final List<String> viewedAnnotations;
-  
+
   const LessonSessionState({
     required this.lessonId,
     this.isArInitialized = false,
@@ -44,7 +49,7 @@ class LessonSessionState {
     this.error,
     this.viewedAnnotations = const [],
   });
-  
+
   LessonSessionState copyWith({
     String? lessonId,
     bool? isArInitialized,
@@ -65,31 +70,34 @@ class LessonSessionState {
 /// StateNotifier для управления сессией урока
 class LessonSessionNotifier extends StateNotifier<LessonSessionState> {
   LessonSessionNotifier(String lessonId)
-      : super(LessonSessionState(lessonId: lessonId));
-  
+    : super(LessonSessionState(lessonId: lessonId));
+
   void setArInitialized(bool value) {
     state = state.copyWith(isArInitialized: value);
   }
-  
+
   void setModelLoaded(bool value) {
     state = state.copyWith(isModelLoaded: value);
   }
-  
+
   void setError(String? error) {
     state = state.copyWith(error: error);
   }
-  
+
   void addViewedAnnotation(String annotationId) {
     final updated = [...state.viewedAnnotations, annotationId];
     state = state.copyWith(viewedAnnotations: updated);
   }
-  
+
   bool hasViewedAnnotation(String annotationId) {
     return state.viewedAnnotations.contains(annotationId);
   }
 }
 
 /// Provider для сессии урока (family - для каждого урока свой)
-final lessonSessionProvider = StateNotifierProvider.family<LessonSessionNotifier, LessonSessionState, String>(
-  (ref, lessonId) => LessonSessionNotifier(lessonId),
-);
+final lessonSessionProvider =
+    StateNotifierProvider.family<
+      LessonSessionNotifier,
+      LessonSessionState,
+      String
+    >((ref, lessonId) => LessonSessionNotifier(lessonId));

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import '../../../shared/models/interactive_task.dart';
 
 /// Drop Target Zone Widget
-/// 
+///
 /// Represents a drop zone where items can be dropped
 /// Provides visual feedback when items are dragged over
 class DropTargetZone extends StatefulWidget {
@@ -66,11 +66,7 @@ class _DropTargetZoneState extends State<DropTargetZone> {
           ),
           child: Center(
             child: widget.isOccupied
-                ? Icon(
-                    Icons.check_circle,
-                    color: Colors.green[600],
-                    size: 48,
-                  )
+                ? Icon(Icons.check_circle, color: Colors.green[600], size: 48)
                 : _buildLabel(theme),
           ),
         );

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import '../../../shared/models/lesson.dart';
 
 /// AR View Widget - Displays 3D model in AR or fallback 3D viewer
-/// 
+///
 /// When AR is supported: Shows camera feed with AR overlay
 /// When AR is not supported: Shows 3D model viewer with touch controls
 class ARViewWidget extends StatefulWidget {
@@ -38,14 +38,14 @@ class _ARViewWidgetState extends State<ARViewWidget> {
       // TODO: Implement actual 3D model loading
       // For now, simulate loading delay
       await Future<void>.delayed(const Duration(seconds: 2));
-      
+
       setState(() {
         _isModelLoaded = true;
         _placementHint = widget.isArSupported
             ? 'Tap to place model'
             : 'Swipe to rotate';
       });
-      
+
       widget.onModelLoaded();
     } catch (e) {
       widget.onError('Failed to load 3D model: $e');
@@ -116,10 +116,7 @@ class _ARViewWidgetState extends State<ARViewWidget> {
                 ),
                 child: Text(
                   _placementHint!,
-                  style: const TextStyle(
-                    color: Colors.white,
-                    fontSize: 16,
-                  ),
+                  style: const TextStyle(color: Colors.white, fontSize: 16),
                 ),
               ),
             ),
@@ -232,18 +229,11 @@ class _ARViewWidgetState extends State<ARViewWidget> {
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    const Icon(
-                      Icons.swipe,
-                      color: Colors.white,
-                      size: 20,
-                    ),
+                    const Icon(Icons.swipe, color: Colors.white, size: 20),
                     const SizedBox(width: 8),
                     Text(
                       _placementHint!,
-                      style: const TextStyle(
-                        color: Colors.white,
-                        fontSize: 16,
-                      ),
+                      style: const TextStyle(color: Colors.white, fontSize: 16),
                     ),
                   ],
                 ),

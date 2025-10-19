@@ -10,7 +10,7 @@ import '../widgets/test_results_list.dart';
 import '../../rewards/presentation/rewards_page.dart';
 
 /// Parent Dashboard - Progress Overview
-/// 
+///
 /// Shows comprehensive statistics about child's learning progress,
 /// including completed lessons, test scores, and unlocked rewards.
 /// Designed for parents/guardians to monitor their child's education.
@@ -21,7 +21,7 @@ class ProgressPage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final l10n = AppLocalizations.of(context)!;
     final theme = Theme.of(context);
-    
+
     return Scaffold(
       backgroundColor: theme.colorScheme.surface,
       appBar: AppBar(
@@ -44,9 +44,7 @@ class ProgressPage extends ConsumerWidget {
             icon: Icons.emoji_events,
             onPressed: () {
               Navigator.of(context).push(
-                ScalePageRoute<void>(
-                  builder: (context) => const RewardsPage(),
-                ),
+                ScalePageRoute<void>(builder: (context) => const RewardsPage()),
               );
             },
             tooltip: l10n.myRewards,
@@ -60,7 +58,7 @@ class ProgressPage extends ConsumerWidget {
           ref.invalidate(progressStatisticsProvider);
           ref.invalidate(lessonHistoryProvider);
           ref.invalidate(testResultsProvider);
-          
+
           // Wait for data to reload
           await Future.wait([
             ref.read(progressStatisticsProvider.future),
@@ -133,9 +131,7 @@ class ProgressPage extends ConsumerWidget {
             const TestResultsList(),
 
             // Bottom spacing
-            const SliverToBoxAdapter(
-              child: SizedBox(height: 24),
-            ),
+            const SliverToBoxAdapter(child: SizedBox(height: 24)),
           ],
         ),
       ),

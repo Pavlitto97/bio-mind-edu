@@ -20,18 +20,11 @@ class SimpleTestApp extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const Icon(
-                Icons.science,
-                size: 100,
-                color: Colors.purple,
-              ),
+              const Icon(Icons.science, size: 100, color: Colors.purple),
               const SizedBox(height: 24),
               const Text(
                 'BioMindEDU',
-                style: TextStyle(
-                  fontSize: 32,
-                  fontWeight: FontWeight.bold,
-                ),
+                style: TextStyle(fontSize: 32, fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 16),
               const Text(

@@ -4,10 +4,10 @@ import 'package:biomind_edu/core/theme/animation_constants.dart';
 /// Custom page route with fade transition
 class FadePageRoute<T> extends PageRoute<T> {
   final WidgetBuilder builder;
-  
+
   @override
   final Duration transitionDuration;
-  
+
   @override
   final Duration reverseTransitionDuration;
 
@@ -57,10 +57,10 @@ class FadePageRoute<T> extends PageRoute<T> {
 class SlidePageRoute<T> extends PageRoute<T> {
   final WidgetBuilder builder;
   final AxisDirection direction;
-  
+
   @override
   final Duration transitionDuration;
-  
+
   @override
   final Duration reverseTransitionDuration;
 
@@ -114,10 +114,7 @@ class SlidePageRoute<T> extends PageRoute<T> {
     }
 
     return SlideTransition(
-      position: Tween<Offset>(
-        begin: begin,
-        end: Offset.zero,
-      ).animate(
+      position: Tween<Offset>(begin: begin, end: Offset.zero).animate(
         CurvedAnimation(
           parent: animation,
           curve: AnimationConstants.pageTransitionCurve,
@@ -131,10 +128,10 @@ class SlidePageRoute<T> extends PageRoute<T> {
 /// Custom page route with scale and fade transition
 class ScalePageRoute<T> extends PageRoute<T> {
   final WidgetBuilder builder;
-  
+
   @override
   final Duration transitionDuration;
-  
+
   @override
   final Duration reverseTransitionDuration;
 
@@ -176,10 +173,7 @@ class ScalePageRoute<T> extends PageRoute<T> {
         curve: AnimationConstants.pageTransitionCurve,
       ),
       child: ScaleTransition(
-        scale: Tween<double>(
-          begin: 0.8,
-          end: 1.0,
-        ).animate(
+        scale: Tween<double>(begin: 0.8, end: 1.0).animate(
           CurvedAnimation(
             parent: animation,
             curve: AnimationConstants.pageTransitionCurve,

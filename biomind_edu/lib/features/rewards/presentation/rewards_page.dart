@@ -12,7 +12,7 @@ class RewardsPage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final allRewards = ref.watch(allRewardsProvider);
     final userProfile = ref.watch(userProfileProvider);
-    
+
     final unlockedCount = allRewards.where((r) => r.isUnlocked).length;
     final totalCount = allRewards.length;
 
@@ -74,15 +74,17 @@ class RewardsPage extends ConsumerWidget {
                     value: totalCount > 0 ? unlockedCount / totalCount : 0,
                     minHeight: 12,
                     backgroundColor: Colors.white.withOpacity(0.3),
-                    valueColor: const AlwaysStoppedAnimation<Color>(Colors.white),
+                    valueColor: const AlwaysStoppedAnimation<Color>(
+                      Colors.white,
+                    ),
                   ),
                 ),
                 const SizedBox(height: 8),
                 Text(
                   '${((unlockedCount / totalCount) * 100).toStringAsFixed(0)}% Complete',
-                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                    color: Colors.white,
-                  ),
+                  style: Theme.of(
+                    context,
+                  ).textTheme.bodySmall?.copyWith(color: Colors.white),
                 ),
               ],
             ),
@@ -95,12 +97,13 @@ class RewardsPage extends ConsumerWidget {
                 : Padding(
                     padding: const EdgeInsets.all(16),
                     child: GridView.builder(
-                      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 2,
-                        childAspectRatio: 0.85,
-                        crossAxisSpacing: 16,
-                        mainAxisSpacing: 16,
-                      ),
+                      gridDelegate:
+                          const SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 2,
+                            childAspectRatio: 0.85,
+                            crossAxisSpacing: 16,
+                            mainAxisSpacing: 16,
+                          ),
                       itemCount: allRewards.length,
                       itemBuilder: (context, index) {
                         final reward = allRewards[index];
@@ -169,16 +172,16 @@ class RewardsPage extends ConsumerWidget {
           const SizedBox(height: 16),
           Text(
             'No Rewards Yet',
-            style: Theme.of(context).textTheme.titleLarge?.copyWith(
-              color: Colors.grey.shade600,
-            ),
+            style: Theme.of(
+              context,
+            ).textTheme.titleLarge?.copyWith(color: Colors.grey.shade600),
           ),
           const SizedBox(height: 8),
           Text(
             'Complete lessons to unlock rewards!',
-            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-              color: Colors.grey.shade500,
-            ),
+            style: Theme.of(
+              context,
+            ).textTheme.bodyMedium?.copyWith(color: Colors.grey.shade500),
           ),
         ],
       ),
@@ -191,9 +194,7 @@ class RewardsPage extends ConsumerWidget {
     showDialog<void>(
       context: context,
       builder: (context) => AlertDialog(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(20),
-        ),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
         content: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
@@ -205,9 +206,9 @@ class RewardsPage extends ConsumerWidget {
             const SizedBox(height: 16),
             Text(
               reward.name,
-              style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                fontWeight: FontWeight.bold,
-              ),
+              style: Theme.of(
+                context,
+              ).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: 8),
@@ -220,9 +221,9 @@ class RewardsPage extends ConsumerWidget {
               const SizedBox(height: 16),
               Text(
                 'Unlocked on ${_formatDate(reward.unlockedAt!)}',
-                style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                  color: Colors.grey.shade600,
-                ),
+                style: Theme.of(
+                  context,
+                ).textTheme.bodySmall?.copyWith(color: Colors.grey.shade600),
               ),
             ],
           ],

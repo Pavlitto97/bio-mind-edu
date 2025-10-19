@@ -4,7 +4,7 @@ import '../../../shared/providers/progress_provider.dart';
 import '../../../l10n/app_localizations.dart';
 
 /// Progress Summary Card
-/// 
+///
 /// Displays overall statistics: lessons completed, average score,
 /// total time spent, and rewards unlocked.
 class ProgressSummaryCard extends ConsumerWidget {
@@ -19,9 +19,7 @@ class ProgressSummaryCard extends ConsumerWidget {
     return statisticsAsync.when(
       data: (stats) => Card(
         elevation: 4,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(16),
-        ),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
         child: Container(
           decoration: BoxDecoration(
             gradient: LinearGradient(
@@ -112,7 +110,9 @@ class ProgressSummaryCard extends ConsumerWidget {
                     child: LinearProgressIndicator(
                       value: stats.completionPercentage / 100,
                       minHeight: 12,
-                      backgroundColor: theme.colorScheme.onPrimary.withOpacity(0.3),
+                      backgroundColor: theme.colorScheme.onPrimary.withOpacity(
+                        0.3,
+                      ),
                       valueColor: AlwaysStoppedAnimation<Color>(
                         theme.colorScheme.secondary,
                       ),
@@ -134,9 +134,7 @@ class ProgressSummaryCard extends ConsumerWidget {
       ),
       loading: () => Card(
         elevation: 4,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(16),
-        ),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
         child: Container(
           height: 300,
           alignment: Alignment.center,
@@ -145,9 +143,7 @@ class ProgressSummaryCard extends ConsumerWidget {
       ),
       error: (error, stack) => Card(
         elevation: 4,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(16),
-        ),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
         child: Container(
           padding: const EdgeInsets.all(20),
           child: Column(
@@ -174,7 +170,7 @@ class ProgressSummaryCard extends ConsumerWidget {
   String _formatDuration(Duration duration) {
     final hours = duration.inHours;
     final minutes = duration.inMinutes % 60;
-    
+
     if (hours > 0) {
       return '${hours}h ${minutes}m';
     } else {
@@ -221,10 +217,7 @@ class _StatCard extends StatelessWidget {
           const SizedBox(height: 4),
           Text(
             label,
-            style: TextStyle(
-              color: color.withOpacity(0.8),
-              fontSize: 11,
-            ),
+            style: TextStyle(color: color.withOpacity(0.8), fontSize: 11),
             textAlign: TextAlign.center,
             maxLines: 2,
             overflow: TextOverflow.ellipsis,

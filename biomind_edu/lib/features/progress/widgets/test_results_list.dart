@@ -5,7 +5,7 @@ import '../../../shared/providers/progress_provider.dart';
 import '../../../l10n/app_localizations.dart';
 
 /// Test Results List
-/// 
+///
 /// Shows test scores with star ratings and completion dates.
 class TestResultsList extends ConsumerWidget {
   const TestResultsList({super.key});
@@ -46,101 +46,96 @@ class TestResultsList extends ConsumerWidget {
         }
 
         return SliverList(
-          delegate: SliverChildBuilderDelegate(
-            (context, index) {
-              final result = results[index];
-              
-              return Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 16.0,
-                  vertical: 6.0,
+          delegate: SliverChildBuilderDelegate((context, index) {
+            final result = results[index];
+
+            return Padding(
+              padding: const EdgeInsets.symmetric(
+                horizontal: 16.0,
+                vertical: 6.0,
+              ),
+              child: Card(
+                elevation: 2,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
                 ),
-                child: Card(
-                  elevation: 2,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  child: ListTile(
-                    contentPadding: const EdgeInsets.all(12),
-                    leading: Container(
-                      width: 56,
-                      height: 56,
-                      decoration: BoxDecoration(
-                        color: _getScoreColor(result.score).withOpacity(0.1),
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      child: Center(
-                        child: Text(
-                          '${result.score.toStringAsFixed(0)}%',
-                          style: TextStyle(
-                            color: _getScoreColor(result.score),
-                            fontWeight: FontWeight.bold,
-                            fontSize: 18,
-                          ),
+                child: ListTile(
+                  contentPadding: const EdgeInsets.all(12),
+                  leading: Container(
+                    width: 56,
+                    height: 56,
+                    decoration: BoxDecoration(
+                      color: _getScoreColor(result.score).withOpacity(0.1),
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    child: Center(
+                      child: Text(
+                        '${result.score.toStringAsFixed(0)}%',
+                        style: TextStyle(
+                          color: _getScoreColor(result.score),
+                          fontWeight: FontWeight.bold,
+                          fontSize: 18,
                         ),
                       ),
-                    ),
-                    title: Text(
-                      _getLocalizedLessonTitle(result.lessonTitle, l10n),
-                      style: theme.textTheme.titleMedium?.copyWith(
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    subtitle: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const SizedBox(height: 4),
-                        Row(
-                          children: [
-                            ...List.generate(
-                              3,
-                              (starIndex) => Icon(
-                                starIndex < result.stars
-                                    ? Icons.star
-                                    : Icons.star_border,
-                                size: 18,
-                                color: starIndex < result.stars
-                                    ? Colors.amber
-                                    : theme.colorScheme.outline,
-                              ),
-                            ),
-                            const SizedBox(width: 8),
-                            Text(
-                              '(${result.attempts} ${result.attempts == 1 ? l10n.attempt : l10n.attempts})',
-                              style: theme.textTheme.bodySmall?.copyWith(
-                                color: theme.colorScheme.outline,
-                              ),
-                            ),
-                          ],
-                        ),
-                        const SizedBox(height: 4),
-                        Text(
-                          DateFormat('MMM d, yyyy').format(result.completedAt),
-                          style: theme.textTheme.bodySmall?.copyWith(
-                            color: theme.colorScheme.outline,
-                          ),
-                        ),
-                      ],
-                    ),
-                    trailing: Icon(
-                      _getScoreIcon(result.score),
-                      color: _getScoreColor(result.score),
-                      size: 32,
                     ),
                   ),
+                  title: Text(
+                    _getLocalizedLessonTitle(result.lessonTitle, l10n),
+                    style: theme.textTheme.titleMedium?.copyWith(
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  subtitle: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const SizedBox(height: 4),
+                      Row(
+                        children: [
+                          ...List.generate(
+                            3,
+                            (starIndex) => Icon(
+                              starIndex < result.stars
+                                  ? Icons.star
+                                  : Icons.star_border,
+                              size: 18,
+                              color: starIndex < result.stars
+                                  ? Colors.amber
+                                  : theme.colorScheme.outline,
+                            ),
+                          ),
+                          const SizedBox(width: 8),
+                          Text(
+                            '(${result.attempts} ${result.attempts == 1 ? l10n.attempt : l10n.attempts})',
+                            style: theme.textTheme.bodySmall?.copyWith(
+                              color: theme.colorScheme.outline,
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 4),
+                      Text(
+                        DateFormat('MMM d, yyyy').format(result.completedAt),
+                        style: theme.textTheme.bodySmall?.copyWith(
+                          color: theme.colorScheme.outline,
+                        ),
+                      ),
+                    ],
+                  ),
+                  trailing: Icon(
+                    _getScoreIcon(result.score),
+                    color: _getScoreColor(result.score),
+                    size: 32,
+                  ),
                 ),
-              );
-            },
-            childCount: results.length,
-          ),
+              ),
+            );
+          }, childCount: results.length),
         );
       },
       loading: () => SliverToBoxAdapter(
         child: Padding(
           padding: const EdgeInsets.all(32.0),
-          child: Center(
-            child: CircularProgressIndicator(),
-          ),
+          child: Center(child: CircularProgressIndicator()),
         ),
       ),
       error: (error, stack) => SliverToBoxAdapter(

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import '../../../shared/models/lesson.dart';
 
 /// Lesson Controls Overlay - Bottom controls for AR lesson
-/// 
+///
 /// Provides buttons for:
 /// - Viewing annotations
 /// - Playing/pausing audio instructions
@@ -35,10 +35,7 @@ class _LessonControlsOverlayState extends State<LessonControlsOverlay> {
         gradient: LinearGradient(
           begin: Alignment.bottomCenter,
           end: Alignment.topCenter,
-          colors: [
-            Colors.black.withOpacity(0.8),
-            Colors.transparent,
-          ],
+          colors: [Colors.black.withOpacity(0.8), Colors.transparent],
         ),
       ),
       padding: const EdgeInsets.all(16),
@@ -141,10 +138,15 @@ class _LessonControlsOverlayState extends State<LessonControlsOverlay> {
 
   String _getAnnotationTitle(LessonAnnotation annotation) {
     // Extract readable name from localization key
-    return annotation.nameKey.split('.').last
+    return annotation.nameKey
+        .split('.')
+        .last
         .replaceAll('_', ' ')
         .split(' ')
-        .map((word) => word.isEmpty ? '' : word[0].toUpperCase() + word.substring(1))
+        .map(
+          (word) =>
+              word.isEmpty ? '' : word[0].toUpperCase() + word.substring(1),
+        )
         .join(' ');
   }
 
@@ -168,13 +170,7 @@ class _LessonControlsOverlayState extends State<LessonControlsOverlay> {
           ),
         ),
         const SizedBox(height: 4),
-        Text(
-          label,
-          style: const TextStyle(
-            color: Colors.white,
-            fontSize: 12,
-          ),
-        ),
+        Text(label, style: const TextStyle(color: Colors.white, fontSize: 12)),
       ],
     );
   }
@@ -189,19 +185,11 @@ class _LessonControlsOverlayState extends State<LessonControlsOverlay> {
       icon: Icon(icon),
       label: Text(
         label,
-        style: const TextStyle(
-          fontSize: 16,
-          fontWeight: FontWeight.bold,
-        ),
+        style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
       ),
       style: ElevatedButton.styleFrom(
-        padding: const EdgeInsets.symmetric(
-          horizontal: 32,
-          vertical: 16,
-        ),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(30),
-        ),
+        padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
       ),
     );
   }

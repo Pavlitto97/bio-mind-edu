@@ -8,7 +8,7 @@ import '../widgets/drop_target_zone.dart';
 import 'dart:async';
 
 /// Interactive Task Screen - Drag and Drop Task Implementation
-/// 
+///
 /// Features:
 /// - Drag and drop interaction for placing items on targets
 /// - Real-time validation and feedback
@@ -27,30 +27,31 @@ class InteractiveTaskPage extends ConsumerStatefulWidget {
   });
 
   @override
-  ConsumerState<InteractiveTaskPage> createState() => _InteractiveTaskPageState();
+  ConsumerState<InteractiveTaskPage> createState() =>
+      _InteractiveTaskPageState();
 }
 
 class _InteractiveTaskPageState extends ConsumerState<InteractiveTaskPage> {
   bool _isLoading = true;
   String? _errorMessage;
   InteractiveTask? _task;
-  
+
   // User's current answers (itemId -> targetId)
   final Map<String, String> _userAnswers = {};
-  
+
   // Items that have been correctly placed
   final Set<String> _correctItems = {};
-  
+
   // Items that were incorrectly placed (for feedback animation)
   final Set<String> _incorrectItems = {};
-  
+
   // Timer for task with time limit
   Timer? _timer;
   int _remainingSeconds = 0;
-  
+
   // Start time for completion tracking
   DateTime? _startTime;
-  
+
   @override
   void initState() {
     super.initState();
@@ -67,12 +68,12 @@ class _InteractiveTaskPageState extends ConsumerState<InteractiveTaskPage> {
       // For now, create a mock task since getInteractiveTask returns null
       // TODO: Implement proper task loading when tasks are stored
       final task = _createMockTask();
-      
+
       setState(() {
         _task = task;
         _isLoading = false;
         _startTime = DateTime.now();
-        
+
         // Start timer if task has time limit
         if (task.timeLimitSeconds != null) {
           _remainingSeconds = task.timeLimitSeconds!;
@@ -157,7 +158,7 @@ class _InteractiveTaskPageState extends ConsumerState<InteractiveTaskPage> {
     _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
       setState(() {
         _remainingSeconds--;
-        
+
         if (_remainingSeconds <= 0) {
           _timer?.cancel();
           _handleTimeOut();
@@ -181,13 +182,13 @@ class _InteractiveTaskPageState extends ConsumerState<InteractiveTaskPage> {
 
     // Check if answer is correct
     final isCorrect = _task!.correctMatches[itemId] == targetId;
-    
+
     if (isCorrect) {
       setState(() {
         _correctItems.add(itemId);
       });
       _playSuccessFeedback();
-      
+
       // Check if all items are placed correctly
       if (_correctItems.length == _task!.items.length) {
         // Provide celebration haptic feedback for task completion
@@ -199,7 +200,7 @@ class _InteractiveTaskPageState extends ConsumerState<InteractiveTaskPage> {
         _incorrectItems.add(itemId);
       });
       _playErrorFeedback();
-      
+
       // Remove incorrect answer after brief delay
       Future.delayed(const Duration(milliseconds: 1500), () {
         if (mounted) {
@@ -216,7 +217,7 @@ class _InteractiveTaskPageState extends ConsumerState<InteractiveTaskPage> {
     // Play success audio
     debugPrint('Playing success audio');
     // ref.read(audioNotifierProvider.notifier).playSfx('success.mp3');
-    
+
     // Provide success haptic feedback
     HapticFeedback.mediumImpact();
   }
@@ -225,7 +226,7 @@ class _InteractiveTaskPageState extends ConsumerState<InteractiveTaskPage> {
     // Play error audio
     debugPrint('Playing error audio');
     // ref.read(audioNotifierProvider.notifier).playSfx('error.mp3');
-    
+
     // Provide error haptic feedback
     HapticFeedback.vibrate();
   }
@@ -237,9 +238,9 @@ class _InteractiveTaskPageState extends ConsumerState<InteractiveTaskPage> {
 
   Future<void> _handleTaskComplete() async {
     _timer?.cancel();
-    
+
     final timeTaken = DateTime.now().difference(_startTime!).inSeconds;
-    
+
     // Create task result
     final result = TaskResult(
       taskId: widget.taskId,
@@ -253,7 +254,7 @@ class _InteractiveTaskPageState extends ConsumerState<InteractiveTaskPage> {
 
     // Save progress
     await _saveProgress(result);
-    
+
     // Show completion dialog
     if (mounted) {
       _showCompletionDialog(result);
@@ -263,7 +264,7 @@ class _InteractiveTaskPageState extends ConsumerState<InteractiveTaskPage> {
   Future<void> _saveProgress(TaskResult result) async {
     try {
       final progressService = ref.read(progressServiceProvider);
-      
+
       // Update lesson progress with task completion
       await progressService.updateLessonProgress(
         lessonId: widget.lessonId,
@@ -271,7 +272,7 @@ class _InteractiveTaskPageState extends ConsumerState<InteractiveTaskPage> {
         timeSpentSeconds: result.timeTakenSeconds,
         attempts: 1,
       );
-      
+
       debugPrint('✅ Task progress saved successfully');
       debugPrint('  Task ID: ${result.taskId}');
       debugPrint('  Correct: ${result.correctCount}/${result.totalCount}');
@@ -285,7 +286,7 @@ class _InteractiveTaskPageState extends ConsumerState<InteractiveTaskPage> {
 
   int _calculateStars(TaskResult result) {
     final scorePercentage = (result.correctCount / result.totalCount) * 100;
-    
+
     if (scorePercentage >= 90) return 3;
     if (scorePercentage >= 70) return 2;
     if (scorePercentage >= 50) return 1;
@@ -379,7 +380,7 @@ class _InteractiveTaskPageState extends ConsumerState<InteractiveTaskPage> {
       _correctItems.clear();
       _incorrectItems.clear();
       _startTime = DateTime.now();
-      
+
       if (_task?.timeLimitSeconds != null) {
         _remainingSeconds = _task!.timeLimitSeconds!;
         _startTimer();
@@ -422,19 +423,16 @@ class _InteractiveTaskPageState extends ConsumerState<InteractiveTaskPage> {
           children: [
             // Instruction text
             _buildInstructionBanner(),
-            
+
             // Timer (if enabled)
-            if (_task!.timeLimitSeconds != null)
-              _buildTimer(),
-            
+            if (_task!.timeLimitSeconds != null) _buildTimer(),
+
             // Progress indicator
             _buildProgressIndicator(),
-            
+
             // Task area
-            Expanded(
-              child: _buildTaskArea(),
-            ),
-            
+            Expanded(child: _buildTaskArea()),
+
             // Action buttons
             _buildActionButtons(),
           ],
@@ -524,10 +522,7 @@ class _InteractiveTaskPageState extends ConsumerState<InteractiveTaskPage> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(
-                'Progress:',
-                style: Theme.of(context).textTheme.titleMedium,
-              ),
+              Text('Progress:', style: Theme.of(context).textTheme.titleMedium),
               Text(
                 '$correct / $total',
                 style: Theme.of(context).textTheme.titleMedium?.copyWith(
@@ -566,17 +561,17 @@ class _InteractiveTaskPageState extends ConsumerState<InteractiveTaskPage> {
             ),
           );
         }),
-        
+
         // Draggable items
         ..._task!.items.map((item) {
           final isPlaced = _userAnswers.containsKey(item.id);
           final isCorrect = _correctItems.contains(item.id);
           final isIncorrect = _incorrectItems.contains(item.id);
-          
+
           if (isPlaced && !isIncorrect) {
             return const SizedBox.shrink();
           }
-          
+
           return Positioned(
             left: item.initialPosition[0],
             top: item.initialPosition[1],
@@ -648,11 +643,7 @@ class _InteractiveTaskPageState extends ConsumerState<InteractiveTaskPage> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const Icon(
-                Icons.error_outline,
-                color: Colors.red,
-                size: 64,
-              ),
+              const Icon(Icons.error_outline, color: Colors.red, size: 64),
               const SizedBox(height: 24),
               Text(
                 'Unable to Load Task',
@@ -680,8 +671,8 @@ class _InteractiveTaskPageState extends ConsumerState<InteractiveTaskPage> {
 
   String _getTaskTitle() {
     // TODO: Implement localization
-    return _task?.titleKey.split('.').last.replaceAll('_', ' ').toUpperCase() 
-        ?? 'Interactive Task';
+    return _task?.titleKey.split('.').last.replaceAll('_', ' ').toUpperCase() ??
+        'Interactive Task';
   }
 
   String _getTaskInstruction() {

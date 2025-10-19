@@ -4,31 +4,25 @@ import 'package:flutter/foundation.dart';
 import '../constants/app_constants.dart';
 
 /// Audio playback state
-enum AudioState {
-  stopped,
-  playing,
-  paused,
-  loading,
-  error,
-}
+enum AudioState { stopped, playing, paused, loading, error }
 
 /// Audio Service
-/// 
+///
 /// Manages audio playback for voice instructions, sound effects, and music.
 /// Supports multiple concurrent audio streams.
 class AudioService {
   static final AudioService _instance = AudioService._internal();
-  
+
   factory AudioService() => _instance;
-  
+
   AudioService._internal();
 
   /// Audio player for voice instructions
   final AudioPlayer _voicePlayer = AudioPlayer();
-  
+
   /// Audio player for sound effects
   final AudioPlayer _sfxPlayer = AudioPlayer();
-  
+
   /// Audio player for background music
   final AudioPlayer _musicPlayer = AudioPlayer();
 
@@ -40,7 +34,8 @@ class AudioService {
   /// Current volume settings
   double _voiceVolume = AudioConstants.defaultVolume;
   double _sfxVolume = AudioConstants.defaultVolume;
-  double _musicVolume = AudioConstants.defaultVolume * 0.5; // Lower for background
+  double _musicVolume =
+      AudioConstants.defaultVolume * 0.5; // Lower for background
 
   /// Mute state
   bool _isMuted = false;
@@ -81,7 +76,7 @@ class AudioService {
   Future<void> playVoice(String audioFile, {String? locale}) async {
     try {
       await stopVoice();
-      
+
       final String path = _getVoicePath(audioFile, locale);
       await _voicePlayer.play(AssetSource(path));
     } catch (e) {
@@ -107,7 +102,7 @@ class AudioService {
   Future<void> playMusic(String audioFile) async {
     try {
       await stopMusic();
-      
+
       final String path = _getMusicPath(audioFile);
       await _musicPlayer.play(AssetSource(path));
     } catch (e) {

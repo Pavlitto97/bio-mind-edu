@@ -17,23 +17,23 @@ class AnimationConstants {
   static const Curve decelerated = Curves.easeOut;
   static const Curve accelerated = Curves.easeIn;
   static const Curve bounce = Curves.elasticOut;
-  
+
   // Specific animation configurations
   static const Duration pageTransition = normal;
   static const Curve pageTransitionCurve = emphasized;
-  
+
   static const Duration cardAnimation = fast;
   static const Curve cardAnimationCurve = standard;
-  
+
   static const Duration buttonAnimation = instant;
   static const Curve buttonAnimationCurve = standard;
-  
+
   static const Duration loadingAnimation = slow;
   static const Curve loadingAnimationCurve = standard;
-  
+
   static const Duration heroAnimation = normal;
   static const Curve heroAnimationCurve = emphasized;
-  
+
   static const Duration rewardAnimation = verySlow;
   static const Curve rewardAnimationCurve = bounce;
 }

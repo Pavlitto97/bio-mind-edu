@@ -5,14 +5,14 @@ import '../../shared/models/lesson.dart';
 import '../../shared/models/progress.dart';
 
 /// Local Storage Service using Hive
-/// 
+///
 /// Manages local data persistence for lessons, progress, and rewards.
 /// Provides CRUD operations with type-safe access.
 class LocalStorageService {
   static final LocalStorageService _instance = LocalStorageService._internal();
-  
+
   factory LocalStorageService() => _instance;
-  
+
   LocalStorageService._internal();
 
   /// Hive boxes
@@ -124,17 +124,15 @@ class LocalStorageService {
   }
 
   /// Mark lesson as completed
-  Future<void> markLessonCompleted(
-    String lessonId, {
-    double? testScore,
-  }) async {
+  Future<void> markLessonCompleted(String lessonId, {double? testScore}) async {
     final progress = getProgress(lessonId);
-    final updated = (progress ?? LessonProgress(lessonId: lessonId, status: 'not_started'))
-        .copyWith(
-      status: 'completed',
-      completedAt: DateTime.now(),
-      testScore: testScore,
-    );
+    final updated =
+        (progress ?? LessonProgress(lessonId: lessonId, status: 'not_started'))
+            .copyWith(
+              status: 'completed',
+              completedAt: DateTime.now(),
+              testScore: testScore,
+            );
     await saveProgress(updated);
   }
 
@@ -240,9 +238,7 @@ class LocalStorageService {
 
   /// Get total completed lessons
   int getCompletedLessonsCount() {
-    return getAllProgress()
-        .where((p) => p.status == 'completed')
-        .length;
+    return getAllProgress().where((p) => p.status == 'completed').length;
   }
 
   /// Get total unlocked rewards

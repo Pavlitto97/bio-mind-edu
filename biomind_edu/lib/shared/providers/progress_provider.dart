@@ -19,7 +19,10 @@ final allProgressProvider = FutureProvider<List<LessonProgress>>((ref) async {
 });
 
 /// Provider для получения прогресса конкретного урока
-final lessonProgressProvider = FutureProvider.family<LessonProgress?, String>((ref, lessonId) async {
+final lessonProgressProvider = FutureProvider.family<LessonProgress?, String>((
+  ref,
+  lessonId,
+) async {
   final storage = LocalStorageService();
   return storage.getProgress(lessonId);
 });
@@ -45,23 +48,23 @@ final userProfileProvider = FutureProvider<UserProfile?>((ref) async {
 /// StateNotifier для управления профилем
 class UserProfileNotifier extends StateNotifier<UserProfile?> {
   final LocalStorageService _storage;
-  
+
   UserProfileNotifier(this._storage) : super(null) {
     _loadProfile();
   }
-  
+
   Future<void> _loadProfile() async {
     state = _storage.getUserProfile();
   }
-  
+
   Future<void> updateProfile(UserProfile profile) async {
     await _storage.saveUserProfile(profile);
     state = profile;
   }
-  
+
   Future<void> updatePreference(String key, dynamic value) async {
     if (state == null) return;
-    
+
     final updatedPreferences = {...state!.preferences, key: value};
     final updatedProfile = state!.copyWith(preferences: updatedPreferences);
     await updateProfile(updatedProfile);
@@ -69,18 +72,23 @@ class UserProfileNotifier extends StateNotifier<UserProfile?> {
 }
 
 /// Provider для управления профилем пользователя
-final userProfileNotifierProvider = StateNotifierProvider<UserProfileNotifier, UserProfile?>((ref) {
-  return UserProfileNotifier(LocalStorageService());
-});
+final userProfileNotifierProvider =
+    StateNotifierProvider<UserProfileNotifier, UserProfile?>((ref) {
+      return UserProfileNotifier(LocalStorageService());
+    });
 
 /// Provider для статистики прогресса (using ProgressService)
-final progressStatisticsProvider = FutureProvider<ProgressStatistics>((ref) async {
+final progressStatisticsProvider = FutureProvider<ProgressStatistics>((
+  ref,
+) async {
   final progressService = ref.watch(progressServiceProvider);
   return progressService.getOverallProgress();
 });
 
 /// Provider для истории уроков
-final lessonHistoryProvider = FutureProvider<List<LessonProgressHistory>>((ref) async {
+final lessonHistoryProvider = FutureProvider<List<LessonProgressHistory>>((
+  ref,
+) async {
   final progressService = ref.watch(progressServiceProvider);
   return progressService.getLessonHistory(limit: 10);
 });

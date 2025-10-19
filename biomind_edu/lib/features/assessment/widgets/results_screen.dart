@@ -34,7 +34,7 @@ class _ResultsScreenState extends ConsumerState<ResultsScreen>
   @override
   void initState() {
     super.initState();
-    
+
     _controller = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 800),
@@ -77,11 +77,11 @@ class _ResultsScreenState extends ConsumerState<ResultsScreen>
     if (!mounted) return;
 
     final progressService = ref.read(progressServiceProvider);
-    
+
     // Calculate stars and time spent
     final stars = _getStars();
     final timeSpent = widget.testResult.timeTakenSeconds;
-    
+
     // Update progress and unlock reward (ProgressService handles both)
     await progressService.updateTestScore(
       lessonId: widget.lessonId,
@@ -151,259 +151,253 @@ class _ResultsScreenState extends ConsumerState<ResultsScreen>
                 padding: const EdgeInsets.all(24),
                 child: Column(
                   children: [
-                        // Result icon and message
-                        ScaleTransition(
-                          scale: _scaleAnimation,
-                          child: Column(
-                            children: [
-                              // Icon
-                              Container(
-                                width: 120,
-                                height: 120,
-                                decoration: BoxDecoration(
-                                  color: isPassed
-                                      ? Colors.green[100]
-                                      : Colors.orange[100],
-                                  shape: BoxShape.circle,
-                                ),
-                                child: Icon(
-                                  isPassed
-                                      ? Icons.celebration
-                                      : Icons.sentiment_satisfied,
-                                  size: 64,
-                                  color: isPassed ? Colors.green : Colors.orange,
-                                ),
-                              ),
-
-                              const SizedBox(height: 24),
-
-                              // Message
-                              Text(
-                                isPassed ? 'Great Job!' : 'Good Try!',
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .headlineLarge
-                                    ?.copyWith(
-                                      fontWeight: FontWeight.bold,
-                                      color: isPassed ? Colors.green : Colors.orange,
-                                    ),
-                              ),
-
-                              const SizedBox(height: 8),
-
-                              Text(
-                                isPassed
-                                    ? 'You passed the test!'
-                                    : 'Keep practicing and try again!',
-                                style: Theme.of(context).textTheme.titleMedium,
-                                textAlign: TextAlign.center,
-                              ),
-                            ],
-                          ),
-                        ),
-
-                        const SizedBox(height: 32),
-
-                        // Stars
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: List.generate(3, (index) {
-                            return Padding(
-                              padding: const EdgeInsets.symmetric(horizontal: 4),
-                              child: Icon(
-                                index < stars ? Icons.star : Icons.star_border,
-                                size: 56,
-                                color: Colors.amber,
-                              ),
-                            );
-                          }),
-                        ),
-
-                        const SizedBox(height: 32),
-
-                        // Score card
-                        Container(
-                          padding: const EdgeInsets.all(24),
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(16),
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.black.withOpacity(0.1),
-                                blurRadius: 8,
-                                offset: const Offset(0, 4),
-                              ),
-                            ],
-                          ),
-                          child: Column(
-                            children: [
-                              // Percentage
-                              Text(
-                                '$percentage%',
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .displayLarge
-                                    ?.copyWith(
-                                      fontWeight: FontWeight.bold,
-                                      color: Theme.of(context).colorScheme.primary,
-                                    ),
-                              ),
-
-                              const SizedBox(height: 8),
-
-                              Text(
-                                'Your Score',
-                                style: Theme.of(context).textTheme.titleMedium,
-                              ),
-
-                              const Divider(height: 32),
-
-                              // Statistics
-                              _StatRow(
-                                icon: Icons.check_circle,
-                                label: 'Correct Answers',
-                                value:
-                                    '${widget.testResult.correctCount} / ${widget.testResult.totalCount}',
-                                color: Colors.green,
-                              ),
-
-                              const SizedBox(height: 16),
-
-                              _StatRow(
-                                icon: Icons.timer,
-                                label: 'Time Taken',
-                                value: _formatTime(
-                                    widget.testResult.timeTakenSeconds),
-                                color: Colors.blue,
-                              ),
-
-                              const SizedBox(height: 16),
-
-                              _StatRow(
-                                icon: Icons.emoji_events,
-                                label: 'Stars Earned',
-                                value: '$stars / 3',
-                                color: Colors.amber,
-                              ),
-                            ],
-                          ),
-                        ),
-
-                        const SizedBox(height: 32),
-
-                        // Reward message (if passed)
-                        if (isPassed && widget.test.rewardId != null) ...[
+                    // Result icon and message
+                    ScaleTransition(
+                      scale: _scaleAnimation,
+                      child: Column(
+                        children: [
+                          // Icon
                           Container(
-                            padding: const EdgeInsets.all(20),
+                            width: 120,
+                            height: 120,
                             decoration: BoxDecoration(
-                              gradient: LinearGradient(
-                                colors: [
-                                  Colors.purple[100]!,
-                                  Colors.pink[100]!,
+                              color: isPassed
+                                  ? Colors.green[100]
+                                  : Colors.orange[100],
+                              shape: BoxShape.circle,
+                            ),
+                            child: Icon(
+                              isPassed
+                                  ? Icons.celebration
+                                  : Icons.sentiment_satisfied,
+                              size: 64,
+                              color: isPassed ? Colors.green : Colors.orange,
+                            ),
+                          ),
+
+                          const SizedBox(height: 24),
+
+                          // Message
+                          Text(
+                            isPassed ? 'Great Job!' : 'Good Try!',
+                            style: Theme.of(context).textTheme.headlineLarge
+                                ?.copyWith(
+                                  fontWeight: FontWeight.bold,
+                                  color: isPassed
+                                      ? Colors.green
+                                      : Colors.orange,
+                                ),
+                          ),
+
+                          const SizedBox(height: 8),
+
+                          Text(
+                            isPassed
+                                ? 'You passed the test!'
+                                : 'Keep practicing and try again!',
+                            style: Theme.of(context).textTheme.titleMedium,
+                            textAlign: TextAlign.center,
+                          ),
+                        ],
+                      ),
+                    ),
+
+                    const SizedBox(height: 32),
+
+                    // Stars
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: List.generate(3, (index) {
+                        return Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 4),
+                          child: Icon(
+                            index < stars ? Icons.star : Icons.star_border,
+                            size: 56,
+                            color: Colors.amber,
+                          ),
+                        );
+                      }),
+                    ),
+
+                    const SizedBox(height: 32),
+
+                    // Score card
+                    Container(
+                      padding: const EdgeInsets.all(24),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(16),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withOpacity(0.1),
+                            blurRadius: 8,
+                            offset: const Offset(0, 4),
+                          ),
+                        ],
+                      ),
+                      child: Column(
+                        children: [
+                          // Percentage
+                          Text(
+                            '$percentage%',
+                            style: Theme.of(context).textTheme.displayLarge
+                                ?.copyWith(
+                                  fontWeight: FontWeight.bold,
+                                  color: Theme.of(context).colorScheme.primary,
+                                ),
+                          ),
+
+                          const SizedBox(height: 8),
+
+                          Text(
+                            'Your Score',
+                            style: Theme.of(context).textTheme.titleMedium,
+                          ),
+
+                          const Divider(height: 32),
+
+                          // Statistics
+                          _StatRow(
+                            icon: Icons.check_circle,
+                            label: 'Correct Answers',
+                            value:
+                                '${widget.testResult.correctCount} / ${widget.testResult.totalCount}',
+                            color: Colors.green,
+                          ),
+
+                          const SizedBox(height: 16),
+
+                          _StatRow(
+                            icon: Icons.timer,
+                            label: 'Time Taken',
+                            value: _formatTime(
+                              widget.testResult.timeTakenSeconds,
+                            ),
+                            color: Colors.blue,
+                          ),
+
+                          const SizedBox(height: 16),
+
+                          _StatRow(
+                            icon: Icons.emoji_events,
+                            label: 'Stars Earned',
+                            value: '$stars / 3',
+                            color: Colors.amber,
+                          ),
+                        ],
+                      ),
+                    ),
+
+                    const SizedBox(height: 32),
+
+                    // Reward message (if passed)
+                    if (isPassed && widget.test.rewardId != null) ...[
+                      Container(
+                        padding: const EdgeInsets.all(20),
+                        decoration: BoxDecoration(
+                          gradient: LinearGradient(
+                            colors: [Colors.purple[100]!, Colors.pink[100]!],
+                          ),
+                          borderRadius: BorderRadius.circular(16),
+                        ),
+                        child: Row(
+                          children: [
+                            const Icon(
+                              Icons.card_giftcard,
+                              size: 48,
+                              color: Colors.purple,
+                            ),
+                            const SizedBox(width: 16),
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    'Reward Unlocked!',
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .titleLarge
+                                        ?.copyWith(fontWeight: FontWeight.bold),
+                                  ),
+                                  const SizedBox(height: 4),
+                                  Text(
+                                    'Check your rewards collection',
+                                    style: Theme.of(
+                                      context,
+                                    ).textTheme.bodyMedium,
+                                  ),
                                 ],
                               ),
-                              borderRadius: BorderRadius.circular(16),
                             ),
-                            child: Row(
-                              children: [
-                                const Icon(
-                                  Icons.card_giftcard,
-                                  size: 48,
-                                  color: Colors.purple,
-                                ),
-                                const SizedBox(width: 16),
-                                Expanded(
-                                  child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        'Reward Unlocked!',
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .titleLarge
-                                            ?.copyWith(
-                                              fontWeight: FontWeight.bold,
-                                            ),
-                                      ),
-                                      const SizedBox(height: 4),
-                                      Text(
-                                        'Check your rewards collection',
-                                        style:
-                                            Theme.of(context).textTheme.bodyMedium,
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          const SizedBox(height: 24),
-                        ],
-                      ],
+                          ],
+                        ),
+                      ),
+                      const SizedBox(height: 24),
+                    ],
+                  ],
+                ),
+              ),
+            ),
+
+            // Action buttons
+            Container(
+              padding: const EdgeInsets.all(16),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.1),
+                    blurRadius: 4,
+                    offset: const Offset(0, -2),
+                  ),
+                ],
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  // View Rewards button (only if reward unlocked)
+                  if (_rewardUnlocked) ...[
+                    ElevatedButton.icon(
+                      onPressed: () {
+                        Navigator.pushNamed(context, '/rewards');
+                      },
+                      icon: const Icon(Icons.emoji_events),
+                      label: const Text('View My Rewards'),
+                      style: ElevatedButton.styleFrom(
+                        padding: const EdgeInsets.symmetric(vertical: 16),
+                        backgroundColor: Colors.amber,
+                        foregroundColor: Colors.black87,
+                      ),
+                    ),
+                    const SizedBox(height: 12),
+                  ],
+
+                  ElevatedButton.icon(
+                    onPressed: widget.onClose,
+                    icon: const Icon(Icons.home),
+                    label: const Text('Back to Lessons'),
+                    style: ElevatedButton.styleFrom(
+                      padding: const EdgeInsets.symmetric(vertical: 16),
+                      backgroundColor: Theme.of(context).colorScheme.primary,
                     ),
                   ),
-                ),
 
-                // Action buttons
-                Container(
-                  padding: const EdgeInsets.all(16),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black.withOpacity(0.1),
-                        blurRadius: 4,
-                        offset: const Offset(0, -2),
-                      ),
-                    ],
+                  const SizedBox(height: 12),
+
+                  OutlinedButton.icon(
+                    onPressed: widget.onRetry,
+                    icon: const Icon(Icons.refresh),
+                    label: const Text('Try Again'),
+                    style: OutlinedButton.styleFrom(
+                      padding: const EdgeInsets.symmetric(vertical: 16),
+                    ),
                   ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      // View Rewards button (only if reward unlocked)
-                      if (_rewardUnlocked) ...[
-                        ElevatedButton.icon(
-                          onPressed: () {
-                            Navigator.pushNamed(context, '/rewards');
-                          },
-                          icon: const Icon(Icons.emoji_events),
-                          label: const Text('View My Rewards'),
-                          style: ElevatedButton.styleFrom(
-                            padding: const EdgeInsets.symmetric(vertical: 16),
-                            backgroundColor: Colors.amber,
-                            foregroundColor: Colors.black87,
-                          ),
-                        ),
-                        const SizedBox(height: 12),
-                      ],
-                      
-                      ElevatedButton.icon(
-                        onPressed: widget.onClose,
-                        icon: const Icon(Icons.home),
-                        label: const Text('Back to Lessons'),
-                        style: ElevatedButton.styleFrom(
-                          padding: const EdgeInsets.symmetric(vertical: 16),
-                          backgroundColor:
-                              Theme.of(context).colorScheme.primary,
-                        ),
-                      ),
-                      
-                      const SizedBox(height: 12),
-                      
-                      OutlinedButton.icon(
-                        onPressed: widget.onRetry,
-                        icon: const Icon(Icons.refresh),
-                        label: const Text('Try Again'),
-                        style: OutlinedButton.styleFrom(
-                          padding: const EdgeInsets.symmetric(vertical: 16),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
+                ],
+              ),
             ),
-          ),
+          ],
+        ),
+      ),
     );
   }
 }
@@ -429,17 +423,14 @@ class _StatRow extends StatelessWidget {
         Icon(icon, color: color, size: 24),
         const SizedBox(width: 12),
         Expanded(
-          child: Text(
-            label,
-            style: Theme.of(context).textTheme.bodyLarge,
-          ),
+          child: Text(label, style: Theme.of(context).textTheme.bodyLarge),
         ),
         Text(
           value,
           style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                fontWeight: FontWeight.bold,
-                color: color,
-              ),
+            fontWeight: FontWeight.bold,
+            color: color,
+          ),
         ),
       ],
     );

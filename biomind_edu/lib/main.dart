@@ -13,7 +13,7 @@ import 'features/rewards/domain/reward_service.dart';
 /// Main entry point for BioMindEDU application
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  
+
   try {
     // Load environment variables (only on non-web platforms)
     try {
@@ -21,10 +21,10 @@ void main() async {
     } catch (e) {
       debugPrint('Environment file not found (expected on web): $e');
     }
-    
+
     // Initialize Hive for local storage
     await Hive.initFlutter();
-    
+
     // Register Hive Type Adapters
     if (!Hive.isAdapterRegistered(4)) {
       Hive.registerAdapter(RewardAdapter());
@@ -35,30 +35,26 @@ void main() async {
     if (!Hive.isAdapterRegistered(6)) {
       Hive.registerAdapter(UserProfileAdapter());
     }
-    
+
     // Initialize Local Storage Service
     final storage = LocalStorageService();
     await storage.initialize();
-    
+
     // Initialize Reward Service
     final rewardService = RewardService();
     await rewardService.initialize();
-    
+
     // Initialize sample lesson data for testing
     // TODO: Remove when actual lesson content is ready
     // TEMPORARILY DISABLED for web - Hive TypeAdapters needed
     // await SampleLessonData.initializeSampleData(storage.saveLesson);
-    
+
     // TODO: Initialize Firebase when project is created
     // await Firebase.initializeApp();
   } catch (e, stackTrace) {
     debugPrint('Initialization error: $e');
     debugPrint('Stack trace: $stackTrace');
   }
-  
-  runApp(
-    const ProviderScope(
-      child: BioMindEduApp(),
-    ),
-  );
+
+  runApp(const ProviderScope(child: BioMindEduApp()));
 }

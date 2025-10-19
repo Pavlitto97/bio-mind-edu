@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import '../../../shared/models/interactive_task.dart';
 
 /// Draggable Task Item Widget
-/// 
+///
 /// Represents a draggable item in the interactive task
 /// Provides visual feedback during drag and drop interaction
 class DraggableTaskItem extends StatelessWidget {
@@ -33,10 +33,10 @@ class DraggableTaskItem extends StatelessWidget {
     bool isGhost = false,
   }) {
     final theme = Theme.of(context);
-    
+
     Color backgroundColor;
     Color borderColor;
-    
+
     if (isCorrect) {
       backgroundColor = Colors.green[100]!;
       borderColor = Colors.green[600]!;
@@ -55,10 +55,7 @@ class DraggableTaskItem extends StatelessWidget {
         height: 100,
         decoration: BoxDecoration(
           color: backgroundColor,
-          border: Border.all(
-            color: borderColor,
-            width: 3,
-          ),
+          border: Border.all(color: borderColor, width: 3),
           borderRadius: BorderRadius.circular(12),
           boxShadow: isDragging
               ? [
@@ -81,11 +78,7 @@ class DraggableTaskItem extends StatelessWidget {
           children: [
             // Icon or image
             if (item.iconName != null)
-              Icon(
-                _getIconData(item.iconName!),
-                size: 48,
-                color: borderColor,
-              )
+              Icon(_getIconData(item.iconName!), size: 48, color: borderColor)
             else if (item.imagePath != null)
               Image.asset(
                 item.imagePath!,
@@ -100,14 +93,10 @@ class DraggableTaskItem extends StatelessWidget {
                 },
               )
             else
-              Icon(
-                Icons.drag_indicator,
-                size: 48,
-                color: borderColor,
-              ),
-            
+              Icon(Icons.drag_indicator, size: 48, color: borderColor),
+
             const SizedBox(height: 4),
-            
+
             // Label
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 4),
@@ -146,7 +135,7 @@ class DraggableTaskItem extends StatelessWidget {
       'circle': Icons.circle,
       'square': Icons.square,
     };
-    
+
     return iconMap[iconName] ?? Icons.help_outline;
   }
 }

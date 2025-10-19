@@ -4,7 +4,7 @@ import '../../../shared/models/lesson.dart';
 import '../../../shared/providers/audio_provider.dart';
 
 /// Popup widget that displays annotation details when user taps on a 3D model part
-/// 
+///
 /// Features:
 /// - Shows annotation name and description
 /// - Plays audio explanation when opened
@@ -34,7 +34,7 @@ class _AnnotationPopupState extends ConsumerState<AnnotationPopup>
   @override
   void initState() {
     super.initState();
-    
+
     // Initialize animations
     _animationController = AnimationController(
       duration: const Duration(milliseconds: 300),
@@ -106,7 +106,8 @@ class _AnnotationPopupState extends ConsumerState<AnnotationPopup>
         child: GestureDetector(
           onVerticalDragEnd: (details) {
             // Swipe down to dismiss
-            if (details.primaryVelocity != null && details.primaryVelocity! > 300) {
+            if (details.primaryVelocity != null &&
+                details.primaryVelocity! > 300) {
               _handleClose();
             }
           },
@@ -137,7 +138,7 @@ class _AnnotationPopupState extends ConsumerState<AnnotationPopup>
                     children: [
                       // Header with close button
                       _buildHeader(theme),
-                      
+
                       // Scrollable content
                       Flexible(
                         child: SingleChildScrollView(
@@ -147,21 +148,21 @@ class _AnnotationPopupState extends ConsumerState<AnnotationPopup>
                             children: [
                               // Icon
                               _buildIcon(theme),
-                              
+
                               const SizedBox(height: 16),
-                              
+
                               // Title
                               _buildTitle(theme),
-                              
+
                               const SizedBox(height: 16),
-                              
+
                               // Description
                               _buildDescription(theme),
                             ],
                           ),
                         ),
                       ),
-                      
+
                       // Action buttons
                       _buildActionButtons(theme),
                     ],
@@ -194,7 +195,7 @@ class _AnnotationPopupState extends ConsumerState<AnnotationPopup>
               borderRadius: BorderRadius.circular(2),
             ),
           ),
-          
+
           // Close button
           IconButton(
             icon: const Icon(Icons.close),
@@ -218,11 +219,7 @@ class _AnnotationPopupState extends ConsumerState<AnnotationPopup>
           color: theme.colorScheme.primaryContainer,
           shape: BoxShape.circle,
         ),
-        child: Icon(
-          Icons.science,
-          size: 64,
-          color: theme.colorScheme.primary,
-        ),
+        child: Icon(Icons.science, size: 64, color: theme.colorScheme.primary),
       ),
     );
   }
@@ -244,10 +241,7 @@ class _AnnotationPopupState extends ConsumerState<AnnotationPopup>
     return Text(
       description,
       textAlign: TextAlign.center,
-      style: theme.textTheme.bodyLarge?.copyWith(
-        height: 1.6,
-        fontSize: 18,
-      ),
+      style: theme.textTheme.bodyLarge?.copyWith(height: 1.6, fontSize: 18),
     );
   }
 
@@ -275,9 +269,9 @@ class _AnnotationPopupState extends ConsumerState<AnnotationPopup>
               ),
             ),
           ),
-          
+
           const SizedBox(width: 12),
-          
+
           // Got it button
           Expanded(
             flex: 2,

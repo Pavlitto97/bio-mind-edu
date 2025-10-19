@@ -10,7 +10,7 @@ import '../widgets/annotation_markers.dart';
 import '../widgets/annotation_popup.dart';
 
 /// AR Lesson Screen - Main screen for viewing AR lesson content
-/// 
+///
 /// Displays AR view with 3D model and provides UI controls for:
 /// - Navigation (back, next, complete)
 /// - Audio playback (voice instructions)
@@ -19,10 +19,7 @@ import '../widgets/annotation_popup.dart';
 class ARLessonPage extends ConsumerStatefulWidget {
   final String lessonId;
 
-  const ARLessonPage({
-    super.key,
-    required this.lessonId,
-  });
+  const ARLessonPage({super.key, required this.lessonId});
 
   @override
   ConsumerState<ARLessonPage> createState() => _ARLessonPageState();
@@ -50,7 +47,7 @@ class _ARLessonPageState extends ConsumerState<ARLessonPage> {
       // Check AR support
       final arManager = ARManager();
       final arSupport = await arManager.checkARSupport();
-      
+
       setState(() {
         _isArSupported = arSupport == ARSupport.fullSupport;
       });
@@ -85,10 +82,10 @@ class _ARLessonPageState extends ConsumerState<ARLessonPage> {
     // Clean up AR session
     final arManager = ARManager();
     arManager.dispose();
-    
+
     // Stop any playing audio
     ref.read(audioNotifierProvider.notifier).stopAll();
-    
+
     super.dispose();
   }
 
@@ -117,7 +114,8 @@ class _ARLessonPageState extends ConsumerState<ARLessonPage> {
                   return _buildLessonView(lesson, lessonSession);
                 },
                 loading: () => _buildLoadingState(),
-                error: (error, stack) => _buildErrorState(message: error.toString()),
+                error: (error, stack) =>
+                    _buildErrorState(message: error.toString()),
               ),
 
             // Annotation markers overlay (only when AR view is loaded)
@@ -174,7 +172,8 @@ class _ARLessonPageState extends ConsumerState<ARLessonPage> {
       isArSupported: _isArSupported,
       onModelLoaded: () {
         if (mounted) {
-          ref.read(lessonSessionProvider(widget.lessonId).notifier)
+          ref
+              .read(lessonSessionProvider(widget.lessonId).notifier)
               .setModelLoaded(true);
         }
       },
@@ -201,16 +200,16 @@ class _ARLessonPageState extends ConsumerState<ARLessonPage> {
             const SizedBox(height: 24),
             Text(
               'Loading AR Experience...',
-              style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    color: Colors.white,
-                  ),
+              style: Theme.of(
+                context,
+              ).textTheme.titleMedium?.copyWith(color: Colors.white),
             ),
             const SizedBox(height: 8),
             Text(
               'Please point camera at flat surface',
-              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                    color: Colors.white70,
-                  ),
+              style: Theme.of(
+                context,
+              ).textTheme.bodyMedium?.copyWith(color: Colors.white70),
             ),
           ],
         ),
@@ -220,7 +219,7 @@ class _ARLessonPageState extends ConsumerState<ARLessonPage> {
 
   Widget _buildErrorState({String? message}) {
     final errorText = message ?? _errorMessage ?? 'Unknown error occurred';
-    
+
     return Container(
       color: Colors.black,
       child: Center(
@@ -229,25 +228,21 @@ class _ARLessonPageState extends ConsumerState<ARLessonPage> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const Icon(
-                Icons.error_outline,
-                color: Colors.red,
-                size: 64,
-              ),
+              const Icon(Icons.error_outline, color: Colors.red, size: 64),
               const SizedBox(height: 24),
               Text(
                 'Unable to Load Lesson',
-                style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                      color: Colors.white,
-                    ),
+                style: Theme.of(
+                  context,
+                ).textTheme.headlineSmall?.copyWith(color: Colors.white),
                 textAlign: TextAlign.center,
               ),
               const SizedBox(height: 16),
               Text(
                 errorText,
-                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                      color: Colors.white70,
-                    ),
+                style: Theme.of(
+                  context,
+                ).textTheme.bodyMedium?.copyWith(color: Colors.white70),
                 textAlign: TextAlign.center,
               ),
               const SizedBox(height: 32),
@@ -269,10 +264,7 @@ class _ARLessonPageState extends ConsumerState<ARLessonPage> {
         gradient: LinearGradient(
           begin: Alignment.topCenter,
           end: Alignment.bottomCenter,
-          colors: [
-            Colors.black.withOpacity(0.6),
-            Colors.transparent,
-          ],
+          colors: [Colors.black.withOpacity(0.6), Colors.transparent],
         ),
       ),
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
@@ -305,9 +297,10 @@ class _ARLessonPageState extends ConsumerState<ARLessonPage> {
 
   void _handleAnnotationTap(LessonAnnotation annotation) {
     if (!mounted) return;
-    
+
     // Mark annotation as viewed
-    ref.read(lessonSessionProvider(widget.lessonId).notifier)
+    ref
+        .read(lessonSessionProvider(widget.lessonId).notifier)
         .addViewedAnnotation(annotation.id);
 
     // Show annotation popup
@@ -337,9 +330,8 @@ class _ARLessonPageState extends ConsumerState<ARLessonPage> {
   void _handleTaskComplete() {
     // Navigate to interactive task screen
     // TODO: Implement navigation to TaskScreen
-    Navigator.of(context).pushNamed(
-      '/interactive-task',
-      arguments: widget.lessonId,
-    );
+    Navigator.of(
+      context,
+    ).pushNamed('/interactive-task', arguments: widget.lessonId);
   }
 }

@@ -8,7 +8,7 @@ import '../../profile/data/models/user_profile_model.dart';
 class RewardService {
   static const String _rewardsBoxName = 'rewards';
   static const String _userProfileBoxName = 'userProfile';
-  
+
   late Box<Reward> _rewardsBox;
   late Box<UserProfile> _userProfileBox;
   bool _initialized = false;
@@ -16,17 +16,17 @@ class RewardService {
   /// Initialize the service
   Future<void> initialize() async {
     if (_initialized) return;
-    
+
     _rewardsBox = await Hive.openBox<Reward>(_rewardsBoxName);
     _userProfileBox = await Hive.openBox<UserProfile>(_userProfileBoxName);
-    
+
     // Initialize with mock rewards if empty
     if (_rewardsBox.isEmpty) {
       for (var reward in mockRewards) {
         await _rewardsBox.put(reward.id, reward);
       }
     }
-    
+
     // Initialize default user profile if empty
     if (_userProfileBox.isEmpty) {
       final defaultProfile = UserProfile(
@@ -37,7 +37,7 @@ class RewardService {
       );
       await _userProfileBox.put('default_user', defaultProfile);
     }
-    
+
     _initialized = true;
   }
 
@@ -66,7 +66,7 @@ class RewardService {
   Future<bool> unlockReward(String rewardId) async {
     final reward = _rewardsBox.get(rewardId);
     if (reward == null) return false;
-    
+
     if (reward.isUnlocked) {
       return false; // Already unlocked
     }
@@ -124,14 +124,14 @@ class RewardService {
     if (profile == null) return;
 
     final updatedProfile = profile.copyWith(
-      totalLessonsCompleted: lessonCompleted == true 
-          ? profile.totalLessonsCompleted + 1 
+      totalLessonsCompleted: lessonCompleted == true
+          ? profile.totalLessonsCompleted + 1
           : profile.totalLessonsCompleted,
-      totalTestsCompleted: testCompleted == true 
-          ? profile.totalTestsCompleted + 1 
+      totalTestsCompleted: testCompleted == true
+          ? profile.totalTestsCompleted + 1
           : profile.totalTestsCompleted,
-      totalStarsEarned: starsEarned != null 
-          ? profile.totalStarsEarned + starsEarned 
+      totalStarsEarned: starsEarned != null
+          ? profile.totalStarsEarned + starsEarned
           : profile.totalStarsEarned,
       lastActiveAt: DateTime.now(),
     );
@@ -145,7 +145,7 @@ class RewardService {
     if (profile == null) return;
 
     final updatedIds = [...profile.unlockedRewardIds, rewardId];
-    
+
     final updatedProfile = profile.copyWith(
       rewardsUnlocked: profile.rewardsUnlocked + 1,
       unlockedRewardIds: updatedIds,

@@ -5,7 +5,7 @@ import '../../../shared/providers/progress_provider.dart';
 import '../../../l10n/app_localizations.dart';
 
 /// Lesson History List
-/// 
+///
 /// Shows recent lessons with completion status, dates, and scores.
 class LessonHistoryList extends ConsumerWidget {
   const LessonHistoryList({super.key});
@@ -46,107 +46,101 @@ class LessonHistoryList extends ConsumerWidget {
         }
 
         return SliverList(
-          delegate: SliverChildBuilderDelegate(
-            (context, index) {
-              final item = history[index];
-              final lesson = item.lesson;
-              final progress = item.progress;
-              
-              return Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 16.0,
-                  vertical: 6.0,
+          delegate: SliverChildBuilderDelegate((context, index) {
+            final item = history[index];
+            final lesson = item.lesson;
+            final progress = item.progress;
+
+            return Padding(
+              padding: const EdgeInsets.symmetric(
+                horizontal: 16.0,
+                vertical: 6.0,
+              ),
+              child: Card(
+                elevation: 2,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
                 ),
-                child: Card(
-                  elevation: 2,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
+                child: ListTile(
+                  contentPadding: const EdgeInsets.all(12),
+                  leading: Container(
+                    width: 56,
+                    height: 56,
+                    decoration: BoxDecoration(
+                      color: _getStatusColor(
+                        progress.status,
+                        theme,
+                      ).withOpacity(0.1),
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    child: Icon(
+                      _getStatusIcon(progress.status),
+                      color: _getStatusColor(progress.status, theme),
+                      size: 28,
+                    ),
                   ),
-                  child: ListTile(
-                    contentPadding: const EdgeInsets.all(12),
-                    leading: Container(
-                      width: 56,
-                      height: 56,
-                      decoration: BoxDecoration(
-                        color: _getStatusColor(progress.status, theme)
-                            .withOpacity(0.1),
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      child: Icon(
-                        _getStatusIcon(progress.status),
-                        color: _getStatusColor(progress.status, theme),
-                        size: 28,
-                      ),
+                  title: Text(
+                    _getLocalizedLessonTitle(lesson.titleKey, l10n),
+                    style: theme.textTheme.titleMedium?.copyWith(
+                      fontWeight: FontWeight.bold,
                     ),
-                    title: Text(
-                      _getLocalizedLessonTitle(lesson.titleKey, l10n),
-                      style: theme.textTheme.titleMedium?.copyWith(
-                        fontWeight: FontWeight.bold,
+                  ),
+                  subtitle: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const SizedBox(height: 4),
+                      Text(
+                        _getStatusText(progress.status, l10n),
+                        style: theme.textTheme.bodySmall?.copyWith(
+                          color: _getStatusColor(progress.status, theme),
+                          fontWeight: FontWeight.w600,
+                        ),
                       ),
-                    ),
-                    subtitle: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const SizedBox(height: 4),
+                      const SizedBox(height: 4),
+                      if (progress.lastAccessedAt != null)
                         Text(
-                          _getStatusText(progress.status, l10n),
+                          DateFormat(
+                            'MMM d, yyyy',
+                          ).format(progress.lastAccessedAt!),
                           style: theme.textTheme.bodySmall?.copyWith(
-                            color: _getStatusColor(progress.status, theme),
-                            fontWeight: FontWeight.w600,
+                            color: theme.colorScheme.outline,
+                          ),
+                        ),
+                    ],
+                  ),
+                  trailing: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      if (progress.testScore != null) ...[
+                        Text(
+                          '${progress.testScore!.toStringAsFixed(0)}%',
+                          style: theme.textTheme.titleMedium?.copyWith(
+                            fontWeight: FontWeight.bold,
+                            color: theme.colorScheme.primary,
                           ),
                         ),
                         const SizedBox(height: 4),
-                        if (progress.lastAccessedAt != null)
-                          Text(
-                            DateFormat('MMM d, yyyy').format(
-                              progress.lastAccessedAt!,
-                            ),
-                            style: theme.textTheme.bodySmall?.copyWith(
-                              color: theme.colorScheme.outline,
-                            ),
+                        Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: List.generate(
+                            _calculateStars(progress.testScore!),
+                            (index) =>
+                                Icon(Icons.star, size: 16, color: Colors.amber),
                           ),
+                        ),
                       ],
-                    ),
-                    trailing: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        if (progress.testScore != null) ...[
-                          Text(
-                            '${progress.testScore!.toStringAsFixed(0)}%',
-                            style: theme.textTheme.titleMedium?.copyWith(
-                              fontWeight: FontWeight.bold,
-                              color: theme.colorScheme.primary,
-                            ),
-                          ),
-                          const SizedBox(height: 4),
-                          Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: List.generate(
-                              _calculateStars(progress.testScore!),
-                              (index) => Icon(
-                                Icons.star,
-                                size: 16,
-                                color: Colors.amber,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ],
-                    ),
+                    ],
                   ),
                 ),
-              );
-            },
-            childCount: history.length,
-          ),
+              ),
+            );
+          }, childCount: history.length),
         );
       },
       loading: () => SliverToBoxAdapter(
         child: Padding(
           padding: const EdgeInsets.all(32.0),
-          child: Center(
-            child: CircularProgressIndicator(),
-          ),
+          child: Center(child: CircularProgressIndicator()),
         ),
       ),
       error: (error, stack) => SliverToBoxAdapter(

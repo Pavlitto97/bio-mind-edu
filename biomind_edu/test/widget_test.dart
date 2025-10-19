@@ -14,18 +14,14 @@ import 'package:biomind_edu/app.dart';
 void main() {
   testWidgets('BioMindEDU app smoke test', (WidgetTester tester) async {
     // Build our app and trigger a frame.
-    await tester.pumpWidget(
-      const ProviderScope(
-        child: BioMindEduApp(),
-      ),
-    );
+    await tester.pumpWidget(const ProviderScope(child: BioMindEduApp()));
 
     // Wait for async operations to complete
     await tester.pumpAndSettle();
 
     // Verify that the app bar with title is displayed
     expect(find.text('BioMind EDU'), findsOneWidget);
-    
+
     // Verify that settings icon is present
     expect(find.byIcon(Icons.settings), findsOneWidget);
   });

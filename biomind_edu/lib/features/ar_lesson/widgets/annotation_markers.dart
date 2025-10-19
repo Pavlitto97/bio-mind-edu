@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import '../../../shared/models/lesson.dart';
 
 /// Overlay widget that displays annotation markers on top of the AR/3D view
-/// 
+///
 /// Features:
 /// - Shows pulsing markers at annotation positions
 /// - Converts 3D positions to 2D screen coordinates
@@ -28,7 +28,7 @@ class AnnotationMarkersOverlay extends StatelessWidget {
       children: annotations.map((annotation) {
         final position = _calculate2DPosition(annotation.position);
         final isViewed = viewedAnnotationIds.contains(annotation.id);
-        
+
         return Positioned(
           left: position.dx - 24, // Center the marker
           top: position.dy - 24,
@@ -43,7 +43,7 @@ class AnnotationMarkersOverlay extends StatelessWidget {
   }
 
   /// Convert 3D position [x, y, z] to 2D screen position
-  /// 
+  ///
   /// This is a simplified projection. In a real AR implementation,
   /// you would use the AR camera's projection matrix.
   Offset _calculate2DPosition(List<double> position3D) {
@@ -86,7 +86,7 @@ class _AnnotationMarkerState extends State<AnnotationMarker>
   @override
   void initState() {
     super.initState();
-    
+
     // Only pulse if not viewed yet
     if (!widget.isViewed) {
       _pulseController = AnimationController(
@@ -94,13 +94,9 @@ class _AnnotationMarkerState extends State<AnnotationMarker>
         vsync: this,
       )..repeat(reverse: true);
 
-      _pulseAnimation = Tween<double>(
-        begin: 1.0,
-        end: 1.3,
-      ).animate(CurvedAnimation(
-        parent: _pulseController,
-        curve: Curves.easeInOut,
-      ));
+      _pulseAnimation = Tween<double>(begin: 1.0, end: 1.3).animate(
+        CurvedAnimation(parent: _pulseController, curve: Curves.easeInOut),
+      );
     } else {
       _pulseController = AnimationController(
         duration: const Duration(milliseconds: 1500),
@@ -119,7 +115,7 @@ class _AnnotationMarkerState extends State<AnnotationMarker>
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    
+
     return GestureDetector(
       onTap: widget.onTap,
       child: AnimatedBuilder(

@@ -6,11 +6,7 @@ class RewardGridItem extends StatelessWidget {
   final Reward reward;
   final VoidCallback? onTap;
 
-  const RewardGridItem({
-    super.key,
-    required this.reward,
-    this.onTap,
-  });
+  const RewardGridItem({super.key, required this.reward, this.onTap});
 
   @override
   Widget build(BuildContext context) {
@@ -18,13 +14,11 @@ class RewardGridItem extends StatelessWidget {
       onTap: onTap,
       child: Container(
         decoration: BoxDecoration(
-          color: reward.isUnlocked 
-              ? Colors.white 
-              : Colors.grey.shade200,
+          color: reward.isUnlocked ? Colors.white : Colors.grey.shade200,
           borderRadius: BorderRadius.circular(16),
           border: Border.all(
-            color: reward.isUnlocked 
-                ? Theme.of(context).primaryColor 
+            color: reward.isUnlocked
+                ? Theme.of(context).primaryColor
                 : Colors.grey.shade300,
             width: 2,
           ),
@@ -50,7 +44,7 @@ class RewardGridItem extends StatelessWidget {
                     : _buildLockedIcon(),
               ),
             ),
-            
+
             // Reward Name
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 8.0),
@@ -58,8 +52,8 @@ class RewardGridItem extends StatelessWidget {
                 reward.isUnlocked ? reward.name : '???',
                 style: Theme.of(context).textTheme.titleSmall?.copyWith(
                   fontWeight: FontWeight.bold,
-                  color: reward.isUnlocked 
-                      ? Colors.black87 
+                  color: reward.isUnlocked
+                      ? Colors.black87
                       : Colors.grey.shade600,
                 ),
                 textAlign: TextAlign.center,
@@ -67,15 +61,12 @@ class RewardGridItem extends StatelessWidget {
                 overflow: TextOverflow.ellipsis,
               ),
             ),
-            
+
             // Category Badge
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Container(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 8,
-                  vertical: 4,
-                ),
+                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                 decoration: BoxDecoration(
                   color: _getCategoryColor().withOpacity(0.2),
                   borderRadius: BorderRadius.circular(12),
@@ -113,11 +104,7 @@ class RewardGridItem extends StatelessWidget {
         break;
     }
 
-    return Icon(
-      iconData,
-      size: 64,
-      color: _getCategoryColor(),
-    );
+    return Icon(iconData, size: 64, color: _getCategoryColor());
   }
 
   Widget _buildLockedIcon() {
@@ -126,11 +113,7 @@ class RewardGridItem extends StatelessWidget {
         color: Colors.grey.shade300,
         shape: BoxShape.circle,
       ),
-      child: Icon(
-        Icons.lock,
-        size: 48,
-        color: Colors.grey.shade600,
-      ),
+      child: Icon(Icons.lock, size: 48, color: Colors.grey.shade600),
     );
   }
 

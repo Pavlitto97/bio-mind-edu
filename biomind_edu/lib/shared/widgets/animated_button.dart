@@ -43,15 +43,13 @@ class _AnimatedButtonState extends State<AnimatedButton>
       duration: AnimationConstants.buttonAnimation,
       vsync: this,
     );
-    _scaleAnimation = Tween<double>(
-      begin: 1.0,
-      end: widget.scaleFactor,
-    ).animate(
-      CurvedAnimation(
-        parent: _controller,
-        curve: AnimationConstants.buttonAnimationCurve,
-      ),
-    );
+    _scaleAnimation = Tween<double>(begin: 1.0, end: widget.scaleFactor)
+        .animate(
+          CurvedAnimation(
+            parent: _controller,
+            curve: AnimationConstants.buttonAnimationCurve,
+          ),
+        );
   }
 
   @override
@@ -105,9 +103,7 @@ class _AnimatedButtonState extends State<AnimatedButton>
             child: Padding(
               padding: widget.padding ?? const EdgeInsets.all(16),
               child: DefaultTextStyle(
-                style: TextStyle(
-                  color: widget.foregroundColor ?? Colors.white,
-                ),
+                style: TextStyle(color: widget.foregroundColor ?? Colors.white),
                 child: widget.child,
               ),
             ),
@@ -155,15 +151,13 @@ class _AnimatedIconButtonState extends State<AnimatedIconButton>
       duration: AnimationConstants.buttonAnimation,
       vsync: this,
     );
-    _scaleAnimation = Tween<double>(
-      begin: 1.0,
-      end: widget.scaleFactor,
-    ).animate(
-      CurvedAnimation(
-        parent: _controller,
-        curve: AnimationConstants.buttonAnimationCurve,
-      ),
-    );
+    _scaleAnimation = Tween<double>(begin: 1.0, end: widget.scaleFactor)
+        .animate(
+          CurvedAnimation(
+            parent: _controller,
+            curve: AnimationConstants.buttonAnimationCurve,
+          ),
+        );
   }
 
   @override
@@ -188,19 +182,12 @@ class _AnimatedIconButtonState extends State<AnimatedIconButton>
       onTap: _handleTap,
       child: ScaleTransition(
         scale: _scaleAnimation,
-        child: Icon(
-          widget.icon,
-          size: widget.size,
-          color: widget.iconColor,
-        ),
+        child: Icon(widget.icon, size: widget.size, color: widget.iconColor),
       ),
     );
 
     if (widget.tooltip != null) {
-      return Tooltip(
-        message: widget.tooltip!,
-        child: button,
-      );
+      return Tooltip(message: widget.tooltip!, child: button);
     }
 
     return button;

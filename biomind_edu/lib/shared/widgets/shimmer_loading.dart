@@ -35,12 +35,7 @@ class _ShimmerLoadingState extends State<ShimmerLoading>
     _animation = Tween<double>(
       begin: -2.0,
       end: 2.0,
-    ).animate(
-      CurvedAnimation(
-        parent: _controller,
-        curve: Curves.easeInOut,
-      ),
-    );
+    ).animate(CurvedAnimation(parent: _controller, curve: Curves.easeInOut));
   }
 
   @override
@@ -55,9 +50,11 @@ class _ShimmerLoadingState extends State<ShimmerLoading>
       return widget.child;
     }
 
-    final baseColor = widget.baseColor ??
+    final baseColor =
+        widget.baseColor ??
         Theme.of(context).colorScheme.surfaceContainerHighest;
-    final highlightColor = widget.highlightColor ??
+    final highlightColor =
+        widget.highlightColor ??
         Theme.of(context).colorScheme.surfaceContainerHigh;
 
     return AnimatedBuilder(
@@ -69,11 +66,7 @@ class _ShimmerLoadingState extends State<ShimmerLoading>
             return LinearGradient(
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
-              colors: [
-                baseColor,
-                highlightColor,
-                baseColor,
-              ],
+              colors: [baseColor, highlightColor, baseColor],
               stops: [
                 _animation.value - 0.5,
                 _animation.value,
@@ -122,11 +115,7 @@ class SkeletonText extends StatelessWidget {
   final double width;
   final double height;
 
-  const SkeletonText({
-    super.key,
-    required this.width,
-    this.height = 16,
-  });
+  const SkeletonText({super.key, required this.width, this.height = 16});
 
   @override
   Widget build(BuildContext context) {

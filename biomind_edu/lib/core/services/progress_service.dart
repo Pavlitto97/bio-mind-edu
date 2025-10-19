@@ -5,10 +5,10 @@ import 'package:biomind_edu/shared/models/progress.dart';
 import 'package:biomind_edu/shared/models/lesson.dart';
 
 /// Progress Tracking Service
-/// 
+///
 /// High-level service that coordinates progress updates across
 /// LocalStorageService, RewardService, and UserProfile.
-/// 
+///
 /// Responsibilities:
 /// - Save lesson and test progress
 /// - Update user statistics automatically
@@ -21,13 +21,13 @@ class ProgressService {
   ProgressService({
     required LocalStorageService storage,
     required RewardService rewardService,
-  })  : _storage = storage,
-        _rewardService = rewardService;
+  }) : _storage = storage,
+       _rewardService = rewardService;
 
   // ============ LESSON PROGRESS ============
 
   /// Update lesson progress after interactive task completion
-  /// 
+  ///
   /// Automatically:
   /// - Updates LessonProgress
   /// - Increments UserProfile stats
@@ -41,7 +41,7 @@ class ProgressService {
     try {
       // Get existing progress or create new
       var progress = _storage.getProgress(lessonId);
-      
+
       if (progress == null) {
         progress = LessonProgress(
           lessonId: lessonId,
@@ -56,12 +56,16 @@ class ProgressService {
 
       // Update progress
       final updatedProgress = progress.copyWith(
-        status: taskCompleted && progress.testCompleted ? 'completed' : 'in_progress',
+        status: taskCompleted && progress.testCompleted
+            ? 'completed'
+            : 'in_progress',
         lastAccessedAt: DateTime.now(),
         taskCompleted: taskCompleted,
         timeSpentSeconds: progress.timeSpentSeconds + (timeSpentSeconds ?? 0),
         attempts: progress.attempts + (attempts ?? 1),
-        completedAt: taskCompleted && progress.testCompleted ? DateTime.now() : progress.completedAt,
+        completedAt: taskCompleted && progress.testCompleted
+            ? DateTime.now()
+            : progress.completedAt,
       );
 
       await _storage.saveProgress(updatedProgress);
@@ -82,7 +86,7 @@ class ProgressService {
   }
 
   /// Update test results and mark lesson as completed if passed
-  /// 
+  ///
   /// Automatically:
   /// - Updates test score and stars
   /// - Marks lesson as completed
@@ -97,7 +101,7 @@ class ProgressService {
     try {
       // Get existing progress or create new
       var progress = _storage.getProgress(lessonId);
-      
+
       if (progress == null) {
         progress = LessonProgress(
           lessonId: lessonId,
@@ -151,7 +155,7 @@ class ProgressService {
   // ============ STATISTICS & ANALYTICS ============
 
   /// Get overall progress statistics
-  /// 
+  ///
   /// Returns:
   /// - Total lessons
   /// - Completed lessons
@@ -162,22 +166,34 @@ class ProgressService {
   Future<ProgressStatistics> getOverallProgress() async {
     try {
       final allProgress = _storage.getAllProgress();
-      final rewards = _storage.getAllRewards().where((r) => r.isUnlocked).toList();
+      final rewards = _storage
+          .getAllRewards()
+          .where((r) => r.isUnlocked)
+          .toList();
 
-      final completed = allProgress.where((p) => p.status == 'completed').toList();
-      final inProgress = allProgress.where((p) => p.status == 'in_progress').toList();
+      final completed = allProgress
+          .where((p) => p.status == 'completed')
+          .toList();
+      final inProgress = allProgress
+          .where((p) => p.status == 'in_progress')
+          .toList();
 
       // Calculate average score
       double avgScore = 0;
       if (completed.isNotEmpty) {
-        final scores = completed.where((p) => p.testScore != null).map((p) => p.testScore!);
+        final scores = completed
+            .where((p) => p.testScore != null)
+            .map((p) => p.testScore!);
         if (scores.isNotEmpty) {
           avgScore = scores.reduce((a, b) => a + b) / scores.length;
         }
       }
 
       // Calculate total learning time
-      int totalSeconds = allProgress.fold(0, (sum, p) => sum + p.timeSpentSeconds);
+      int totalSeconds = allProgress.fold(
+        0,
+        (sum, p) => sum + p.timeSpentSeconds,
+      );
 
       return ProgressStatistics(
         totalLessons: allProgress.length,
@@ -204,7 +220,7 @@ class ProgressService {
   Future<List<LessonProgressHistory>> getLessonHistory({int limit = 10}) async {
     try {
       final allProgress = _storage.getAllProgress();
-      
+
       // Sort by last accessed (most recent first)
       allProgress.sort((a, b) {
         final dateA = a.lastAccessedAt ?? DateTime(2000);
@@ -217,10 +233,9 @@ class ProgressService {
       for (final progress in allProgress.take(limit)) {
         final lesson = _storage.getLesson(progress.lessonId);
         if (lesson != null) {
-          history.add(LessonProgressHistory(
-            lesson: lesson,
-            progress: progress,
-          ));
+          history.add(
+            LessonProgressHistory(lesson: lesson, progress: progress),
+          );
         }
       }
 
@@ -250,14 +265,16 @@ class ProgressService {
       for (final progress in completedWithScores) {
         final lesson = _storage.getLesson(progress.lessonId);
         if (lesson != null) {
-          results.add(TestResult(
-            lessonId: progress.lessonId,
-            lessonTitle: lesson.titleKey, // Use titleKey for localization
-            score: progress.testScore!,
-            stars: _calculateStars(progress.testScore!),
-            completedAt: progress.completedAt!,
-            attempts: progress.attempts,
-          ));
+          results.add(
+            TestResult(
+              lessonId: progress.lessonId,
+              lessonTitle: lesson.titleKey, // Use titleKey for localization
+              score: progress.testScore!,
+              stars: _calculateStars(progress.testScore!),
+              completedAt: progress.completedAt!,
+              attempts: progress.attempts,
+            ),
+          );
         }
       }
 
@@ -277,7 +294,9 @@ class ProgressService {
       final rates = <String, double>{};
 
       for (final difficulty in ['beginner', 'intermediate', 'advanced']) {
-        final lessonsOfDifficulty = allLessons.where((l) => l.difficulty == difficulty).toList();
+        final lessonsOfDifficulty = allLessons
+            .where((l) => l.difficulty == difficulty)
+            .toList();
         if (lessonsOfDifficulty.isEmpty) {
           rates[difficulty] = 0;
           continue;
@@ -337,12 +356,13 @@ class ProgressService {
       if (allProgress.isEmpty) return 0;
 
       // Get all activity dates
-      final activityDates = allProgress
-          .where((p) => p.lastAccessedAt != null)
-          .map((p) => _stripTime(p.lastAccessedAt!))
-          .toSet()
-          .toList()
-        ..sort((a, b) => b.compareTo(a)); // Most recent first
+      final activityDates =
+          allProgress
+              .where((p) => p.lastAccessedAt != null)
+              .map((p) => _stripTime(p.lastAccessedAt!))
+              .toSet()
+              .toList()
+            ..sort((a, b) => b.compareTo(a)); // Most recent first
 
       if (activityDates.isEmpty) return 0;
 
@@ -350,7 +370,8 @@ class ProgressService {
       final today = _stripTime(DateTime.now());
       final yesterday = today.subtract(const Duration(days: 1));
 
-      if (!activityDates.contains(today) && !activityDates.contains(yesterday)) {
+      if (!activityDates.contains(today) &&
+          !activityDates.contains(yesterday)) {
         return 0; // Streak broken
       }
 
@@ -383,7 +404,7 @@ class ProgressService {
   }) async {
     try {
       var profile = _storage.getUserProfile();
-      
+
       if (profile == null) {
         // Create default profile if none exists
         profile = UserProfile(
@@ -405,7 +426,9 @@ class ProgressService {
       );
 
       await _storage.saveUserProfile(updatedProfile);
-      debugPrint('✅ User profile updated: ${updatedProfile.lessonsCompleted} lessons completed');
+      debugPrint(
+        '✅ User profile updated: ${updatedProfile.lessonsCompleted} lessons completed',
+      );
     } catch (e) {
       debugPrint('❌ Error updating user profile: $e');
     }
@@ -448,7 +471,8 @@ class ProgressStatistics {
   double get completionPercentage =>
       totalLessons > 0 ? (completedLessons / totalLessons) * 100 : 0;
 
-  int get notStartedLessons => totalLessons - completedLessons - inProgressLessons;
+  int get notStartedLessons =>
+      totalLessons - completedLessons - inProgressLessons;
 }
 
 /// Lesson progress history item
@@ -456,10 +480,7 @@ class LessonProgressHistory {
   final Lesson lesson;
   final LessonProgress progress;
 
-  const LessonProgressHistory({
-    required this.lesson,
-    required this.progress,
-  });
+  const LessonProgressHistory({required this.lesson, required this.progress});
 }
 
 /// Test result for completed lesson

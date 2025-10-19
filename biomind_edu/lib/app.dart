@@ -19,7 +19,7 @@ class BioMindEduApp extends ConsumerWidget {
     return MaterialApp(
       title: 'BioMindEDU',
       debugShowCheckedModeBanner: false,
-      
+
       // Localization
       localizationsDelegates: const [
         AppLocalizations.delegate,
@@ -31,7 +31,7 @@ class BioMindEduApp extends ConsumerWidget {
         Locale('en'), // English
         Locale('uk'), // Ukrainian
       ],
-      
+
       theme: AppTheme.lightTheme,
       home: const LessonsListPage(),
       onGenerateRoute: (settings) {
@@ -58,9 +58,7 @@ class BioMindEduApp extends ConsumerWidget {
               ),
             );
           case '/rewards':
-            return MaterialPageRoute(
-              builder: (context) => const RewardsPage(),
-            );
+            return MaterialPageRoute(builder: (context) => const RewardsPage());
           default:
             return null;
         }

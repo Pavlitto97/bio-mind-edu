@@ -74,10 +74,7 @@ class AppTheme {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(UIConstants.mediumRadius),
           ),
-          textStyle: const TextStyle(
-            fontSize: 18,
-            fontWeight: FontWeight.bold,
-          ),
+          textStyle: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
         ),
       ),
       textButtonTheme: TextButtonThemeData(
@@ -153,14 +150,8 @@ class AppTheme {
           fontWeight: FontWeight.w500,
           color: textPrimary,
         ),
-        bodyLarge: TextStyle(
-          fontSize: 16,
-          color: textPrimary,
-        ),
-        bodyMedium: TextStyle(
-          fontSize: 14,
-          color: textSecondary,
-        ),
+        bodyLarge: TextStyle(fontSize: 16, color: textPrimary),
+        bodyMedium: TextStyle(fontSize: 14, color: textSecondary),
         labelLarge: TextStyle(
           fontSize: 16,
           fontWeight: FontWeight.w500,
