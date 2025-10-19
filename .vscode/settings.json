@@ -9,6 +9,47 @@
     "chat.tools.terminal.autoApprove": {
         ".specify/scripts/bash/": true,
         ".specify/scripts/powershell/": true
+    },
+    "github.copilot.chat.mcp.servers": {
+        "context7": {
+            "command": "npx",
+            "args": [
+                "-y",
+                "@upstash/context7-mcp"
+            ],
+            "env": {
+                "CONTEXT7_API_KEY": "ctx7sk-7e0d31e5-5a6d-4ebf-9494-c04f04edd307"
+            }
+        }
+    },
+    "dart.flutterSdkPath": "/Users/user/flutter",
+    "dart.previewFlutterUiGuides": true,
+    "dart.previewFlutterUiGuidesCustomTracking": true,
+    "dart.debugExternalPackageLibraries": false,
+    "dart.debugSdkLibraries": false,
+    "[dart]": {
+        "editor.formatOnSave": true,
+        "editor.formatOnType": true,
+        "editor.rulers": [80],
+        "editor.selectionHighlight": false,
+        "editor.suggest.snippetsPreventQuickSuggestions": false,
+        "editor.suggestSelection": "first",
+        "editor.tabCompletion": "onlySnippets",
+        "editor.wordBasedSuggestions": "off"
+    },
+    "files.associations": {
+        "*.arb": "json",
+        "*.freezed.dart": "dart",
+        "*.g.dart": "dart"
+    },
+    "search.exclude": {
+        "**/*.freezed.dart": true,
+        "**/*.g.dart": true,
+        "**/.dart_tool": true,
+        "**/.firebase": true,
+        "**/build": true,
+        "**/.flutter-plugins": true,
+        "**/.flutter-plugins-dependencies": true
     }
 }
 
