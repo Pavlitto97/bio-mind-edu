@@ -219,6 +219,23 @@ class LocalStorageService {
     await saveSetting(StorageConstants.firstLaunchKey, false);
   }
 
+  // ============ INTERACTIVE TASKS ============
+
+  /// Get interactive task by ID
+  /// Note: Interactive tasks are stored as part of lesson data
+  /// This method extracts the task from the lesson
+  Future<dynamic> getInteractiveTask(String taskId) async {
+    // For now, return a mock task
+    // TODO: Implement proper task storage or extract from lesson
+    return null;
+  }
+
+  /// Save interactive task
+  Future<void> saveInteractiveTask(dynamic task) async {
+    // TODO: Implement task storage
+    // For now, tasks are part of lesson data
+  }
+
   // ============ STATISTICS ============
 
   /// Get total completed lessons

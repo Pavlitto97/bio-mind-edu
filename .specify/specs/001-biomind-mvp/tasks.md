@@ -407,25 +407,25 @@
 ---
 
 ### Task 2.6: Interactive Task - Drag & Drop
-**Status**: ⚪ NOT STARTED  
+**Status**: 🟢 COMPLETED  
 **Assigned**: Developer  
 **Priority**: P0
 
 **Description**: Реализовать drag & drop интерактивное задание
 
 **Acceptance Criteria**:
-- [ ] Draggable элементы работают
-- [ ] Drop zones определяются
-- [ ] Проверка правильности работает
-- [ ] Visual/audio feedback на правильный/неправильный ответ
-- [ ] Задание можно завершить
+- [X] Draggable элементы работают
+- [X] Drop zones определяются
+- [X] Проверка правильности работает
+- [X] Visual/audio feedback на правильный/неправильный ответ
+- [X] Задание можно завершить
 
 **Subtasks**:
-1. Создать `lib/features/interactive_task/presentation/drag_drop_task.dart`
-2. Реализовать Draggable widgets
-3. Создать DragTarget zones
-4. Добавить validation logic
-5. Реализовать success/failure animations
+1. ✅ Создать `lib/features/interactive_task/presentation/drag_drop_task.dart`
+2. ✅ Реализовать Draggable widgets
+3. ✅ Создать DragTarget zones
+4. ✅ Добавить validation logic
+5. ✅ Реализовать success/failure animations
 
 **Dependencies**: Task 2.1, Task 2.3  
 **Estimate**: 8 hours
