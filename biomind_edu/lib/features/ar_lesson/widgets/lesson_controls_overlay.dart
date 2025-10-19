@@ -10,7 +10,7 @@ import '../../../shared/models/lesson.dart';
 class LessonControlsOverlay extends StatefulWidget {
   final Lesson lesson;
   final bool isArMode;
-  final void Function(String annotationId) onAnnotationTap;
+  final void Function(LessonAnnotation annotation) onAnnotationTap;
   final VoidCallback onTaskComplete;
 
   const LessonControlsOverlay({
@@ -101,7 +101,7 @@ class _LessonControlsOverlayState extends State<LessonControlsOverlay> {
       child: Card(
         color: Colors.white.withOpacity(0.15),
         child: InkWell(
-          onTap: () => widget.onAnnotationTap(annotation.id),
+          onTap: () => widget.onAnnotationTap(annotation),
           child: Padding(
             padding: const EdgeInsets.all(12),
             child: Column(

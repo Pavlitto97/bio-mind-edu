@@ -6,6 +6,8 @@ import '../../../shared/providers/audio_provider.dart';
 import '../../../core/services/ar_manager.dart';
 import '../widgets/ar_view_widget.dart';
 import '../widgets/lesson_controls_overlay.dart';
+import '../widgets/annotation_markers.dart';
+import '../widgets/annotation_popup.dart';
 
 /// AR Lesson Screen - Main screen for viewing AR lesson content
 /// 
@@ -30,6 +32,7 @@ class _ARLessonPageState extends ConsumerState<ARLessonPage> {
   bool _isLoading = true;
   String? _errorMessage;
   bool _isArSupported = false;
+  LessonAnnotation? _selectedAnnotation;
 
   @override
   void initState() {
@@ -93,6 +96,7 @@ class _ARLessonPageState extends ConsumerState<ARLessonPage> {
   Widget build(BuildContext context) {
     final lessonAsync = ref.watch(lessonByIdProvider(widget.lessonId));
     final lessonSession = ref.watch(lessonSessionProvider(widget.lessonId));
+    final screenSize = MediaQuery.of(context).size;
 
     return Scaffold(
       backgroundColor: Colors.black,
@@ -114,6 +118,21 @@ class _ARLessonPageState extends ConsumerState<ARLessonPage> {
                 },
                 loading: () => _buildLoadingState(),
                 error: (error, stack) => _buildErrorState(message: error.toString()),
+              ),
+
+            // Annotation markers overlay (only when AR view is loaded)
+            if (!_isLoading && _errorMessage == null)
+              lessonAsync.maybeWhen(
+                data: (lesson) {
+                  if (lesson == null) return const SizedBox.shrink();
+                  return AnnotationMarkersOverlay(
+                    annotations: lesson.annotations,
+                    viewedAnnotationIds: lessonSession.viewedAnnotations,
+                    onAnnotationTap: _handleAnnotationTap,
+                    screenSize: screenSize,
+                  );
+                },
+                orElse: () => const SizedBox.shrink(),
               ),
 
             // Top controls overlay
@@ -280,18 +299,31 @@ class _ARLessonPageState extends ConsumerState<ARLessonPage> {
     );
   }
 
-  void _handleAnnotationTap(String annotationId) {
+  void _handleAnnotationTap(LessonAnnotation annotation) {
     // Mark annotation as viewed
     ref.read(lessonSessionProvider(widget.lessonId).notifier)
-        .addViewedAnnotation(annotationId);
+        .addViewedAnnotation(annotation.id);
 
-    // Play annotation audio
-    // TODO: Play actual annotation audio
-    // final audioNotifier = ref.read(audioNotifierProvider.notifier);
-    // audioNotifier.playVoice('annotation_$annotationId.mp3');
+    // Show annotation popup
+    setState(() {
+      _selectedAnnotation = annotation;
+    });
 
-    // Show annotation details
-    // TODO: Implement annotation popup/overlay
+    // Show the popup as a modal overlay
+    showDialog<void>(
+      context: context,
+      barrierDismissible: true,
+      barrierColor: Colors.transparent, // Use popup's own background
+      builder: (context) => AnnotationPopup(
+        annotation: annotation,
+        onClose: () {
+          Navigator.of(context).pop();
+          setState(() {
+            _selectedAnnotation = null;
+          });
+        },
+      ),
+    );
   }
 
   void _handleTaskComplete() {
