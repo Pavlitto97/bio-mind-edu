@@ -433,25 +433,25 @@
 ---
 
 ### Task 2.7: Assessment Test Screen
-**Status**: ⚪ NOT STARTED  
+**Status**: 🟢 COMPLETED  
 **Assigned**: Developer  
 **Priority**: P0
 
 **Description**: Создать экран теста с multiple choice questions
 
 **Acceptance Criteria**:
-- [ ] Test screen отображает вопросы
-- [ ] Можно выбрать ответ
-- [ ] Показывается правильный/неправильный ответ
-- [ ] Подсчитывается score
-- [ ] Показывается результат в конце
+- [X] Test screen отображает вопросы
+- [X] Можно выбрать ответ
+- [X] Показывается правильный/неправильный ответ
+- [X] Подсчитывается score
+- [X] Показывается результат в конце
 
 **Subtasks**:
-1. Создать `lib/features/assessment/presentation/assessment_page.dart`
-2. Создать question widget с изображениями
-3. Реализовать answer selection
-4. Добавить score tracking
-5. Создать results screen
+1. ✅ Создать `lib/features/assessment/presentation/assessment_page.dart`
+2. ✅ Создать question widget с изображениями
+3. ✅ Реализовать answer selection
+4. ✅ Добавить score tracking
+5. ✅ Создать results screen
 
 **Dependencies**: Task 2.1  
 **Estimate**: 6 hours

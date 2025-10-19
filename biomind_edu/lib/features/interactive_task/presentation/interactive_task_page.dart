@@ -374,6 +374,7 @@ class _InteractiveTaskPageState extends ConsumerState<InteractiveTaskPage> {
     Navigator.of(context).pushReplacementNamed(
       '/assessment',
       arguments: {
+        'testId': 'test_cell_knowledge', // Mock test ID
         'lessonId': widget.lessonId,
       },
     );
