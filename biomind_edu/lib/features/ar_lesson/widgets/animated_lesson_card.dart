@@ -3,6 +3,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../shared/models/lesson.dart';
 import '../../../core/services/local_storage_service.dart';
 import '../../rewards/domain/reward_service.dart';
+import '../../../l10n/l10n_helpers.dart';
+import '../../../shared/providers/newly_unlocked_provider.dart';
 
 /// Enhanced animated lesson card with progress indicators
 class AnimatedLessonCard extends ConsumerStatefulWidget {
@@ -34,10 +36,13 @@ class AnimatedLessonCard extends ConsumerStatefulWidget {
 }
 
 class _AnimatedLessonCardState extends ConsumerState<AnimatedLessonCard>
-    with SingleTickerProviderStateMixin {
+    with TickerProviderStateMixin {
   late AnimationController _controller;
   late Animation<double> _scaleAnimation;
   late Animation<Offset> _slideAnimation;
+  
+  late AnimationController _shimmerController;
+  late Animation<double> _shimmerAnimation;
 
   @override
   void initState() {
@@ -58,6 +63,20 @@ class _AnimatedLessonCardState extends ConsumerState<AnimatedLessonCard>
       end: Offset.zero,
     ).animate(CurvedAnimation(parent: _controller, curve: Curves.easeOut));
 
+    // Shimmer animation for newly unlocked lessons (smooth gradient flow)
+    _shimmerController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 2000),
+    );
+
+    _shimmerAnimation = Tween<double>(
+      begin: -2.0,
+      end: 2.0,
+    ).animate(CurvedAnimation(
+      parent: _shimmerController,
+      curve: Curves.easeInOut,
+    ));
+
     // Start entrance animation
     _controller.forward();
   }
@@ -65,6 +84,7 @@ class _AnimatedLessonCardState extends ConsumerState<AnimatedLessonCard>
   @override
   void dispose() {
     _controller.dispose();
+    _shimmerController.dispose();
     super.dispose();
   }
 
@@ -74,6 +94,18 @@ class _AnimatedLessonCardState extends ConsumerState<AnimatedLessonCard>
     final storage = LocalStorageService();
     final progress = storage.getProgress(widget.lessonId);
     final rewardService = ref.watch(rewardServiceProvider);
+    final newlyUnlockedLessons = ref.watch(newlyUnlockedProvider);
+
+    // Check if this lesson is newly unlocked
+    final isNewlyUnlocked = newlyUnlockedLessons.contains(widget.lessonId);
+    
+    // Start shimmer animation if newly unlocked
+    if (isNewlyUnlocked && !_shimmerController.isAnimating) {
+      _shimmerController.repeat();
+    } else if (!isNewlyUnlocked && _shimmerController.isAnimating) {
+      _shimmerController.stop();
+      _shimmerController.reset();
+    }
 
     // Check if lesson has unlocked rewards (safely handle uninitialized service)
     bool hasReward = false;
@@ -110,13 +142,15 @@ class _AnimatedLessonCardState extends ConsumerState<AnimatedLessonCard>
         child: Hero(
           tag: 'lesson_${widget.lessonId}',
           child: Card(
-            elevation: widget.isLocked ? 1 : 4,
+            elevation: widget.isLocked ? 1 : (isNewlyUnlocked ? 6 : 4),
             clipBehavior: Clip.antiAlias,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(16),
-              side: isCompleted
+              side: isNewlyUnlocked
                   ? BorderSide(color: Colors.green, width: 2)
-                  : BorderSide.none,
+                  : isCompleted
+                      ? BorderSide(color: Colors.green, width: 2)
+                      : BorderSide.none,
             ),
             child: InkWell(
               onTap: widget.isLocked ? null : widget.onTap,
@@ -151,6 +185,36 @@ class _AnimatedLessonCardState extends ConsumerState<AnimatedLessonCard>
                                   : _buildPlaceholder(),
                             ),
 
+                            // Shimmer overlay for newly unlocked lessons
+                            if (isNewlyUnlocked && !widget.isLocked)
+                              AnimatedBuilder(
+                                animation: _shimmerAnimation,
+                                builder: (context, child) {
+                                  return Container(
+                                    decoration: BoxDecoration(
+                                      gradient: LinearGradient(
+                                        begin: Alignment.topLeft,
+                                        end: Alignment.bottomRight,
+                                        stops: [
+                                          0.0,
+                                          (_shimmerAnimation.value - 0.3).clamp(0.0, 1.0),
+                                          _shimmerAnimation.value.clamp(0.0, 1.0),
+                                          (_shimmerAnimation.value + 0.3).clamp(0.0, 1.0),
+                                          1.0,
+                                        ],
+                                        colors: [
+                                          Colors.transparent,
+                                          Colors.transparent,
+                                          Colors.green.withOpacity(0.3),
+                                          Colors.transparent,
+                                          Colors.transparent,
+                                        ],
+                                      ),
+                                    ),
+                                  );
+                                },
+                              ),
+
                             // Locked overlay
                             if (widget.isLocked)
                               Container(
@@ -164,8 +228,51 @@ class _AnimatedLessonCardState extends ConsumerState<AnimatedLessonCard>
                                 ),
                               ),
 
+                            // NEW! Badge for newly unlocked lessons
+                            if (isNewlyUnlocked && !widget.isLocked)
+                              Positioned(
+                                top: 8,
+                                left: 8,
+                                child: Container(
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 12,
+                                    vertical: 6,
+                                  ),
+                                  decoration: BoxDecoration(
+                                    color: Colors.green,
+                                    borderRadius: BorderRadius.circular(12),
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.green.withOpacity(0.5),
+                                        blurRadius: 8,
+                                        spreadRadius: 2,
+                                      ),
+                                    ],
+                                  ),
+                                  child: const Row(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      Icon(
+                                        Icons.new_releases,
+                                        color: Colors.white,
+                                        size: 16,
+                                      ),
+                                      SizedBox(width: 4),
+                                      Text(
+                                        'NEW!',
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 12,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+
                             // Completion badge
-                            if (isCompleted && !widget.isLocked)
+                            if (isCompleted && !widget.isLocked && !isNewlyUnlocked)
                               Positioned(
                                 top: 8,
                                 right: 8,
@@ -279,24 +386,11 @@ class _AnimatedLessonCardState extends ConsumerState<AnimatedLessonCard>
   }
 
   String _getLocalizedTitle() {
-    // TODO: Implement proper localization
-    final parts = widget.titleKey.split('.');
-    final title = parts.isNotEmpty ? parts.last : widget.titleKey;
-    return title
-        .replaceAll('_', ' ')
-        .split(' ')
-        .map((word) {
-          if (word.isEmpty) return word;
-          return word[0].toUpperCase() + word.substring(1).toLowerCase();
-        })
-        .join(' ');
+    return localizeKey(context, widget.titleKey);
   }
 
   String _getLocalizedDescription() {
-    // TODO: Implement proper localization
-    final parts = widget.descriptionKey.split('.');
-    final desc = parts.isNotEmpty ? parts.last : widget.descriptionKey;
-    return desc.replaceAll('_', ' ');
+    return localizeKey(context, widget.descriptionKey);
   }
 
   Widget _buildPlaceholder() {
