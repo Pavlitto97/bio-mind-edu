@@ -4,6 +4,7 @@ import '../../../shared/models/lesson.dart';
 import '../../../shared/providers/lessons_provider.dart';
 import '../../../shared/providers/audio_provider.dart';
 import '../../../core/services/ar_manager.dart';
+import '../../../core/services/audio_service.dart';
 import '../widgets/ar_view_widget.dart';
 import '../widgets/lesson_controls_overlay.dart';
 import '../widgets/annotation_markers.dart';
@@ -29,7 +30,6 @@ class _ARLessonPageState extends ConsumerState<ARLessonPage> {
   bool _isLoading = true;
   String? _errorMessage;
   bool _isArSupported = false;
-  LessonAnnotation? _selectedAnnotation;
 
   @override
   void initState() {
@@ -83,8 +83,13 @@ class _ARLessonPageState extends ConsumerState<ARLessonPage> {
     final arManager = ARManager();
     arManager.dispose();
 
-    // Stop any playing audio
-    ref.read(audioNotifierProvider.notifier).stopAll();
+    // Stop any playing audio without touching Riverpod ref during dispose
+    // Using the singleton AudioService directly avoids "ref after dispose" issues
+    try {
+      AudioService().stopAll();
+    } catch (_) {
+      // no-op: app is closing this page, ignore cleanup errors
+    }
 
     super.dispose();
   }
@@ -303,11 +308,6 @@ class _ARLessonPageState extends ConsumerState<ARLessonPage> {
         .read(lessonSessionProvider(widget.lessonId).notifier)
         .addViewedAnnotation(annotation.id);
 
-    // Show annotation popup
-    setState(() {
-      _selectedAnnotation = annotation;
-    });
-
     // Show the popup as a modal overlay
     showDialog<void>(
       context: context,
@@ -317,11 +317,6 @@ class _ARLessonPageState extends ConsumerState<ARLessonPage> {
         annotation: annotation,
         onClose: () {
           Navigator.of(context).pop();
-          if (mounted) {
-            setState(() {
-              _selectedAnnotation = null;
-            });
-          }
         },
       ),
     );

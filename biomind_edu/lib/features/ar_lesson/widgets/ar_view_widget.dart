@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:model_viewer_plus/model_viewer_plus.dart';
 import '../../../shared/models/lesson.dart';
-import '../../../core/constants/app_constants.dart';
+import '../../../l10n/l10n_helpers.dart';
 
 /// AR View Widget - Displays 3D model in AR or fallback 3D viewer
 ///
@@ -149,22 +149,39 @@ class _ARViewWidgetState extends State<ARViewWidget> {
   }
 
   Widget _buildFallback3DView() {
-    // Build model path: assets/3d_models/{modelFileName}
-    final modelPath = '${ModelConstants.modelsPath}${widget.lesson.modelFileName}';
+    // Build model path from lesson's modelFileName
+    final modelPath = 'assets/3d_models/${widget.lesson.modelFileName}';
     
     return Stack(
       children: [
-        // 3D Model Viewer with model_viewer_plus
+        // 3D Model Viewer using model_viewer_plus
         ModelViewer(
           src: modelPath,
-          alt: '${widget.lesson.titleKey} 3D Model',
-          ar: false, // Disable AR for web fallback
+          alt: localizeKey(context, widget.lesson.titleKey),
+          ar: false, // Disable AR button in fallback mode
           autoRotate: true,
+          autoRotateDelay: 0,
+          rotationPerSecond: '30deg',
           cameraControls: true,
+          touchAction: TouchAction.panY,
+          disableZoom: false,
           backgroundColor: const Color(0xFF1A1A1A),
           loading: Loading.eager,
-          cameraOrbit: 'auto auto auto',
+          reveal: Reveal.auto,
+          // Lighting
+          shadowIntensity: 0.7,
+          shadowSoftness: 0.5,
+          exposure: 1.0,
+          // Camera position
+          cameraOrbit: 'auto auto 3m',
+          minCameraOrbit: 'auto auto 2m',
+          maxCameraOrbit: 'auto auto 10m',
+          // Field of view
           fieldOfView: '45deg',
+          minFieldOfView: '25deg',
+          maxFieldOfView: '75deg',
+          // Interaction
+          interpolationDecay: 200,
         ),
 
         // Touch gesture hint
