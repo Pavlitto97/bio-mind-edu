@@ -8,8 +8,8 @@ class SampleLessonData {
   /// Cell Lesson - Learn about cell structure
   static Lesson get cellLesson => const Lesson(
         id: 'lesson_cell',
-        titleKey: 'lessons.cell.title',
-        descriptionKey: 'lessons.cell.description',
+        titleKey: 'lessonsCellTitle',
+        descriptionKey: 'lessonsCellDescription',
         difficulty: LessonDifficulty.beginner,
         modelFileName: 'cell_model.glb',
         voiceFiles: {
@@ -33,38 +33,39 @@ class SampleLessonData {
         annotations: [
           LessonAnnotation(
             id: 'annotation_nucleus',
-            nameKey: 'lessons.cell.parts.nucleus',
-            descriptionKey: 'lessons.cell.parts.nucleus_description',
+            nameKey: 'lessonsCellPartsNucleus',
+            descriptionKey: 'lessonsCellPartsNucleusDescription',
             modelPartId: 'nucleus_mesh',
             voiceFile: 'cell_nucleus_explanation.mp3',
             position: [0, 0.5, 0],
           ),
           LessonAnnotation(
             id: 'annotation_membrane',
-            nameKey: 'lessons.cell.parts.membrane',
-            descriptionKey: 'lessons.cell.parts.membrane_description',
+            nameKey: 'lessonsCellPartsMembrane',
+            descriptionKey: 'lessonsCellPartsMembraneDescription',
             modelPartId: 'membrane_mesh',
             voiceFile: 'cell_membrane_explanation.mp3',
             position: [0.3, 0, 0.3],
           ),
           LessonAnnotation(
             id: 'annotation_mitochondria',
-            nameKey: 'lessons.cell.parts.mitochondria',
-            descriptionKey: 'lessons.cell.parts.mitochondria_description',
+            nameKey: 'lessonsCellPartsMitochondria',
+            descriptionKey: 'lessonsCellPartsMitochondriaDescription',
             modelPartId: 'mitochondria_mesh',
             voiceFile: 'cell_mitochondria_explanation.mp3',
             position: [-0.2, 0.2, 0.1],
           ),
           LessonAnnotation(
             id: 'annotation_cytoplasm',
-            nameKey: 'lessons.cell.parts.cytoplasm',
-            descriptionKey: 'lessons.cell.parts.cytoplasm_description',
+            nameKey: 'lessonsCellPartsCytoplasm',
+            descriptionKey: 'lessonsCellPartsCytoplasmDescription',
             modelPartId: 'cytoplasm_mesh',
             voiceFile: 'cell_cytoplasm_explanation.mp3',
             position: [0.1, -0.3, -0.2],
           ),
         ],
-        thumbnailPath: 'assets/images/cell_thumbnail.png',
+  // Updated preview image for the first lesson
+  thumbnailPath: 'assets/images/cell_thumbnail.png',
         isLocked: false,
         status: LessonStatus.notStarted,
       );
@@ -72,8 +73,8 @@ class SampleLessonData {
   /// Plant Lesson - Learn about plant structure (LOCKED - requires cell lesson)
   static Lesson get plantLesson => const Lesson(
         id: 'lesson_plant',
-        titleKey: 'lessons.plant.title',
-        descriptionKey: 'lessons.plant.description',
+        titleKey: 'lessonsPlantTitle',
+        descriptionKey: 'lessonsPlantDescription',
         difficulty: LessonDifficulty.beginner,
         modelFileName: 'plant_model.glb',
         voiceFiles: {
@@ -97,24 +98,24 @@ class SampleLessonData {
         annotations: [
           LessonAnnotation(
             id: 'annotation_roots',
-            nameKey: 'lessons.plant.parts.roots',
-            descriptionKey: 'lessons.plant.parts.roots_description',
+            nameKey: 'lessonsPlantPartsRoots',
+            descriptionKey: 'lessonsPlantPartsRootsDescription',
             modelPartId: 'roots_mesh',
             voiceFile: 'plant_roots_explanation.mp3',
             position: [0, -0.8, 0],
           ),
           LessonAnnotation(
             id: 'annotation_stem',
-            nameKey: 'lessons.plant.parts.stem',
-            descriptionKey: 'lessons.plant.parts.stem_description',
+            nameKey: 'lessonsPlantPartsStem',
+            descriptionKey: 'lessonsPlantPartsStemDescription',
             modelPartId: 'stem_mesh',
             voiceFile: 'plant_stem_explanation.mp3',
             position: [0, 0, 0],
           ),
           LessonAnnotation(
             id: 'annotation_leaves',
-            nameKey: 'lessons.plant.parts.leaves',
-            descriptionKey: 'lessons.plant.parts.leaves_description',
+            nameKey: 'lessonsPlantPartsLeaves',
+            descriptionKey: 'lessonsPlantPartsLeavesDescription',
             modelPartId: 'leaves_mesh',
             voiceFile: 'plant_leaves_explanation.mp3',
             position: [0.3, 0.5, 0.2],
@@ -128,8 +129,8 @@ class SampleLessonData {
   /// Heart Lesson - Learn about heart structure (LOCKED - requires plant lesson)
   static Lesson get heartLesson => const Lesson(
         id: 'lesson_heart',
-        titleKey: 'lessons.heart.title',
-        descriptionKey: 'lessons.heart.description',
+        titleKey: 'lessonsHeartTitle',
+        descriptionKey: 'lessonsHeartDescription',
         difficulty: LessonDifficulty.intermediate,
         modelFileName: 'heart_model.glb',
         voiceFiles: {
@@ -153,32 +154,32 @@ class SampleLessonData {
         annotations: [
           LessonAnnotation(
             id: 'annotation_left_atrium',
-            nameKey: 'lessons.heart.parts.left_atrium',
-            descriptionKey: 'lessons.heart.parts.left_atrium_description',
+            nameKey: 'lessonsHeartPartsLeftAtrium',
+            descriptionKey: 'lessonsHeartPartsLeftAtriumDescription',
             modelPartId: 'left_atrium_mesh',
             voiceFile: 'heart_left_atrium_explanation.mp3',
             position: [-0.2, 0.3, 0.1],
           ),
           LessonAnnotation(
             id: 'annotation_left_ventricle',
-            nameKey: 'lessons.heart.parts.left_ventricle',
-            descriptionKey: 'lessons.heart.parts.left_ventricle_description',
+            nameKey: 'lessonsHeartPartsLeftVentricle',
+            descriptionKey: 'lessonsHeartPartsLeftVentricleDescription',
             modelPartId: 'left_ventricle_mesh',
             voiceFile: 'heart_left_ventricle_explanation.mp3',
             position: [-0.2, -0.2, 0.1],
           ),
           LessonAnnotation(
             id: 'annotation_right_atrium',
-            nameKey: 'lessons.heart.parts.right_atrium',
-            descriptionKey: 'lessons.heart.parts.right_atrium_description',
+            nameKey: 'lessonsHeartPartsRightAtrium',
+            descriptionKey: 'lessonsHeartPartsRightAtriumDescription',
             modelPartId: 'right_atrium_mesh',
             voiceFile: 'heart_right_atrium_explanation.mp3',
             position: [0.2, 0.3, 0.1],
           ),
           LessonAnnotation(
             id: 'annotation_right_ventricle',
-            nameKey: 'lessons.heart.parts.right_ventricle',
-            descriptionKey: 'lessons.heart.parts.right_ventricle_description',
+            nameKey: 'lessonsHeartPartsRightVentricle',
+            descriptionKey: 'lessonsHeartPartsRightVentricleDescription',
             modelPartId: 'right_ventricle_mesh',
             voiceFile: 'heart_right_ventricle_explanation.mp3',
             position: [0.2, -0.2, 0.1],
