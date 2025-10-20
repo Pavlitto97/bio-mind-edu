@@ -3,6 +3,10 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../shared/models/interactive_task.dart';
 import '../../../shared/providers/progress_provider.dart';
+import '../../../shared/providers/newly_unlocked_provider.dart';
+import '../../../shared/providers/lessons_provider.dart';
+import '../../../shared/data/sample_lesson_data.dart';
+import '../../../core/services/local_storage_service.dart';
 import '../widgets/draggable_task_item.dart';
 import '../widgets/drop_target_zone.dart';
 import 'dart:async';
@@ -193,7 +197,12 @@ class _InteractiveTaskPageState extends ConsumerState<InteractiveTaskPage> {
       if (_correctItems.length == _task!.items.length) {
         // Provide celebration haptic feedback for task completion
         HapticFeedback.heavyImpact();
-        _handleTaskComplete();
+        // Delay completion to allow user to see final placement
+        Future.delayed(const Duration(milliseconds: 800), () {
+          if (mounted) {
+            _handleTaskComplete();
+          }
+        });
       }
     } else {
       setState(() {
@@ -252,10 +261,10 @@ class _InteractiveTaskPageState extends ConsumerState<InteractiveTaskPage> {
       completedAt: DateTime.now(),
     );
 
-    // Save progress
+    // Save progress and unlock reward
     await _saveProgress(result);
 
-    // Show completion dialog
+    // Show completion dialog with achievement
     if (mounted) {
       _showCompletionDialog(result);
     }
@@ -294,6 +303,8 @@ class _InteractiveTaskPageState extends ConsumerState<InteractiveTaskPage> {
   }
 
   void _showCompletionDialog(TaskResult result) {
+    final stars = _calculateStars(result);
+    
     showDialog<void>(
       context: context,
       barrierDismissible: false,
@@ -315,7 +326,6 @@ class _InteractiveTaskPageState extends ConsumerState<InteractiveTaskPage> {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: List.generate(3, (index) {
-                final stars = _calculateStars(result);
                 return Icon(
                   index < stars ? Icons.star : Icons.star_border,
                   color: Colors.amber,
@@ -323,6 +333,36 @@ class _InteractiveTaskPageState extends ConsumerState<InteractiveTaskPage> {
                 );
               }),
             ),
+            if (result.isPassed) ...[
+              const SizedBox(height: 24),
+              Container(
+                padding: const EdgeInsets.all(12),
+                decoration: BoxDecoration(
+                  color: Colors.green.shade50,
+                  borderRadius: BorderRadius.circular(12),
+                  border: Border.all(color: Colors.green, width: 2),
+                ),
+                child: Column(
+                  children: [
+                    const Icon(Icons.emoji_events, color: Colors.amber, size: 48),
+                    const SizedBox(height: 8),
+                    const Text(
+                      '🏆 Achievement Unlocked!',
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.green,
+                      ),
+                    ),
+                    const SizedBox(height: 4),
+                    Text(
+                      'Next lesson unlocked!',
+                      style: TextStyle(fontSize: 14, color: Colors.grey.shade700),
+                    ),
+                  ],
+                ),
+              ),
+            ],
           ],
         ),
         actions: [
@@ -337,9 +377,12 @@ class _InteractiveTaskPageState extends ConsumerState<InteractiveTaskPage> {
           ElevatedButton(
             onPressed: () {
               Navigator.of(context).pop();
-              _navigateToAssessment();
+              _navigateBack();
             },
-            child: const Text('Continue', style: TextStyle(fontSize: 18)),
+            child: Text(
+              result.isPassed ? 'Continue' : 'Go Back',
+              style: const TextStyle(fontSize: 18),
+            ),
           ),
         ],
       ),
@@ -388,15 +431,41 @@ class _InteractiveTaskPageState extends ConsumerState<InteractiveTaskPage> {
     });
   }
 
-  void _navigateToAssessment() {
-    // Navigate to assessment screen
-    Navigator.of(context).pushReplacementNamed(
-      '/assessment',
-      arguments: {
-        'testId': 'test_cell_knowledge', // Mock test ID
-        'lessonId': widget.lessonId,
-      },
-    );
+  void _navigateBack() {
+    // Mark next lesson as newly unlocked for highlighting
+    _markNextLessonAsUnlocked();
+    
+    // Log current lesson progress to verify it was saved
+    final storage = LocalStorageService();
+    final progress = storage.getProgress(widget.lessonId);
+    debugPrint('🔍 Checking progress before navigation:');
+    debugPrint('  Lesson ID: ${widget.lessonId}');
+    debugPrint('  Task Completed: ${progress?.taskCompleted}');
+    debugPrint('  Status: ${progress?.status}');
+    
+    // Invalidate lessons provider to refresh unlock status
+    ref.invalidate(lessonsProvider);
+    
+    // Return to the home screen (pop until we reach the lessons list)
+    Navigator.of(context).popUntil((route) => route.isFirst);
+  }
+
+  void _markNextLessonAsUnlocked() {
+    // Get all lessons
+    final lessons = [
+      SampleLessonData.cellLesson,
+      SampleLessonData.plantLesson,
+      SampleLessonData.heartLesson,
+    ];
+
+    // Find current lesson index
+    final currentIndex = lessons.indexWhere((l) => l.id == widget.lessonId);
+    
+    // If there's a next lesson, mark it as newly unlocked
+    if (currentIndex >= 0 && currentIndex < lessons.length - 1) {
+      final nextLesson = lessons[currentIndex + 1];
+      ref.read(newlyUnlockedProvider.notifier).markAsNewlyUnlocked(nextLesson.id);
+    }
   }
 
   @override
@@ -568,19 +637,49 @@ class _InteractiveTaskPageState extends ConsumerState<InteractiveTaskPage> {
           final isCorrect = _correctItems.contains(item.id);
           final isIncorrect = _incorrectItems.contains(item.id);
 
-          if (isPlaced && !isIncorrect) {
+          // If correctly placed, show item in the target zone
+          if (isCorrect) {
+            final targetId = _userAnswers[item.id];
+            final target = _task!.targets.firstWhere((t) => t.id == targetId);
+            
+            return Positioned(
+              left: target.position[0],
+              top: target.position[1],
+              child: Opacity(
+                opacity: 0.9,
+                child: Container(
+                  width: 120,
+                  height: 120,
+                  alignment: Alignment.center,
+                  child: DraggableTaskItem(
+                    item: item,
+                    isCorrect: isCorrect,
+                    isIncorrect: false,
+                  ),
+                ),
+              ),
+            );
+          }
+
+          // If incorrectly placed, hide temporarily and show back at initial position
+          if (isIncorrect) {
             return const SizedBox.shrink();
           }
 
-          return Positioned(
-            left: item.initialPosition[0],
-            top: item.initialPosition[1],
-            child: DraggableTaskItem(
-              item: item,
-              isCorrect: isCorrect,
-              isIncorrect: isIncorrect,
-            ),
-          );
+          // Show item at initial position if not placed or if placement was wrong
+          if (!isPlaced || isIncorrect) {
+            return Positioned(
+              left: item.initialPosition[0],
+              top: item.initialPosition[1],
+              child: DraggableTaskItem(
+                item: item,
+                isCorrect: false,
+                isIncorrect: isIncorrect,
+              ),
+            );
+          }
+
+          return const SizedBox.shrink();
         }),
       ],
     );
