@@ -8,11 +8,35 @@ final localStorageServiceProvider = Provider<LocalStorageService>((ref) {
   return LocalStorageService();
 });
 
-/// Provider для получения всех уроков
-/// WEB MODE: Loading directly from SampleLessonData instead of Hive storage
+/// Provider для получения всех уроков с проверкой unlock статуса
+/// WEB MODE: Loading directly from SampleLessonData and checking progress
 final lessonsProvider = FutureProvider<List<Lesson>>((ref) async {
-  // For web demo - return sample data directly
-  return SampleLessonData.allLessons;
+  final storage = ref.watch(localStorageServiceProvider);
+  final allLessons = SampleLessonData.allLessons;
+  
+  // Check each lesson's prerequisites and update lock status
+  final updatedLessons = <Lesson>[];
+  
+  for (final lesson in allLessons) {
+    bool shouldLock = false;
+    
+    // Check if all prerequisites are completed
+    if (lesson.prerequisites.isNotEmpty) {
+      for (final prereqId in lesson.prerequisites) {
+        final progress = storage.getProgress(prereqId);
+        // Lock if prerequisite is not completed (task not done)
+        if (progress == null || !progress.taskCompleted) {
+          shouldLock = true;
+          break;
+        }
+      }
+    }
+    
+    // Create updated lesson with correct lock status
+    updatedLessons.add(lesson.copyWith(isLocked: shouldLock));
+  }
+  
+  return updatedLessons;
 });
 
 /// Provider для получения конкретного урока по ID
