@@ -28,9 +28,9 @@ class BioMindEduApp extends ConsumerWidget {
         GlobalCupertinoLocalizations.delegate,
       ],
       supportedLocales: const [
-        Locale('en'), // English
-        Locale('uk'), // Ukrainian
+        Locale('en'), // English only
       ],
+      locale: const Locale('en'), // Force English
 
       theme: AppTheme.lightTheme,
       home: const LessonsListPage(),

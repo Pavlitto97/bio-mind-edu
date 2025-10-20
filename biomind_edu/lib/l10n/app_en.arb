@@ -375,5 +375,182 @@
   "errorLoadingResults": "Error loading results",
   "@errorLoadingResults": {
     "description": "Error message for results loading"
+  },
+  
+  "lessonsCellTitle": "Cell Structure",
+  "@lessonsCellTitle": {
+    "description": "Title for cell lesson"
+  },
+  
+  "lessonsCellDescription": "Let's explore the tiny building blocks of life! Discover what's inside a cell.",
+  "@lessonsCellDescription": {
+    "description": "Description for cell lesson"
+  },
+  
+  "lessonsCellPartsNucleus": "Nucleus",
+  "@lessonsCellPartsNucleus": {
+    "description": "Cell part: nucleus"
+  },
+  
+  "lessonsCellPartsNucleusDescription": "🧠 The Brain of the Cell\nThe nucleus is like the control center! It tells the cell what to do and stores all the important instructions (DNA).",
+  "@lessonsCellPartsNucleusDescription": {
+    "description": "Description of nucleus for kids"
+  },
+  
+  "lessonsCellPartsMembrane": "Cell Membrane",
+  "@lessonsCellPartsMembrane": {
+    "description": "Cell part: membrane"
+  },
+  
+  "lessonsCellPartsMembraneDescription": "🛡️ The Protective Wall\nThe membrane is like a bouncer at a club! It decides what goes in and out of the cell to keep it safe.",
+  "@lessonsCellPartsMembraneDescription": {
+    "description": "Description of membrane for kids"
+  },
+  
+  "lessonsCellPartsMitochondria": "Mitochondria",
+  "@lessonsCellPartsMitochondria": {
+    "description": "Cell part: mitochondria"
+  },
+  
+  "lessonsCellPartsMitochondriaDescription": "⚡ The Power Plant\nMitochondria are like tiny batteries! They make energy so the cell can work and stay alive.",
+  "@lessonsCellPartsMitochondriaDescription": {
+    "description": "Description of mitochondria for kids"
+  },
+  
+  "lessonsCellPartsCytoplasm": "Cytoplasm",
+  "@lessonsCellPartsCytoplasm": {
+    "description": "Cell part: cytoplasm"
+  },
+  
+  "lessonsCellPartsCytoplasmDescription": "🌊 The Jelly Inside\nCytoplasm is like jelly that fills the cell! All the other parts float around in it.",
+  "@lessonsCellPartsCytoplasmDescription": {
+    "description": "Description of cytoplasm for kids"
+  },
+
+  "lessonsCellObjectivesTitle": "What you'll learn",
+  "@lessonsCellObjectivesTitle": {
+    "description": "Section title for lesson objectives"
+  },
+  "lessonsCellObjective1": "What a cell is and why it's important",
+  "@lessonsCellObjective1": {
+    "description": "First objective for the cell lesson"
+  },
+  "lessonsCellObjective2": "Meet the nucleus, membrane, mitochondria, and cytoplasm",
+  "@lessonsCellObjective2": {
+    "description": "Second objective for the cell lesson"
+  },
+  "lessonsCellObjective3": "How each part helps the cell do its job",
+  "@lessonsCellObjective3": {
+    "description": "Third objective for the cell lesson"
+  },
+  "lessonsCellStepsTitle": "Lesson steps",
+  "@lessonsCellStepsTitle": {
+    "description": "Section title for lesson steps"
+  },
+  "lessonsCellStep1": "Look at the 3D cell and rotate it",
+  "@lessonsCellStep1": {
+    "description": "First step for the cell lesson"
+  },
+  "lessonsCellStep2": "Tap each glowing dot to learn about that part",
+  "@lessonsCellStep2": {
+    "description": "Second step for the cell lesson"
+  },
+  "lessonsCellStep3": "Complete the mini-game: match parts to names",
+  "@lessonsCellStep3": {
+    "description": "Third step for the cell lesson"
+  },
+  "lessonsCellStep4": "Take a tiny quiz to earn your sticker!",
+  "@lessonsCellStep4": {
+    "description": "Fourth step for the cell lesson"
+  },
+  
+  "lessonsPlantTitle": "Plant Life",
+  "@lessonsPlantTitle": {
+    "description": "Title for plant lesson"
+  },
+  
+  "lessonsPlantDescription": "How do plants grow? Let's discover the amazing parts that help plants live and grow!",
+  "@lessonsPlantDescription": {
+    "description": "Description for plant lesson"
+  },
+  
+  "lessonsPlantPartsRoots": "Roots",
+  "@lessonsPlantPartsRoots": {
+    "description": "Plant part: roots"
+  },
+  
+  "lessonsPlantPartsRootsDescription": "🌱 Underground Helpers\nRoots drink water from the soil and hold the plant in place, like an anchor!",
+  "@lessonsPlantPartsRootsDescription": {
+    "description": "Description of roots for kids"
+  },
+  
+  "lessonsPlantPartsStem": "Stem",
+  "@lessonsPlantPartsStem": {
+    "description": "Plant part: stem"
+  },
+  
+  "lessonsPlantPartsStemDescription": "🎋 The Highway\nThe stem is like a straw! It carries water and food between the roots and leaves.",
+  "@lessonsPlantPartsStemDescription": {
+    "description": "Description of stem for kids"
+  },
+  
+  "lessonsPlantPartsLeaves": "Leaves",
+  "@lessonsPlantPartsLeaves": {
+    "description": "Plant part: leaves"
+  },
+  
+  "lessonsPlantPartsLeavesDescription": "🍃 The Food Factory\nLeaves use sunlight to make food for the plant! This is called photosynthesis.",
+  "@lessonsPlantPartsLeavesDescription": {
+    "description": "Description of leaves for kids"
+  },
+  
+  "lessonsHeartTitle": "Human Heart",
+  "@lessonsHeartTitle": {
+    "description": "Title for heart lesson"
+  },
+  
+  "lessonsHeartDescription": "Your heart is an amazing pump! Let's see how it sends blood all around your body.",
+  "@lessonsHeartDescription": {
+    "description": "Description for heart lesson"
+  },
+  
+  "lessonsHeartPartsLeftAtrium": "Left Atrium",
+  "@lessonsHeartPartsLeftAtrium": {
+    "description": "Heart part: left atrium"
+  },
+  
+  "lessonsHeartPartsLeftAtriumDescription": "📥 Top Left Chamber\nThis room receives fresh oxygen-rich blood from the lungs!",
+  "@lessonsHeartPartsLeftAtriumDescription": {
+    "description": "Description of left atrium for kids"
+  },
+  
+  "lessonsHeartPartsLeftVentricle": "Left Ventricle",
+  "@lessonsHeartPartsLeftVentricle": {
+    "description": "Heart part: left ventricle"
+  },
+  
+  "lessonsHeartPartsLeftVentricleDescription": "💪 Strong Pump\nThe strongest part! It pumps blood to your whole body.",
+  "@lessonsHeartPartsLeftVentricleDescription": {
+    "description": "Description of left ventricle for kids"
+  },
+  
+  "lessonsHeartPartsRightAtrium": "Right Atrium",
+  "@lessonsHeartPartsRightAtrium": {
+    "description": "Heart part: right atrium"
+  },
+  
+  "lessonsHeartPartsRightAtriumDescription": "📥 Top Right Chamber\nThis room receives blood that needs fresh oxygen from your body.",
+  "@lessonsHeartPartsRightAtriumDescription": {
+    "description": "Description of right atrium for kids"
+  },
+  
+  "lessonsHeartPartsRightVentricle": "Right Ventricle",
+  "@lessonsHeartPartsRightVentricle": {
+    "description": "Heart part: right ventricle"
+  },
+  
+  "lessonsHeartPartsRightVentricleDescription": "🫁 Lung Pump\nThis pumps blood to your lungs to get fresh oxygen!",
+  "@lessonsHeartPartsRightVentricleDescription": {
+    "description": "Description of right ventricle for kids"
   }
 }

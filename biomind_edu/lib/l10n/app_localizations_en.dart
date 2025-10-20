@@ -221,4 +221,131 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get errorLoadingResults => 'Error loading results';
+
+  @override
+  String get lessonsCellTitle => 'Cell Structure';
+
+  @override
+  String get lessonsCellDescription =>
+      'Let\'s explore the tiny building blocks of life! Discover what\'s inside a cell.';
+
+  @override
+  String get lessonsCellPartsNucleus => 'Nucleus';
+
+  @override
+  String get lessonsCellPartsNucleusDescription =>
+      '🧠 The Brain of the Cell\nThe nucleus is like the control center! It tells the cell what to do and stores all the important instructions (DNA).';
+
+  @override
+  String get lessonsCellPartsMembrane => 'Cell Membrane';
+
+  @override
+  String get lessonsCellPartsMembraneDescription =>
+      '🛡️ The Protective Wall\nThe membrane is like a bouncer at a club! It decides what goes in and out of the cell to keep it safe.';
+
+  @override
+  String get lessonsCellPartsMitochondria => 'Mitochondria';
+
+  @override
+  String get lessonsCellPartsMitochondriaDescription =>
+      '⚡ The Power Plant\nMitochondria are like tiny batteries! They make energy so the cell can work and stay alive.';
+
+  @override
+  String get lessonsCellPartsCytoplasm => 'Cytoplasm';
+
+  @override
+  String get lessonsCellPartsCytoplasmDescription =>
+      '🌊 The Jelly Inside\nCytoplasm is like jelly that fills the cell! All the other parts float around in it.';
+
+  @override
+  String get lessonsCellObjectivesTitle => 'What you\'ll learn';
+
+  @override
+  String get lessonsCellObjective1 => 'What a cell is and why it\'s important';
+
+  @override
+  String get lessonsCellObjective2 =>
+      'Meet the nucleus, membrane, mitochondria, and cytoplasm';
+
+  @override
+  String get lessonsCellObjective3 => 'How each part helps the cell do its job';
+
+  @override
+  String get lessonsCellStepsTitle => 'Lesson steps';
+
+  @override
+  String get lessonsCellStep1 => 'Look at the 3D cell and rotate it';
+
+  @override
+  String get lessonsCellStep2 =>
+      'Tap each glowing dot to learn about that part';
+
+  @override
+  String get lessonsCellStep3 => 'Complete the mini-game: match parts to names';
+
+  @override
+  String get lessonsCellStep4 => 'Take a tiny quiz to earn your sticker!';
+
+  @override
+  String get lessonsPlantTitle => 'Plant Life';
+
+  @override
+  String get lessonsPlantDescription =>
+      'How do plants grow? Let\'s discover the amazing parts that help plants live and grow!';
+
+  @override
+  String get lessonsPlantPartsRoots => 'Roots';
+
+  @override
+  String get lessonsPlantPartsRootsDescription =>
+      '🌱 Underground Helpers\nRoots drink water from the soil and hold the plant in place, like an anchor!';
+
+  @override
+  String get lessonsPlantPartsStem => 'Stem';
+
+  @override
+  String get lessonsPlantPartsStemDescription =>
+      '🎋 The Highway\nThe stem is like a straw! It carries water and food between the roots and leaves.';
+
+  @override
+  String get lessonsPlantPartsLeaves => 'Leaves';
+
+  @override
+  String get lessonsPlantPartsLeavesDescription =>
+      '🍃 The Food Factory\nLeaves use sunlight to make food for the plant! This is called photosynthesis.';
+
+  @override
+  String get lessonsHeartTitle => 'Human Heart';
+
+  @override
+  String get lessonsHeartDescription =>
+      'Your heart is an amazing pump! Let\'s see how it sends blood all around your body.';
+
+  @override
+  String get lessonsHeartPartsLeftAtrium => 'Left Atrium';
+
+  @override
+  String get lessonsHeartPartsLeftAtriumDescription =>
+      '📥 Top Left Chamber\nThis room receives fresh oxygen-rich blood from the lungs!';
+
+  @override
+  String get lessonsHeartPartsLeftVentricle => 'Left Ventricle';
+
+  @override
+  String get lessonsHeartPartsLeftVentricleDescription =>
+      '💪 Strong Pump\nThe strongest part! It pumps blood to your whole body.';
+
+  @override
+  String get lessonsHeartPartsRightAtrium => 'Right Atrium';
+
+  @override
+  String get lessonsHeartPartsRightAtriumDescription =>
+      '📥 Top Right Chamber\nThis room receives blood that needs fresh oxygen from your body.';
+
+  @override
+  String get lessonsHeartPartsRightVentricle => 'Right Ventricle';
+
+  @override
+  String get lessonsHeartPartsRightVentricleDescription =>
+      '🫁 Lung Pump\nThis pumps blood to your lungs to get fresh oxygen!';
 }

@@ -493,6 +493,228 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Error loading results'**
   String get errorLoadingResults;
+
+  /// Title for cell lesson
+  ///
+  /// In en, this message translates to:
+  /// **'Cell Structure'**
+  String get lessonsCellTitle;
+
+  /// Description for cell lesson
+  ///
+  /// In en, this message translates to:
+  /// **'Let\'s explore the tiny building blocks of life! Discover what\'s inside a cell.'**
+  String get lessonsCellDescription;
+
+  /// Cell part: nucleus
+  ///
+  /// In en, this message translates to:
+  /// **'Nucleus'**
+  String get lessonsCellPartsNucleus;
+
+  /// Description of nucleus for kids
+  ///
+  /// In en, this message translates to:
+  /// **'🧠 The Brain of the Cell\nThe nucleus is like the control center! It tells the cell what to do and stores all the important instructions (DNA).'**
+  String get lessonsCellPartsNucleusDescription;
+
+  /// Cell part: membrane
+  ///
+  /// In en, this message translates to:
+  /// **'Cell Membrane'**
+  String get lessonsCellPartsMembrane;
+
+  /// Description of membrane for kids
+  ///
+  /// In en, this message translates to:
+  /// **'🛡️ The Protective Wall\nThe membrane is like a bouncer at a club! It decides what goes in and out of the cell to keep it safe.'**
+  String get lessonsCellPartsMembraneDescription;
+
+  /// Cell part: mitochondria
+  ///
+  /// In en, this message translates to:
+  /// **'Mitochondria'**
+  String get lessonsCellPartsMitochondria;
+
+  /// Description of mitochondria for kids
+  ///
+  /// In en, this message translates to:
+  /// **'⚡ The Power Plant\nMitochondria are like tiny batteries! They make energy so the cell can work and stay alive.'**
+  String get lessonsCellPartsMitochondriaDescription;
+
+  /// Cell part: cytoplasm
+  ///
+  /// In en, this message translates to:
+  /// **'Cytoplasm'**
+  String get lessonsCellPartsCytoplasm;
+
+  /// Description of cytoplasm for kids
+  ///
+  /// In en, this message translates to:
+  /// **'🌊 The Jelly Inside\nCytoplasm is like jelly that fills the cell! All the other parts float around in it.'**
+  String get lessonsCellPartsCytoplasmDescription;
+
+  /// Section title for lesson objectives
+  ///
+  /// In en, this message translates to:
+  /// **'What you\'ll learn'**
+  String get lessonsCellObjectivesTitle;
+
+  /// First objective for the cell lesson
+  ///
+  /// In en, this message translates to:
+  /// **'What a cell is and why it\'s important'**
+  String get lessonsCellObjective1;
+
+  /// Second objective for the cell lesson
+  ///
+  /// In en, this message translates to:
+  /// **'Meet the nucleus, membrane, mitochondria, and cytoplasm'**
+  String get lessonsCellObjective2;
+
+  /// Third objective for the cell lesson
+  ///
+  /// In en, this message translates to:
+  /// **'How each part helps the cell do its job'**
+  String get lessonsCellObjective3;
+
+  /// Section title for lesson steps
+  ///
+  /// In en, this message translates to:
+  /// **'Lesson steps'**
+  String get lessonsCellStepsTitle;
+
+  /// First step for the cell lesson
+  ///
+  /// In en, this message translates to:
+  /// **'Look at the 3D cell and rotate it'**
+  String get lessonsCellStep1;
+
+  /// Second step for the cell lesson
+  ///
+  /// In en, this message translates to:
+  /// **'Tap each glowing dot to learn about that part'**
+  String get lessonsCellStep2;
+
+  /// Third step for the cell lesson
+  ///
+  /// In en, this message translates to:
+  /// **'Complete the mini-game: match parts to names'**
+  String get lessonsCellStep3;
+
+  /// Fourth step for the cell lesson
+  ///
+  /// In en, this message translates to:
+  /// **'Take a tiny quiz to earn your sticker!'**
+  String get lessonsCellStep4;
+
+  /// Title for plant lesson
+  ///
+  /// In en, this message translates to:
+  /// **'Plant Life'**
+  String get lessonsPlantTitle;
+
+  /// Description for plant lesson
+  ///
+  /// In en, this message translates to:
+  /// **'How do plants grow? Let\'s discover the amazing parts that help plants live and grow!'**
+  String get lessonsPlantDescription;
+
+  /// Plant part: roots
+  ///
+  /// In en, this message translates to:
+  /// **'Roots'**
+  String get lessonsPlantPartsRoots;
+
+  /// Description of roots for kids
+  ///
+  /// In en, this message translates to:
+  /// **'🌱 Underground Helpers\nRoots drink water from the soil and hold the plant in place, like an anchor!'**
+  String get lessonsPlantPartsRootsDescription;
+
+  /// Plant part: stem
+  ///
+  /// In en, this message translates to:
+  /// **'Stem'**
+  String get lessonsPlantPartsStem;
+
+  /// Description of stem for kids
+  ///
+  /// In en, this message translates to:
+  /// **'🎋 The Highway\nThe stem is like a straw! It carries water and food between the roots and leaves.'**
+  String get lessonsPlantPartsStemDescription;
+
+  /// Plant part: leaves
+  ///
+  /// In en, this message translates to:
+  /// **'Leaves'**
+  String get lessonsPlantPartsLeaves;
+
+  /// Description of leaves for kids
+  ///
+  /// In en, this message translates to:
+  /// **'🍃 The Food Factory\nLeaves use sunlight to make food for the plant! This is called photosynthesis.'**
+  String get lessonsPlantPartsLeavesDescription;
+
+  /// Title for heart lesson
+  ///
+  /// In en, this message translates to:
+  /// **'Human Heart'**
+  String get lessonsHeartTitle;
+
+  /// Description for heart lesson
+  ///
+  /// In en, this message translates to:
+  /// **'Your heart is an amazing pump! Let\'s see how it sends blood all around your body.'**
+  String get lessonsHeartDescription;
+
+  /// Heart part: left atrium
+  ///
+  /// In en, this message translates to:
+  /// **'Left Atrium'**
+  String get lessonsHeartPartsLeftAtrium;
+
+  /// Description of left atrium for kids
+  ///
+  /// In en, this message translates to:
+  /// **'📥 Top Left Chamber\nThis room receives fresh oxygen-rich blood from the lungs!'**
+  String get lessonsHeartPartsLeftAtriumDescription;
+
+  /// Heart part: left ventricle
+  ///
+  /// In en, this message translates to:
+  /// **'Left Ventricle'**
+  String get lessonsHeartPartsLeftVentricle;
+
+  /// Description of left ventricle for kids
+  ///
+  /// In en, this message translates to:
+  /// **'💪 Strong Pump\nThe strongest part! It pumps blood to your whole body.'**
+  String get lessonsHeartPartsLeftVentricleDescription;
+
+  /// Heart part: right atrium
+  ///
+  /// In en, this message translates to:
+  /// **'Right Atrium'**
+  String get lessonsHeartPartsRightAtrium;
+
+  /// Description of right atrium for kids
+  ///
+  /// In en, this message translates to:
+  /// **'📥 Top Right Chamber\nThis room receives blood that needs fresh oxygen from your body.'**
+  String get lessonsHeartPartsRightAtriumDescription;
+
+  /// Heart part: right ventricle
+  ///
+  /// In en, this message translates to:
+  /// **'Right Ventricle'**
+  String get lessonsHeartPartsRightVentricle;
+
+  /// Description of right ventricle for kids
+  ///
+  /// In en, this message translates to:
+  /// **'🫁 Lung Pump\nThis pumps blood to your lungs to get fresh oxygen!'**
+  String get lessonsHeartPartsRightVentricleDescription;
 }
 
 class _AppLocalizationsDelegate

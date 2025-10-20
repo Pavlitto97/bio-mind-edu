@@ -222,4 +222,132 @@ class AppLocalizationsUk extends AppLocalizations {
 
   @override
   String get errorLoadingResults => 'Помилка завантаження результатів';
+
+  @override
+  String get lessonsCellTitle => 'Будова Клітини';
+
+  @override
+  String get lessonsCellDescription =>
+      'Давай дослідимо крихітні будівельні блоки життя! Дізнайся, що всередині клітини.';
+
+  @override
+  String get lessonsCellPartsNucleus => 'Ядро';
+
+  @override
+  String get lessonsCellPartsNucleusDescription =>
+      '🧠 Мозок Клітини\nЯдро - це командний центр! Воно керує клітиною і зберігає всі важливі інструкції (ДНК).';
+
+  @override
+  String get lessonsCellPartsMembrane => 'Клітинна Мембрана';
+
+  @override
+  String get lessonsCellPartsMembraneDescription =>
+      '🛡️ Захисна Стіна\nМембрана - це як охоронець! Вона вирішує, що заходить і виходить з клітини, щоб тримати її в безпеці.';
+
+  @override
+  String get lessonsCellPartsMitochondria => 'Мітохондрії';
+
+  @override
+  String get lessonsCellPartsMitochondriaDescription =>
+      '⚡ Електростанція\nМітохондрії - це крихітні батарейки! Вони виробляють енергію, щоб клітина могла працювати.';
+
+  @override
+  String get lessonsCellPartsCytoplasm => 'Цитоплазма';
+
+  @override
+  String get lessonsCellPartsCytoplasmDescription =>
+      '🌊 Желе Всередині\nЦитоплазма - це як желе, що заповнює клітину! Всі інші частини плавають у ній.';
+
+  @override
+  String get lessonsCellObjectivesTitle => 'Чому ти навчишся';
+
+  @override
+  String get lessonsCellObjective1 => 'Що таке клітина і чому вона важлива';
+
+  @override
+  String get lessonsCellObjective2 =>
+      'Познайомишся з ядром, мембраною, мітохондріями та цитоплазмою';
+
+  @override
+  String get lessonsCellObjective3 =>
+      'Як кожна частина допомагає клітині працювати';
+
+  @override
+  String get lessonsCellStepsTitle => 'Кроки уроку';
+
+  @override
+  String get lessonsCellStep1 => 'Подивись на 3D-клітину та поверни її';
+
+  @override
+  String get lessonsCellStep2 =>
+      'Натисни на сяючі точки, щоб дізнатись про частини';
+
+  @override
+  String get lessonsCellStep3 => 'Виконай міні-гру: з\'єднай частини з назвами';
+
+  @override
+  String get lessonsCellStep4 => 'Пройди маленький тест і отримай наліпку!';
+
+  @override
+  String get lessonsPlantTitle => 'Життя Рослин';
+
+  @override
+  String get lessonsPlantDescription =>
+      'Як ростуть рослини? Давай відкриємо дивовижні частини, які допомагають рослинам жити!';
+
+  @override
+  String get lessonsPlantPartsRoots => 'Коріння';
+
+  @override
+  String get lessonsPlantPartsRootsDescription =>
+      '🌱 Підземні Помічники\nКоріння п\'є воду з землі і тримає рослину на місці, як якір!';
+
+  @override
+  String get lessonsPlantPartsStem => 'Стебло';
+
+  @override
+  String get lessonsPlantPartsStemDescription =>
+      '🎋 Дорога\nСтебло - це як трубочка! Воно переносить воду і їжу між корінням і листям.';
+
+  @override
+  String get lessonsPlantPartsLeaves => 'Листя';
+
+  @override
+  String get lessonsPlantPartsLeavesDescription =>
+      '🍃 Фабрика Їжі\nЛистя використовує сонячне світло, щоб зробити їжу для рослини! Це називається фотосинтез.';
+
+  @override
+  String get lessonsHeartTitle => 'Людське Серце';
+
+  @override
+  String get lessonsHeartDescription =>
+      'Твоє серце - це дивовижна помпа! Подивимось, як воно качає кров по всьому тілу.';
+
+  @override
+  String get lessonsHeartPartsLeftAtrium => 'Ліве Передсердя';
+
+  @override
+  String get lessonsHeartPartsLeftAtriumDescription =>
+      '📥 Верхня Ліва Камера\nЦя кімната отримує свіжу кров з киснем з легенів!';
+
+  @override
+  String get lessonsHeartPartsLeftVentricle => 'Лівий Шлуночок';
+
+  @override
+  String get lessonsHeartPartsLeftVentricleDescription =>
+      '💪 Сильна Помпа\nНайсильніша частина! Вона качає кров по всьому тілу.';
+
+  @override
+  String get lessonsHeartPartsRightAtrium => 'Праве Передсердя';
+
+  @override
+  String get lessonsHeartPartsRightAtriumDescription =>
+      '📥 Верхня Права Камера\nЦя кімната отримує кров, якій потрібен свіжий кисень з твого тіла.';
+
+  @override
+  String get lessonsHeartPartsRightVentricle => 'Правий Шлуночок';
+
+  @override
+  String get lessonsHeartPartsRightVentricleDescription =>
+      '🫁 Легенева Помпа\nВона качає кров до легенів, щоб отримати свіжий кисень!';
 }

@@ -148,5 +148,182 @@
   "errorLoadingResults": "Помилка завантаження результатів",
   "@errorLoadingResults": {
     "description": "Error message for results loading"
+  },
+  
+  "lessonsCellTitle": "Будова Клітини",
+  "@lessonsCellTitle": {
+    "description": "Title for cell lesson"
+  },
+  
+  "lessonsCellDescription": "Давай дослідимо крихітні будівельні блоки життя! Дізнайся, що всередині клітини.",
+  "@lessonsCellDescription": {
+    "description": "Description for cell lesson"
+  },
+  
+  "lessonsCellPartsNucleus": "Ядро",
+  "@lessonsCellPartsNucleus": {
+    "description": "Cell part: nucleus"
+  },
+  
+  "lessonsCellPartsNucleusDescription": "🧠 Мозок Клітини\nЯдро - це командний центр! Воно керує клітиною і зберігає всі важливі інструкції (ДНК).",
+  "@lessonsCellPartsNucleusDescription": {
+    "description": "Description of nucleus for kids"
+  },
+  
+  "lessonsCellPartsMembrane": "Клітинна Мембрана",
+  "@lessonsCellPartsMembrane": {
+    "description": "Cell part: membrane"
+  },
+  
+  "lessonsCellPartsMembraneDescription": "🛡️ Захисна Стіна\nМембрана - це як охоронець! Вона вирішує, що заходить і виходить з клітини, щоб тримати її в безпеці.",
+  "@lessonsCellPartsMembraneDescription": {
+    "description": "Description of membrane for kids"
+  },
+  
+  "lessonsCellPartsMitochondria": "Мітохондрії",
+  "@lessonsCellPartsMitochondria": {
+    "description": "Cell part: mitochondria"
+  },
+  
+  "lessonsCellPartsMitochondriaDescription": "⚡ Електростанція\nМітохондрії - це крихітні батарейки! Вони виробляють енергію, щоб клітина могла працювати.",
+  "@lessonsCellPartsMitochondriaDescription": {
+    "description": "Description of mitochondria for kids"
+  },
+  
+  "lessonsCellPartsCytoplasm": "Цитоплазма",
+  "@lessonsCellPartsCytoplasm": {
+    "description": "Cell part: cytoplasm"
+  },
+  
+  "lessonsCellPartsCytoplasmDescription": "🌊 Желе Всередині\nЦитоплазма - це як желе, що заповнює клітину! Всі інші частини плавають у ній.",
+  "@lessonsCellPartsCytoplasmDescription": {
+    "description": "Description of cytoplasm for kids"
+  },
+
+  "lessonsCellObjectivesTitle": "Чому ти навчишся",
+  "@lessonsCellObjectivesTitle": {
+    "description": "Section title for lesson objectives"
+  },
+  "lessonsCellObjective1": "Що таке клітина і чому вона важлива",
+  "@lessonsCellObjective1": {
+    "description": "First objective for the cell lesson"
+  },
+  "lessonsCellObjective2": "Познайомишся з ядром, мембраною, мітохондріями та цитоплазмою",
+  "@lessonsCellObjective2": {
+    "description": "Second objective for the cell lesson"
+  },
+  "lessonsCellObjective3": "Як кожна частина допомагає клітині працювати",
+  "@lessonsCellObjective3": {
+    "description": "Third objective for the cell lesson"
+  },
+  "lessonsCellStepsTitle": "Кроки уроку",
+  "@lessonsCellStepsTitle": {
+    "description": "Section title for lesson steps"
+  },
+  "lessonsCellStep1": "Подивись на 3D-клітину та поверни її",
+  "@lessonsCellStep1": {
+    "description": "First step for the cell lesson"
+  },
+  "lessonsCellStep2": "Натисни на сяючі точки, щоб дізнатись про частини",
+  "@lessonsCellStep2": {
+    "description": "Second step for the cell lesson"
+  },
+  "lessonsCellStep3": "Виконай міні-гру: з'єднай частини з назвами",
+  "@lessonsCellStep3": {
+    "description": "Third step for the cell lesson"
+  },
+  "lessonsCellStep4": "Пройди маленький тест і отримай наліпку!",
+  "@lessonsCellStep4": {
+    "description": "Fourth step for the cell lesson"
+  },
+  
+  "lessonsPlantTitle": "Життя Рослин",
+  "@lessonsPlantTitle": {
+    "description": "Title for plant lesson"
+  },
+  
+  "lessonsPlantDescription": "Як ростуть рослини? Давай відкриємо дивовижні частини, які допомагають рослинам жити!",
+  "@lessonsPlantDescription": {
+    "description": "Description for plant lesson"
+  },
+  
+  "lessonsPlantPartsRoots": "Коріння",
+  "@lessonsPlantPartsRoots": {
+    "description": "Plant part: roots"
+  },
+  
+  "lessonsPlantPartsRootsDescription": "🌱 Підземні Помічники\nКоріння п'є воду з землі і тримає рослину на місці, як якір!",
+  "@lessonsPlantPartsRootsDescription": {
+    "description": "Description of roots for kids"
+  },
+  
+  "lessonsPlantPartsStem": "Стебло",
+  "@lessonsPlantPartsStem": {
+    "description": "Plant part: stem"
+  },
+  
+  "lessonsPlantPartsStemDescription": "🎋 Дорога\nСтебло - це як трубочка! Воно переносить воду і їжу між корінням і листям.",
+  "@lessonsPlantPartsStemDescription": {
+    "description": "Description of stem for kids"
+  },
+  
+  "lessonsPlantPartsLeaves": "Листя",
+  "@lessonsPlantPartsLeaves": {
+    "description": "Plant part: leaves"
+  },
+  
+  "lessonsPlantPartsLeavesDescription": "🍃 Фабрика Їжі\nЛистя використовує сонячне світло, щоб зробити їжу для рослини! Це називається фотосинтез.",
+  "@lessonsPlantPartsLeavesDescription": {
+    "description": "Description of leaves for kids"
+  },
+  
+  "lessonsHeartTitle": "Людське Серце",
+  "@lessonsHeartTitle": {
+    "description": "Title for heart lesson"
+  },
+  
+  "lessonsHeartDescription": "Твоє серце - це дивовижна помпа! Подивимось, як воно качає кров по всьому тілу.",
+  "@lessonsHeartDescription": {
+    "description": "Description for heart lesson"
+  },
+  
+  "lessonsHeartPartsLeftAtrium": "Ліве Передсердя",
+  "@lessonsHeartPartsLeftAtrium": {
+    "description": "Heart part: left atrium"
+  },
+  
+  "lessonsHeartPartsLeftAtriumDescription": "📥 Верхня Ліва Камера\nЦя кімната отримує свіжу кров з киснем з легенів!",
+  "@lessonsHeartPartsLeftAtriumDescription": {
+    "description": "Description of left atrium for kids"
+  },
+  
+  "lessonsHeartPartsLeftVentricle": "Лівий Шлуночок",
+  "@lessonsHeartPartsLeftVentricle": {
+    "description": "Heart part: left ventricle"
+  },
+  
+  "lessonsHeartPartsLeftVentricleDescription": "💪 Сильна Помпа\nНайсильніша частина! Вона качає кров по всьому тілу.",
+  "@lessonsHeartPartsLeftVentricleDescription": {
+    "description": "Description of left ventricle for kids"
+  },
+  
+  "lessonsHeartPartsRightAtrium": "Праве Передсердя",
+  "@lessonsHeartPartsRightAtrium": {
+    "description": "Heart part: right atrium"
+  },
+  
+  "lessonsHeartPartsRightAtriumDescription": "📥 Верхня Права Камера\nЦя кімната отримує кров, якій потрібен свіжий кисень з твого тіла.",
+  "@lessonsHeartPartsRightAtriumDescription": {
+    "description": "Description of right atrium for kids"
+  },
+  
+  "lessonsHeartPartsRightVentricle": "Правий Шлуночок",
+  "@lessonsHeartPartsRightVentricle": {
+    "description": "Heart part: right ventricle"
+  },
+  
+  "lessonsHeartPartsRightVentricleDescription": "🫁 Легенева Помпа\nВона качає кров до легенів, щоб отримати свіжий кисень!",
+  "@lessonsHeartPartsRightVentricleDescription": {
+    "description": "Description of right ventricle for kids"
   }
 }
