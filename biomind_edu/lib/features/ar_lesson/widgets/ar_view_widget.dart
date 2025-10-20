@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:model_viewer_plus/model_viewer_plus.dart';
 import '../../../shared/models/lesson.dart';
+import '../../../core/constants/app_constants.dart';
 
 /// AR View Widget - Displays 3D model in AR or fallback 3D viewer
 ///
@@ -147,67 +149,22 @@ class _ARViewWidgetState extends State<ARViewWidget> {
   }
 
   Widget _buildFallback3DView() {
+    // Build model path: assets/3d_models/{modelFileName}
+    final modelPath = '${ModelConstants.modelsPath}${widget.lesson.modelFileName}';
+    
     return Stack(
       children: [
-        // 3D Model Viewer
-        // TODO: Integrate flutter_cube or model_viewer_plus
-        Container(
-          color: const Color(0xFF1A1A1A),
-          child: Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                // Placeholder for 3D model
-                Container(
-                  width: 250,
-                  height: 250,
-                  decoration: BoxDecoration(
-                    color: Colors.white.withOpacity(0.1),
-                    borderRadius: BorderRadius.circular(16),
-                    border: Border.all(
-                      color: Colors.white.withOpacity(0.2),
-                      width: 2,
-                    ),
-                  ),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Icon(
-                        Icons.view_in_ar,
-                        size: 80,
-                        color: Colors.white.withOpacity(0.5),
-                      ),
-                      const SizedBox(height: 16),
-                      Text(
-                        widget.lesson.titleKey.split('.').last.toUpperCase(),
-                        style: TextStyle(
-                          color: Colors.white.withOpacity(0.7),
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      const SizedBox(height: 8),
-                      Text(
-                        '3D Model',
-                        style: TextStyle(
-                          color: Colors.white.withOpacity(0.5),
-                          fontSize: 14,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                const SizedBox(height: 32),
-                Text(
-                  'AR not supported on this device',
-                  style: TextStyle(
-                    color: Colors.white.withOpacity(0.7),
-                    fontSize: 16,
-                  ),
-                ),
-              ],
-            ),
-          ),
+        // 3D Model Viewer with model_viewer_plus
+        ModelViewer(
+          src: modelPath,
+          alt: '${widget.lesson.titleKey} 3D Model',
+          ar: false, // Disable AR for web fallback
+          autoRotate: true,
+          cameraControls: true,
+          backgroundColor: const Color(0xFF1A1A1A),
+          loading: Loading.eager,
+          cameraOrbit: 'auto auto auto',
+          fieldOfView: '45deg',
         ),
 
         // Touch gesture hint
