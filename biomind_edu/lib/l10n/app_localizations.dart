@@ -503,7 +503,7 @@ abstract class AppLocalizations {
   /// Description for cell lesson
   ///
   /// In en, this message translates to:
-  /// **'Let\'s explore the tiny building blocks of life! Discover what\'s inside a cell.'**
+  /// **'🔬 Journey inside a cell! Meet the nucleus-brain, membrane-guard, and mitochondria-batteries. Take apart the cell and discover how all parts work together! Fun and simple for little explorers! ✨'**
   String get lessonsCellDescription;
 
   /// Cell part: nucleus
@@ -617,7 +617,7 @@ abstract class AppLocalizations {
   /// Description for plant lesson
   ///
   /// In en, this message translates to:
-  /// **'How do plants grow? Let\'s discover the amazing parts that help plants live and grow!'**
+  /// **'🌱 Green wonders all around! Learn how roots drink water, stems carry food, and leaves make magic with sunshine. Build a plant from parts and become a real botanist! 🌿✨'**
   String get lessonsPlantDescription;
 
   /// Plant part: roots
@@ -665,7 +665,7 @@ abstract class AppLocalizations {
   /// Description for heart lesson
   ///
   /// In en, this message translates to:
-  /// **'Your heart is an amazing pump! Let\'s see how it sends blood all around your body.'**
+  /// **'❤️ Your heart is a super muscle! It pumps blood day and night to deliver oxygen to every part of your body. Explore chambers, valves and learn how this amazing pump of life works! 💓🩺'**
   String get lessonsHeartDescription;
 
   /// Heart part: left atrium

@@ -227,7 +227,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get lessonsCellDescription =>
-      'Let\'s explore the tiny building blocks of life! Discover what\'s inside a cell.';
+      '🔬 Journey inside a cell! Meet the nucleus-brain, membrane-guard, and mitochondria-batteries. Take apart the cell and discover how all parts work together! Fun and simple for little explorers! ✨';
 
   @override
   String get lessonsCellPartsNucleus => 'Nucleus';
@@ -291,7 +291,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get lessonsPlantDescription =>
-      'How do plants grow? Let\'s discover the amazing parts that help plants live and grow!';
+      '🌱 Green wonders all around! Learn how roots drink water, stems carry food, and leaves make magic with sunshine. Build a plant from parts and become a real botanist! 🌿✨';
 
   @override
   String get lessonsPlantPartsRoots => 'Roots';
@@ -319,7 +319,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get lessonsHeartDescription =>
-      'Your heart is an amazing pump! Let\'s see how it sends blood all around your body.';
+      '❤️ Your heart is a super muscle! It pumps blood day and night to deliver oxygen to every part of your body. Explore chambers, valves and learn how this amazing pump of life works! 💓🩺';
 
   @override
   String get lessonsHeartPartsLeftAtrium => 'Left Atrium';
