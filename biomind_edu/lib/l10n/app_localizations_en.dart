@@ -294,25 +294,32 @@ class AppLocalizationsEn extends AppLocalizations {
       '🌱 Green wonders all around! Learn how roots drink water, stems carry food, and leaves make magic with sunshine. Build a plant from parts and become a real botanist! 🌿✨';
 
   @override
-  String get lessonsPlantPartsRoots => 'Roots';
+  String get lessonsPlantPartsSeed => 'Seed';
 
   @override
-  String get lessonsPlantPartsRootsDescription =>
-      '🌱 Underground Helpers\nRoots drink water from the soil and hold the plant in place, like an anchor!';
+  String get lessonsPlantPartsSeedDescription =>
+      '� Tiny Beginning\nEvery plant starts as a tiny seed! Inside is a baby plant waiting to grow with water and sunshine.';
 
   @override
-  String get lessonsPlantPartsStem => 'Stem';
+  String get lessonsPlantPartsSprout => 'Sprout';
 
   @override
-  String get lessonsPlantPartsStemDescription =>
-      '🎋 The Highway\nThe stem is like a straw! It carries water and food between the roots and leaves.';
+  String get lessonsPlantPartsSproutDescription =>
+      '🌱 First Hello!\nThe seed cracks open and a tiny green sprout pops out! It\'s reaching up to find the sunlight.';
 
   @override
-  String get lessonsPlantPartsLeaves => 'Leaves';
+  String get lessonsPlantPartsGrowth => 'Growth';
 
   @override
-  String get lessonsPlantPartsLeavesDescription =>
-      '🍃 The Food Factory\nLeaves use sunlight to make food for the plant! This is called photosynthesis.';
+  String get lessonsPlantPartsGrowthDescription =>
+      '� Getting Bigger!\nThe plant grows taller and stronger! Leaves open up to catch sunlight and make food. Roots dig deeper for water.';
+
+  @override
+  String get lessonsPlantPartsBloom => 'Bloom';
+
+  @override
+  String get lessonsPlantPartsBloomDescription =>
+      '� Beautiful Flowers!\nThe plant makes colorful flowers! Flowers help make new seeds so more plants can grow. It\'s the circle of life! ✨';
 
   @override
   String get lessonsHeartTitle => 'Human Heart';

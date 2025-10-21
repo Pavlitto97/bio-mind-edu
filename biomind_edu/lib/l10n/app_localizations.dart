@@ -620,41 +620,53 @@ abstract class AppLocalizations {
   /// **'🌱 Green wonders all around! Learn how roots drink water, stems carry food, and leaves make magic with sunshine. Build a plant from parts and become a real botanist! 🌿✨'**
   String get lessonsPlantDescription;
 
-  /// Plant part: roots
+  /// Plant life cycle stage: seed
   ///
   /// In en, this message translates to:
-  /// **'Roots'**
-  String get lessonsPlantPartsRoots;
+  /// **'Seed'**
+  String get lessonsPlantPartsSeed;
 
-  /// Description of roots for kids
+  /// Description of seed stage for kids
   ///
   /// In en, this message translates to:
-  /// **'🌱 Underground Helpers\nRoots drink water from the soil and hold the plant in place, like an anchor!'**
-  String get lessonsPlantPartsRootsDescription;
+  /// **'� Tiny Beginning\nEvery plant starts as a tiny seed! Inside is a baby plant waiting to grow with water and sunshine.'**
+  String get lessonsPlantPartsSeedDescription;
 
-  /// Plant part: stem
+  /// Plant life cycle stage: sprout
   ///
   /// In en, this message translates to:
-  /// **'Stem'**
-  String get lessonsPlantPartsStem;
+  /// **'Sprout'**
+  String get lessonsPlantPartsSprout;
 
-  /// Description of stem for kids
+  /// Description of sprout stage for kids
   ///
   /// In en, this message translates to:
-  /// **'🎋 The Highway\nThe stem is like a straw! It carries water and food between the roots and leaves.'**
-  String get lessonsPlantPartsStemDescription;
+  /// **'🌱 First Hello!\nThe seed cracks open and a tiny green sprout pops out! It\'s reaching up to find the sunlight.'**
+  String get lessonsPlantPartsSproutDescription;
 
-  /// Plant part: leaves
+  /// Plant life cycle stage: growth
   ///
   /// In en, this message translates to:
-  /// **'Leaves'**
-  String get lessonsPlantPartsLeaves;
+  /// **'Growth'**
+  String get lessonsPlantPartsGrowth;
 
-  /// Description of leaves for kids
+  /// Description of growth stage for kids
   ///
   /// In en, this message translates to:
-  /// **'🍃 The Food Factory\nLeaves use sunlight to make food for the plant! This is called photosynthesis.'**
-  String get lessonsPlantPartsLeavesDescription;
+  /// **'� Getting Bigger!\nThe plant grows taller and stronger! Leaves open up to catch sunlight and make food. Roots dig deeper for water.'**
+  String get lessonsPlantPartsGrowthDescription;
+
+  /// Plant life cycle stage: bloom
+  ///
+  /// In en, this message translates to:
+  /// **'Bloom'**
+  String get lessonsPlantPartsBloom;
+
+  /// Description of bloom stage for kids
+  ///
+  /// In en, this message translates to:
+  /// **'� Beautiful Flowers!\nThe plant makes colorful flowers! Flowers help make new seeds so more plants can grow. It\'s the circle of life! ✨'**
+  String get lessonsPlantPartsBloomDescription;
 
   /// Title for heart lesson
   ///

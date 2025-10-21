@@ -474,34 +474,44 @@
     "description": "Description for plant lesson"
   },
   
-  "lessonsPlantPartsRoots": "Roots",
-  "@lessonsPlantPartsRoots": {
-    "description": "Plant part: roots"
+  "lessonsPlantPartsSeed": "Seed",
+  "@lessonsPlantPartsSeed": {
+    "description": "Plant life cycle stage: seed"
   },
   
-  "lessonsPlantPartsRootsDescription": "🌱 Underground Helpers\nRoots drink water from the soil and hold the plant in place, like an anchor!",
-  "@lessonsPlantPartsRootsDescription": {
-    "description": "Description of roots for kids"
+  "lessonsPlantPartsSeedDescription": "� Tiny Beginning\nEvery plant starts as a tiny seed! Inside is a baby plant waiting to grow with water and sunshine.",
+  "@lessonsPlantPartsSeedDescription": {
+    "description": "Description of seed stage for kids"
   },
   
-  "lessonsPlantPartsStem": "Stem",
-  "@lessonsPlantPartsStem": {
-    "description": "Plant part: stem"
+  "lessonsPlantPartsSprout": "Sprout",
+  "@lessonsPlantPartsSprout": {
+    "description": "Plant life cycle stage: sprout"
   },
   
-  "lessonsPlantPartsStemDescription": "🎋 The Highway\nThe stem is like a straw! It carries water and food between the roots and leaves.",
-  "@lessonsPlantPartsStemDescription": {
-    "description": "Description of stem for kids"
+  "lessonsPlantPartsSproutDescription": "🌱 First Hello!\nThe seed cracks open and a tiny green sprout pops out! It's reaching up to find the sunlight.",
+  "@lessonsPlantPartsSproutDescription": {
+    "description": "Description of sprout stage for kids"
   },
   
-  "lessonsPlantPartsLeaves": "Leaves",
-  "@lessonsPlantPartsLeaves": {
-    "description": "Plant part: leaves"
+  "lessonsPlantPartsGrowth": "Growth",
+  "@lessonsPlantPartsGrowth": {
+    "description": "Plant life cycle stage: growth"
   },
   
-  "lessonsPlantPartsLeavesDescription": "🍃 The Food Factory\nLeaves use sunlight to make food for the plant! This is called photosynthesis.",
-  "@lessonsPlantPartsLeavesDescription": {
-    "description": "Description of leaves for kids"
+  "lessonsPlantPartsGrowthDescription": "� Getting Bigger!\nThe plant grows taller and stronger! Leaves open up to catch sunlight and make food. Roots dig deeper for water.",
+  "@lessonsPlantPartsGrowthDescription": {
+    "description": "Description of growth stage for kids"
+  },
+  
+  "lessonsPlantPartsBloom": "Bloom",
+  "@lessonsPlantPartsBloom": {
+    "description": "Plant life cycle stage: bloom"
+  },
+  
+  "lessonsPlantPartsBloomDescription": "� Beautiful Flowers!\nThe plant makes colorful flowers! Flowers help make new seeds so more plants can grow. It's the circle of life! ✨",
+  "@lessonsPlantPartsBloomDescription": {
+    "description": "Description of bloom stage for kids"
   },
   
   "lessonsHeartTitle": "Human Heart",

@@ -247,34 +247,44 @@
     "description": "Description for plant lesson"
   },
   
-  "lessonsPlantPartsRoots": "Коріння",
-  "@lessonsPlantPartsRoots": {
-    "description": "Plant part: roots"
+  "lessonsPlantPartsSeed": "Насіння",
+  "@lessonsPlantPartsSeed": {
+    "description": "Plant life cycle stage: seed"
   },
   
-  "lessonsPlantPartsRootsDescription": "🌱 Підземні Помічники\nКоріння п'є воду з землі і тримає рослину на місці, як якір!",
-  "@lessonsPlantPartsRootsDescription": {
-    "description": "Description of roots for kids"
+  "lessonsPlantPartsSeedDescription": "� Крихітний Початок\nКожна рослина починається з маленького насінинки! Всередині - маленька рослинка, яка чекає води та сонця.",
+  "@lessonsPlantPartsSeedDescription": {
+    "description": "Description of seed stage for kids"
   },
   
-  "lessonsPlantPartsStem": "Стебло",
-  "@lessonsPlantPartsStem": {
-    "description": "Plant part: stem"
+  "lessonsPlantPartsSprout": "Паросток",
+  "@lessonsPlantPartsSprout": {
+    "description": "Plant life cycle stage: sprout"
   },
   
-  "lessonsPlantPartsStemDescription": "🎋 Дорога\nСтебло - це як трубочка! Воно переносить воду і їжу між корінням і листям.",
-  "@lessonsPlantPartsStemDescription": {
-    "description": "Description of stem for kids"
+  "lessonsPlantPartsSproutDescription": "� Перше Привіт!\nНасінина тріскається і з'являється крихітний зелений паросток! Він тягнеться до сонячного світла.",
+  "@lessonsPlantPartsSproutDescription": {
+    "description": "Description of sprout stage for kids"
   },
   
-  "lessonsPlantPartsLeaves": "Листя",
-  "@lessonsPlantPartsLeaves": {
-    "description": "Plant part: leaves"
+  "lessonsPlantPartsGrowth": "Ріст",
+  "@lessonsPlantPartsGrowth": {
+    "description": "Plant life cycle stage: growth"
   },
   
-  "lessonsPlantPartsLeavesDescription": "🍃 Фабрика Їжі\nЛистя використовує сонячне світло, щоб зробити їжу для рослини! Це називається фотосинтез.",
-  "@lessonsPlantPartsLeavesDescription": {
-    "description": "Description of leaves for kids"
+  "lessonsPlantPartsGrowthDescription": "🌿 Стає Більшою!\nРослина росте вище і сильніше! Листя розкриваються, щоб ловити сонце. Коріння йдуть глибше за водою.",
+  "@lessonsPlantPartsGrowthDescription": {
+    "description": "Description of growth stage for kids"
+  },
+  
+  "lessonsPlantPartsBloom": "Цвітіння",
+  "@lessonsPlantPartsBloom": {
+    "description": "Plant life cycle stage: bloom"
+  },
+  
+  "lessonsPlantPartsBloomDescription": "� Гарні Квіти!\nРослина робить красиві квіти! Квіти допомагають створити нове насіння, щоб виросло більше рослин. Це коло життя! ✨",
+  "@lessonsPlantPartsBloomDescription": {
+    "description": "Description of bloom stage for kids"
   },
   
   "lessonsHeartTitle": "Людське Серце",
