@@ -179,6 +179,87 @@ class _InteractiveTaskPageState extends ConsumerState<InteractiveTaskPage> {
       );
     }
 
+    // Heart Blood Flow Task
+    if (widget.taskId == 'task_heart_blood_flow') {
+      return const InteractiveTask(
+        id: 'heart_blood_flow_drag_drop',
+        titleKey: 'tasks.heart.drag_drop.title',
+        instructionKey: 'tasks.heart.drag_drop.instruction',
+        type: TaskType.dragDrop,
+        items: [
+          TaskItem(
+            id: 'left_atrium',
+            labelKey: 'LEFT ATRIUM',
+            imagePath: 'assets/images/LEFT_ATRIUM.png',
+            color: '#FF8C8C',
+            initialPosition: [50, 500],
+          ),
+          TaskItem(
+            id: 'left_ventricle',
+            labelKey: 'LEFT VENTRICLE',
+            imagePath: 'assets/images/LEFT_VENTRICLE.png',
+            color: '#FF4444',
+            initialPosition: [170, 500],
+          ),
+          TaskItem(
+            id: 'right_atrium',
+            labelKey: 'RIGHT ATRIUM',
+            imagePath: 'assets/images/RIGHT_ATRIUM.png',
+            color: '#9999FF',
+            initialPosition: [290, 500],
+          ),
+          TaskItem(
+            id: 'right_ventricle',
+            labelKey: 'RIGHT VENTRICLE',
+            imagePath: 'assets/images/RIGHT_VENTRICLE.png',
+            color: '#6666FF',
+            initialPosition: [410, 500],
+          ),
+        ],
+        targets: [
+          TaskTarget(
+            id: 'left_atrium_zone',
+            labelKey: 'Upper Left Chamber',
+            imagePath: 'assets/images/LEFT_ATRIUM.png',
+            position: [50, 300],
+            size: [100, 100],
+            shape: 'circle',
+          ),
+          TaskTarget(
+            id: 'left_ventricle_zone',
+            labelKey: 'Lower Left Chamber',
+            imagePath: 'assets/images/LEFT_VENTRICLE.png',
+            position: [180, 300],
+            size: [100, 100],
+            shape: 'circle',
+          ),
+          TaskTarget(
+            id: 'right_atrium_zone',
+            labelKey: 'Upper Right Chamber',
+            imagePath: 'assets/images/RIGHT_ATRIUM.png',
+            position: [310, 300],
+            size: [100, 100],
+            shape: 'circle',
+          ),
+          TaskTarget(
+            id: 'right_ventricle_zone',
+            labelKey: 'Lower Right Chamber',
+            imagePath: 'assets/images/RIGHT_VENTRICLE.png',
+            position: [440, 300],
+            size: [100, 100],
+            shape: 'circle',
+          ),
+        ],
+        correctMatches: {
+          'left_atrium': 'left_atrium_zone',
+          'left_ventricle': 'left_ventricle_zone',
+          'right_atrium': 'right_atrium_zone',
+          'right_ventricle': 'right_ventricle_zone',
+        },
+        minCorrectToPass: 3,
+      );
+    }
+
     // Default: Cell task
     return const InteractiveTask(
       id: 'cell_drag_drop',
