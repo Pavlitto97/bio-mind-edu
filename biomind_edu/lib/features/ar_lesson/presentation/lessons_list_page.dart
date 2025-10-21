@@ -20,7 +20,19 @@ class LessonsListPage extends ConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(l10n.appTitle),
+        title: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            // App logo in header
+            Image.asset(
+              'assets/images/app_logo_header.png',
+              height: 32,
+              fit: BoxFit.contain,
+            ),
+            const SizedBox(width: 12),
+            Text(l10n.appTitle),
+          ],
+        ),
         actions: [
           AnimatedIconButton(
             icon: Icons.analytics,

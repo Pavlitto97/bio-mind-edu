@@ -8,12 +8,28 @@ import 'core/services/local_storage_service.dart';
 import 'features/rewards/data/models/reward_model.dart';
 import 'features/profile/data/models/user_profile_model.dart';
 import 'features/rewards/domain/reward_service.dart';
+import 'shared/widgets/splash_screen.dart';
 // import 'shared/data/sample_lesson_data.dart'; // Disabled for web demo
 
 /// Main entry point for BioMindEDU application
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
+  runApp(
+    ProviderScope(
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        home: SplashScreen(
+          initializeApp: _initializeApp,
+          nextScreen: const BioMindEduApp(),
+        ),
+      ),
+    ),
+  );
+}
+
+/// Initialize all app services
+Future<void> _initializeApp() async {
   try {
     // Load environment variables (only on non-web platforms)
     try {
@@ -55,6 +71,4 @@ void main() async {
     debugPrint('Initialization error: $e');
     debugPrint('Stack trace: $stackTrace');
   }
-
-  runApp(const ProviderScope(child: BioMindEduApp()));
 }
