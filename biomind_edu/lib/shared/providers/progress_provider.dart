@@ -12,70 +12,46 @@ final progressServiceProvider = Provider<ProgressService>((ref) {
   );
 });
 
-/// Provider для получения всех записей прогресса
-final allProgressProvider = FutureProvider<List<LessonProgress>>((ref) async {
-  final storage = LocalStorageService();
-  return storage.getAllProgress();
-});
-
-/// Provider для получения прогресса конкретного урока
-final lessonProgressProvider = FutureProvider.family<LessonProgress?, String>((
-  ref,
-  lessonId,
-) async {
-  final storage = LocalStorageService();
-  return storage.getProgress(lessonId);
-});
-
-/// Provider для получения всех наград пользователя
-final allRewardsProvider = FutureProvider<List<Reward>>((ref) async {
-  final storage = LocalStorageService();
-  return storage.getAllRewards();
-});
-
-/// Provider для получения разблокированных наград
-final unlockedRewardsProvider = FutureProvider<List<Reward>>((ref) async {
-  final allRewards = await ref.watch(allRewardsProvider.future);
-  return allRewards.where((r) => r.isUnlocked).toList();
-});
-
-/// Provider для получения профиля пользователя
-final userProfileProvider = FutureProvider<UserProfile?>((ref) async {
-  final storage = LocalStorageService();
-  return storage.getUserProfile();
-});
-
-/// StateNotifier для управления профилем
-class UserProfileNotifier extends StateNotifier<UserProfile?> {
+/// StateNotifier for managing lesson progress reactively
+class ProgressNotifier extends StateNotifier<List<LessonProgress>> {
   final LocalStorageService _storage;
 
-  UserProfileNotifier(this._storage) : super(null) {
-    _loadProfile();
+  ProgressNotifier(this._storage) : super([]) {
+    _loadProgress();
   }
 
-  Future<void> _loadProfile() async {
-    state = _storage.getUserProfile();
+  void _loadProgress() {
+    state = _storage.getAllProgress();
   }
 
-  Future<void> updateProfile(UserProfile profile) async {
-    await _storage.saveUserProfile(profile);
-    state = profile;
-  }
-
-  Future<void> updatePreference(String key, dynamic value) async {
-    if (state == null) return;
-
-    final updatedPreferences = {...state!.preferences, key: value};
-    final updatedProfile = state!.copyWith(preferences: updatedPreferences);
-    await updateProfile(updatedProfile);
+  void refresh() {
+    state = _storage.getAllProgress();
   }
 }
 
-/// Provider для управления профилем пользователя
-final userProfileNotifierProvider =
-    StateNotifierProvider<UserProfileNotifier, UserProfile?>((ref) {
-      return UserProfileNotifier(LocalStorageService());
+/// StateNotifier provider for all progress
+final progressNotifierProvider =
+    StateNotifierProvider<ProgressNotifier, List<LessonProgress>>((ref) {
+      return ProgressNotifier(LocalStorageService());
     });
+
+/// Provider для получения всех записей прогресса
+final allProgressProvider = Provider<List<LessonProgress>>((ref) {
+  return ref.watch(progressNotifierProvider);
+});
+
+/// Provider для получения прогресса конкретного урока
+final lessonProgressProvider = Provider.family<LessonProgress?, String>((
+  ref,
+  lessonId,
+) {
+  final allProgress = ref.watch(progressNotifierProvider);
+  try {
+    return allProgress.firstWhere((p) => p.lessonId == lessonId);
+  } catch (e) {
+    return null;
+  }
+});
 
 /// Provider для статистики прогресса (using ProgressService)
 final progressStatisticsProvider = FutureProvider<ProgressStatistics>((

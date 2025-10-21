@@ -4,9 +4,11 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../shared/models/interactive_task.dart';
 import '../../../shared/providers/progress_provider.dart';
 import '../../../shared/providers/newly_unlocked_provider.dart';
+import '../../../shared/providers/newly_unlocked_achievements_provider.dart';
 import '../../../shared/providers/lessons_provider.dart';
 import '../../../shared/data/sample_lesson_data.dart';
 import '../../../core/services/local_storage_service.dart';
+import '../../../features/rewards/domain/achievement_service.dart';
 import '../widgets/draggable_task_item.dart';
 import '../widgets/drop_target_zone.dart';
 import 'dart:async';
@@ -48,6 +50,9 @@ class _InteractiveTaskPageState extends ConsumerState<InteractiveTaskPage> {
 
   // Items that were incorrectly placed (for feedback animation)
   final Set<String> _incorrectItems = {};
+
+  // Error tracking for achievements
+  int _errorCount = 0;
 
   // Timer for task with time limit
   Timer? _timer;
@@ -373,6 +378,7 @@ class _InteractiveTaskPageState extends ConsumerState<InteractiveTaskPage> {
     } else {
       setState(() {
         _incorrectItems.add(itemId);
+        _errorCount++; // Track errors for achievements
       });
       _playErrorFeedback();
 
@@ -439,6 +445,7 @@ class _InteractiveTaskPageState extends ConsumerState<InteractiveTaskPage> {
   Future<void> _saveProgress(TaskResult result) async {
     try {
       final progressService = ref.read(progressServiceProvider);
+      final achievementService = ref.read(achievementServiceProvider);
 
       // Update lesson progress with task completion
       await progressService.updateLessonProgress(
@@ -448,12 +455,48 @@ class _InteractiveTaskPageState extends ConsumerState<InteractiveTaskPage> {
         attempts: 1,
       );
 
+      // Refresh progress provider
+      ref.read(progressNotifierProvider.notifier).refresh();
+
+      // Check speed-based achievements
+      final accuracyPercent = (result.correctCount / result.totalCount) * 100;
+      final hasErrors = _errorCount > 0;
+
+      final unlockedAchievements = await achievementService
+          .checkSpeedAchievements(
+            timeSpentSeconds: result.timeTakenSeconds,
+            hasErrors: hasErrors,
+            accuracyPercent: accuracyPercent,
+          );
+
+      // Check completion achievements
+      final completionAchievements = await achievementService
+          .checkCompletionAchievements();
+
+      // Combine all newly unlocked achievements
+      final allNewAchievements = [
+        ...unlockedAchievements,
+        ...completionAchievements,
+      ];
+
+      // Store newly unlocked achievements for UI display
+      if (allNewAchievements.isNotEmpty) {
+        ref
+            .read(newlyUnlockedAchievementsProvider.notifier)
+            .addAchievements(allNewAchievements);
+      }
+
       debugPrint('✅ Task progress saved successfully');
       debugPrint('  Task ID: ${result.taskId}');
       debugPrint('  Correct: ${result.correctCount}/${result.totalCount}');
       debugPrint('  Time: ${result.timeTakenSeconds}s');
+      debugPrint('  Errors: $_errorCount');
+      debugPrint('  Accuracy: ${accuracyPercent.toStringAsFixed(1)}%');
       debugPrint('  Passed: ${result.isPassed}');
       debugPrint('  Stars: ${_calculateStars(result)}');
+      debugPrint(
+        '  New Achievements: ${allNewAchievements.map((a) => a.name).join(", ")}',
+      );
     } catch (e) {
       debugPrint('❌ Error saving progress: $e');
     }
@@ -470,6 +513,7 @@ class _InteractiveTaskPageState extends ConsumerState<InteractiveTaskPage> {
 
   void _showCompletionDialog(TaskResult result) {
     final stars = _calculateStars(result);
+    final newAchievements = ref.read(newlyUnlockedAchievementsProvider);
 
     showDialog<void>(
       context: context,
@@ -480,66 +524,143 @@ class _InteractiveTaskPageState extends ConsumerState<InteractiveTaskPage> {
           style: const TextStyle(fontSize: 28),
           textAlign: TextAlign.center,
         ),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Text(
-              'You got ${result.correctCount} out of ${result.totalCount} correct!',
-              style: const TextStyle(fontSize: 20),
-              textAlign: TextAlign.center,
-            ),
-            const SizedBox(height: 16),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: List.generate(3, (index) {
-                return Icon(
-                  index < stars ? Icons.star : Icons.star_border,
-                  color: Colors.amber,
-                  size: 40,
-                );
-              }),
-            ),
-            if (result.isPassed) ...[
-              const SizedBox(height: 24),
-              Container(
-                padding: const EdgeInsets.all(12),
-                decoration: BoxDecoration(
-                  color: const Color(0xFFE3F2FD), // Light Blue
-                  borderRadius: BorderRadius.circular(12),
-                  border: Border.all(
-                    color: const Color(0xFF2196F3),
-                    width: 2,
-                  ), // Blue
-                ),
-                child: Column(
-                  children: [
-                    const Icon(
-                      Icons.emoji_events,
-                      color: Colors.amber,
-                      size: 48,
-                    ),
-                    const SizedBox(height: 8),
-                    const Text(
-                      '🏆 Achievement Unlocked!',
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                        color: Color(0xFF2196F3), // Blue
-                      ),
-                    ),
-                    const SizedBox(height: 4),
-                    Text(
-                      'Next lesson unlocked!',
-                      style: TextStyle(
-                        fontSize: 14,
-                        color: Colors.grey.shade700,
-                      ),
-                    ),
-                  ],
-                ),
+        content: SingleChildScrollView(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(
+                'You got ${result.correctCount} out of ${result.totalCount} correct!',
+                style: const TextStyle(fontSize: 20),
+                textAlign: TextAlign.center,
               ),
+              const SizedBox(height: 8),
+              Text(
+                'Time: ${result.timeTakenSeconds}s',
+                style: TextStyle(
+                  fontSize: 16,
+                  color: result.timeTakenSeconds <= 20
+                      ? Colors.green
+                      : result.timeTakenSeconds <= 30
+                      ? Colors.orange
+                      : Colors.grey,
+                  fontWeight: result.timeTakenSeconds <= 20
+                      ? FontWeight.bold
+                      : FontWeight.normal,
+                ),
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: 16),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: List.generate(3, (index) {
+                  return Icon(
+                    index < stars ? Icons.star : Icons.star_border,
+                    color: Colors.amber,
+                    size: 40,
+                  );
+                }),
+              ),
+              if (result.isPassed) ...[
+                const SizedBox(height: 24),
+                Container(
+                  padding: const EdgeInsets.all(12),
+                  decoration: BoxDecoration(
+                    color: const Color(0xFFE3F2FD), // Light Blue
+                    borderRadius: BorderRadius.circular(12),
+                    border: Border.all(
+                      color: const Color(0xFF2196F3),
+                      width: 2,
+                    ), // Blue
+                  ),
+                  child: Column(
+                    children: [
+                      const Icon(
+                        Icons.emoji_events,
+                        color: Colors.amber,
+                        size: 48,
+                      ),
+                      const SizedBox(height: 8),
+                      const Text(
+                        '🏆 Task Complete!',
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                          color: Color(0xFF2196F3), // Blue
+                        ),
+                      ),
+                      const SizedBox(height: 4),
+                      Text(
+                        'Next lesson unlocked!',
+                        style: TextStyle(
+                          fontSize: 14,
+                          color: Colors.grey.shade700,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+              // Show new achievements
+              if (newAchievements.isNotEmpty) ...[
+                const SizedBox(height: 16),
+                ...newAchievements.map(
+                  (achievement) => Container(
+                    margin: const EdgeInsets.only(bottom: 12),
+                    padding: const EdgeInsets.all(12),
+                    decoration: BoxDecoration(
+                      gradient: const LinearGradient(
+                        colors: [
+                          Color(0xFFFFF9C4), // Light Yellow
+                          Color(0xFFFFF59D), // Yellow
+                        ],
+                      ),
+                      borderRadius: BorderRadius.circular(12),
+                      border: Border.all(
+                        color: const Color(0xFFFBC02D),
+                        width: 2,
+                      ),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.amber.withOpacity(0.3),
+                          blurRadius: 8,
+                          spreadRadius: 2,
+                        ),
+                      ],
+                    ),
+                    child: Row(
+                      children: [
+                        const Text('🏆', style: TextStyle(fontSize: 32)),
+                        const SizedBox(width: 12),
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                achievement.name,
+                                style: const TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                  color: Color(0xFFF57F17), // Dark Yellow
+                                ),
+                              ),
+                              const SizedBox(height: 4),
+                              Text(
+                                achievement.description,
+                                style: TextStyle(
+                                  fontSize: 13,
+                                  color: Colors.brown.shade700,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
             ],
-          ],
+          ),
         ),
         actions: [
           if (!result.isPassed)
@@ -608,6 +729,9 @@ class _InteractiveTaskPageState extends ConsumerState<InteractiveTaskPage> {
   }
 
   void _navigateBack() {
+    // Clear newly unlocked achievements
+    ref.read(newlyUnlockedAchievementsProvider.notifier).clear();
+
     // Mark next lesson as newly unlocked for highlighting
     _markNextLessonAsUnlocked();
 

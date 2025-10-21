@@ -8,6 +8,7 @@ import '../widgets/progress_summary_card.dart';
 import '../widgets/lesson_history_list.dart';
 import '../widgets/test_results_list.dart';
 import '../../rewards/presentation/rewards_page.dart';
+import '../../rewards/domain/reward_service.dart';
 
 /// Parent Dashboard - Progress Overview
 ///
@@ -55,6 +56,8 @@ class ProgressPage extends ConsumerWidget {
       body: RefreshIndicator(
         onRefresh: () async {
           // Refresh all providers
+          ref.read(progressNotifierProvider.notifier).refresh();
+          ref.read(rewardsNotifierProvider.notifier).refresh();
           ref.invalidate(progressStatisticsProvider);
           ref.invalidate(lessonHistoryProvider);
           ref.invalidate(testResultsProvider);

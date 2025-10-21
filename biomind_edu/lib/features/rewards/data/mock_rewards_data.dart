@@ -79,6 +79,43 @@ final List<Reward> mockRewards = [
     imageUrl: 'assets/images/rewards/perfect_score.png',
     category: RewardCategory.sticker,
   ),
+
+  // Speed-based achievements
+  const Reward(
+    id: 'reward_speed_demon',
+    name: '⚡ Speed Demon',
+    description: 'Completed task in under 30 seconds!',
+    imageUrl: 'assets/images/rewards/speed_demon.png',
+    category: RewardCategory.achievement,
+  ),
+  const Reward(
+    id: 'reward_lightning_fast',
+    name: '⚡⚡ Lightning Fast',
+    description: 'Completed task in under 20 seconds!',
+    imageUrl: 'assets/images/rewards/lightning_fast.png',
+    category: RewardCategory.achievement,
+  ),
+  const Reward(
+    id: 'reward_sonic_speed',
+    name: '⚡⚡⚡ Sonic Speed',
+    description: 'Completed task in under 15 seconds!',
+    imageUrl: 'assets/images/rewards/sonic_speed.png',
+    category: RewardCategory.trophy,
+  ),
+  const Reward(
+    id: 'reward_first_try_master',
+    name: '🎯 First Try Master',
+    description: 'Completed task on first attempt with no mistakes!',
+    imageUrl: 'assets/images/rewards/first_try.png',
+    category: RewardCategory.trophy,
+  ),
+  const Reward(
+    id: 'reward_perfect_combo',
+    name: '💫 Perfect Combo',
+    description: 'Fast completion + perfect accuracy!',
+    imageUrl: 'assets/images/rewards/perfect_combo.png',
+    category: RewardCategory.trophy,
+  ),
 ];
 
 /// Get reward by lesson ID

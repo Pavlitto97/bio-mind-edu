@@ -193,16 +193,40 @@ final rewardServiceProvider = Provider<RewardService>((ref) {
   return service;
 });
 
+/// StateNotifier for reactive rewards list
+class RewardsNotifier extends StateNotifier<List<Reward>> {
+  final RewardService _service;
+
+  RewardsNotifier(this._service) : super([]) {
+    _loadRewards();
+  }
+
+  Future<void> _loadRewards() async {
+    await _service.initialize();
+    state = _service.getAllRewards();
+  }
+
+  void refresh() {
+    state = _service.getAllRewards();
+  }
+}
+
+/// StateNotifier provider for all rewards
+final rewardsNotifierProvider =
+    StateNotifierProvider<RewardsNotifier, List<Reward>>((ref) {
+      final service = ref.watch(rewardServiceProvider);
+      return RewardsNotifier(service);
+    });
+
 /// Provider for all rewards
 final allRewardsProvider = Provider<List<Reward>>((ref) {
-  final service = ref.watch(rewardServiceProvider);
-  return service.getAllRewards();
+  return ref.watch(rewardsNotifierProvider);
 });
 
 /// Provider for unlocked rewards
 final unlockedRewardsProvider = Provider<List<Reward>>((ref) {
-  final service = ref.watch(rewardServiceProvider);
-  return service.getUnlockedRewards();
+  final allRewards = ref.watch(rewardsNotifierProvider);
+  return allRewards.where((r) => r.isUnlocked).toList();
 });
 
 /// Provider for user profile

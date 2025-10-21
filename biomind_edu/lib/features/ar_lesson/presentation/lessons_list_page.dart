@@ -63,13 +63,7 @@ class LessonsListPage extends ConsumerWidget {
                 },
                 tooltip: l10n.myRewards,
               ),
-              const SizedBox(width: 8),
-              IconButton(
-                icon: const Icon(Icons.settings),
-                onPressed: () {
-                  // TODO: Navigate to settings
-                },
-              ),
+              const SizedBox(width: 16),
             ],
           ),
         ),
