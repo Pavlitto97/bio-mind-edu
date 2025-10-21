@@ -42,11 +42,11 @@ class BioMindEduApp extends ConsumerWidget {
               builder: (context) => ARLessonPage(lessonId: lessonId),
             );
           case '/interactive-task':
-            final lessonId = settings.arguments as String;
+            final args = settings.arguments as Map<String, String>;
             return MaterialPageRoute(
               builder: (context) => InteractiveTaskPage(
-                taskId: 'cell_drag_drop', // Mock task ID
-                lessonId: lessonId,
+                taskId: args['taskId']!,
+                lessonId: args['lessonId']!,
               ),
             );
           case '/assessment':

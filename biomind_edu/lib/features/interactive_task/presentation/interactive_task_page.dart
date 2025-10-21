@@ -99,64 +99,83 @@ class _InteractiveTaskPageState extends ConsumerState<InteractiveTaskPage> {
   /// TODO: Remove this when proper task loading is implemented
   InteractiveTask _createMockTask() {
     // Return different tasks based on taskId
-    if (widget.taskId == 'task_plant_parts') {
+    if (widget.taskId == 'task_plant_life_cycle') {
       return const InteractiveTask(
-        id: 'plant_drag_drop',
+        id: 'plant_life_cycle_drag_drop',
         titleKey: 'tasks.plant.drag_drop.title',
         instructionKey: 'tasks.plant.drag_drop.instruction',
         type: TaskType.dragDrop,
         items: [
           TaskItem(
-            id: 'roots',
-            labelKey: 'tasks.plant.items.roots',
-            iconName: 'grass',
+            id: 'seed',
+            labelKey: 'SEED',
+            imagePath: 'assets/images/SEED.png',
             color: '#8B4513',
             initialPosition: [50, 500],
           ),
           TaskItem(
-            id: 'stem',
-            labelKey: 'tasks.plant.items.stem',
-            iconName: 'height',
-            color: '#009688', // Teal
+            id: 'sprout',
+            labelKey: 'SPROUT',
+            imagePath: 'assets/images/SPROUT.png',
+            color: '#4CAF50', // Green
             initialPosition: [170, 500],
           ),
           TaskItem(
-            id: 'leaves',
-            labelKey: 'tasks.plant.items.leaves',
-            iconName: 'eco',
-            color: '#26A69A', // Light Teal
+            id: 'growth',
+            labelKey: 'GROWTH',
+            imagePath: 'assets/images/GROWTH.png',
+            color: '#2E7D32', // Dark Green
             initialPosition: [290, 500],
+          ),
+          TaskItem(
+            id: 'bloom',
+            labelKey: 'BLOOM',
+            imagePath: 'assets/images/BLOOM.png',
+            color: '#E91E63', // Pink
+            initialPosition: [410, 500],
           ),
         ],
         targets: [
           TaskTarget(
-            id: 'roots_zone',
-            labelKey: 'Roots',
-            position: [100, 350],
-            size: [120, 80],
-            shape: 'rectangle',
+            id: 'seed_zone',
+            labelKey: 'Seed Stage',
+            imagePath: 'assets/images/SEED.png',
+            position: [50, 300],
+            size: [100, 100],
+            shape: 'circle',
           ),
           TaskTarget(
-            id: 'stem_zone',
-            labelKey: 'Stem',
-            position: [100, 200],
-            size: [80, 120],
-            shape: 'rectangle',
+            id: 'sprout_zone',
+            labelKey: 'Sprout Stage',
+            imagePath: 'assets/images/SPROUT.png',
+            position: [180, 300],
+            size: [100, 100],
+            shape: 'circle',
           ),
           TaskTarget(
-            id: 'leaves_zone',
-            labelKey: 'Leaves',
-            position: [150, 100],
-            size: [100, 80],
+            id: 'growth_zone',
+            labelKey: 'Growth Stage',
+            imagePath: 'assets/images/GROWTH.png',
+            position: [310, 300],
+            size: [100, 100],
+            shape: 'circle',
+          ),
+          TaskTarget(
+            id: 'bloom_zone',
+            labelKey: 'Bloom Stage',
+            imagePath: 'assets/images/BLOOM.png',
+            position: [440, 300],
+            size: [100, 100],
             shape: 'circle',
           ),
         ],
         correctMatches: {
-          'roots': 'roots_zone',
-          'stem': 'stem_zone',
-          'leaves': 'leaves_zone',
+          'seed': 'seed_zone',
+          'sprout': 'sprout_zone',
+          'growth': 'growth_zone',
+          'bloom': 'bloom_zone',
         },
-        minCorrectToPass: 2,
+        minCorrectToPass: 3,
       );
     }
 

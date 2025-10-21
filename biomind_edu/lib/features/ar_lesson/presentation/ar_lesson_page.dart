@@ -323,10 +323,18 @@ class _ARLessonPageState extends ConsumerState<ARLessonPage> {
   }
 
   void _handleTaskComplete() {
-    // Navigate to interactive task screen
-    // TODO: Implement navigation to TaskScreen
-    Navigator.of(
-      context,
-    ).pushNamed('/interactive-task', arguments: widget.lessonId);
+    // Get the lesson to access its interactiveTaskId
+    final lesson = ref.read(lessonByIdProvider(widget.lessonId)).value;
+    
+    if (lesson != null) {
+      // Navigate to interactive task screen with both taskId and lessonId
+      Navigator.of(context).pushNamed(
+        '/interactive-task',
+        arguments: {
+          'taskId': lesson.interactiveTaskId,
+          'lessonId': widget.lessonId,
+        },
+      );
+    }
   }
 }
