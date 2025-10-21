@@ -117,14 +117,14 @@ class _InteractiveTaskPageState extends ConsumerState<InteractiveTaskPage> {
             id: 'stem',
             labelKey: 'tasks.plant.items.stem',
             iconName: 'height',
-            color: '#4CAF50',
+            color: '#009688', // Teal
             initialPosition: [170, 500],
           ),
           TaskItem(
             id: 'leaves',
             labelKey: 'tasks.plant.items.leaves',
             iconName: 'eco',
-            color: '#66BB6A',
+            color: '#26A69A', // Light Teal
             initialPosition: [290, 500],
           ),
         ],
@@ -178,7 +178,7 @@ class _InteractiveTaskPageState extends ConsumerState<InteractiveTaskPage> {
           id: 'mitochondria',
           labelKey: 'MITOCHONDRIA',
           imagePath: 'assets/images/mitochondria.png',
-          color: '#4CAF50',
+          color: '#009688', // Teal
           initialPosition: [170, 500],
         ),
         TaskItem(
@@ -404,9 +404,9 @@ class _InteractiveTaskPageState extends ConsumerState<InteractiveTaskPage> {
               Container(
                 padding: const EdgeInsets.all(12),
                 decoration: BoxDecoration(
-                  color: Colors.green.shade50,
+                  color: const Color(0xFFE3F2FD), // Light Blue
                   borderRadius: BorderRadius.circular(12),
-                  border: Border.all(color: Colors.green, width: 2),
+                  border: Border.all(color: const Color(0xFF2196F3), width: 2), // Blue
                 ),
                 child: Column(
                   children: [
@@ -417,7 +417,7 @@ class _InteractiveTaskPageState extends ConsumerState<InteractiveTaskPage> {
                       style: TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
-                        color: Colors.green,
+                        color: Color(0xFF2196F3), // Blue
                       ),
                     ),
                     const SizedBox(height: 4),

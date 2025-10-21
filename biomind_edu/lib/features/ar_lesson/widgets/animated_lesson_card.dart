@@ -5,8 +5,9 @@ import '../../../core/services/local_storage_service.dart';
 import '../../rewards/domain/reward_service.dart';
 import '../../../l10n/l10n_helpers.dart';
 import '../../../shared/providers/newly_unlocked_provider.dart';
+import '../../../core/theme/app_colors.dart';
 
-/// Enhanced animated lesson card with progress indicators
+/// Enhanced animated lesson card with progress indicators and new blue/purple design
 class AnimatedLessonCard extends ConsumerStatefulWidget {
   final String lessonId;
   final String titleKey;
@@ -147,9 +148,9 @@ class _AnimatedLessonCardState extends ConsumerState<AnimatedLessonCard>
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(16),
               side: isNewlyUnlocked
-                  ? BorderSide(color: Colors.green, width: 2)
+                  ? BorderSide(color: AppColors.accentOrange, width: 2)
                   : isCompleted
-                      ? BorderSide(color: Colors.green, width: 2)
+                      ? BorderSide(color: AppColors.success, width: 2)
                       : BorderSide.none,
             ),
             child: InkWell(
@@ -205,7 +206,7 @@ class _AnimatedLessonCardState extends ConsumerState<AnimatedLessonCard>
                                         colors: [
                                           Colors.transparent,
                                           Colors.transparent,
-                                          Colors.green.withOpacity(0.3),
+                                          AppColors.accentOrange.withOpacity(0.3),
                                           Colors.transparent,
                                           Colors.transparent,
                                         ],
@@ -239,11 +240,11 @@ class _AnimatedLessonCardState extends ConsumerState<AnimatedLessonCard>
                                     vertical: 6,
                                   ),
                                   decoration: BoxDecoration(
-                                    color: Colors.green,
+                                    color: AppColors.accentOrange,
                                     borderRadius: BorderRadius.circular(12),
                                     boxShadow: [
                                       BoxShadow(
-                                        color: Colors.green.withOpacity(0.5),
+                                        color: AppColors.accentOrange.withOpacity(0.5),
                                         blurRadius: 8,
                                         spreadRadius: 2,
                                       ),
@@ -279,7 +280,7 @@ class _AnimatedLessonCardState extends ConsumerState<AnimatedLessonCard>
                                 child: Container(
                                   padding: const EdgeInsets.all(8),
                                   decoration: const BoxDecoration(
-                                    color: Colors.green,
+                                    color: AppColors.success,
                                     shape: BoxShape.circle,
                                   ),
                                   child: const Icon(
@@ -377,11 +378,22 @@ class _AnimatedLessonCardState extends ConsumerState<AnimatedLessonCard>
   }
 
   List<Color> _getGradientColors() {
-    switch (widget.difficulty) {
-      case LessonDifficulty.beginner:
-        return [Colors.green.shade200, Colors.green.shade400];
-      case LessonDifficulty.intermediate:
-        return [Colors.orange.shade200, Colors.orange.shade400];
+    // Use lesson-specific gradients from AppColors
+    switch (widget.lessonId) {
+      case 'cell':
+        return AppColors.cellLessonColors;
+      case 'plant':
+        return AppColors.plantLessonColors;
+      case 'heart':
+        return AppColors.heartLessonColors;
+      default:
+        // Fallback based on difficulty
+        switch (widget.difficulty) {
+          case LessonDifficulty.beginner:
+            return AppColors.gradientBlue;
+          case LessonDifficulty.intermediate:
+            return AppColors.gradientPurple;
+        }
     }
   }
 
@@ -410,12 +422,12 @@ class _AnimatedLessonCardState extends ConsumerState<AnimatedLessonCard>
 
     switch (widget.difficulty) {
       case LessonDifficulty.beginner:
-        color = Colors.green;
+        color = AppColors.success;
         icon = Icons.sentiment_satisfied;
         label = '★☆☆';
         break;
       case LessonDifficulty.intermediate:
-        color = Colors.orange;
+        color = AppColors.accentOrange;
         icon = Icons.sentiment_neutral;
         label = '★★☆';
         break;

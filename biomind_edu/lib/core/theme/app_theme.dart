@@ -1,57 +1,38 @@
 import 'package:flutter/material.dart';
 import '../constants/app_constants.dart';
+import 'app_colors.dart';
 
-/// BioMindEDU app theme configuration
+/// BioMindEDU app theme configuration - Modern blue/purple design
 class AppTheme {
   AppTheme._();
 
-  /// Primary color - green for biology/nature
-  static const Color primaryColor = Color(0xFF4CAF50);
-  static const Color primaryLight = Color(0xFF80E27E);
-  static const Color primaryDark = Color(0xFF087F23);
+  // Using new AppColors instead of old green colors
 
-  /// Secondary color - blue for science
-  static const Color secondaryColor = Color(0xFF2196F3);
-  static const Color secondaryLight = Color(0xFF6EC6FF);
-  static const Color secondaryDark = Color(0xFF0069C0);
-
-  /// Accent colors for rewards and highlights
-  static const Color accentYellow = Color(0xFFFFC107);
-  static const Color accentOrange = Color(0xFFFF9800);
-  static const Color accentPurple = Color(0xFF9C27B0);
-
-  /// Background colors
-  static const Color backgroundLight = Color(0xFFFAFAFA);
-  static const Color surfaceLight = Color(0xFFFFFFFF);
-
-  /// Text colors
-  static const Color textPrimary = Color(0xFF212121);
-  static const Color textSecondary = Color(0xFF757575);
-  static const Color textHint = Color(0xFFBDBDBD);
-
-  /// Status colors
-  static const Color successColor = Color(0xFF4CAF50);
-  static const Color errorColor = Color(0xFFF44336);
-  static const Color warningColor = Color(0xFFFF9800);
-  static const Color infoColor = Color(0xFF2196F3);
-
-  /// Light theme
+  /// Light theme - Modern Material Design 3 with blue/purple palette
   static ThemeData get lightTheme {
     return ThemeData(
       useMaterial3: true,
-      colorScheme: ColorScheme.fromSeed(
-        seedColor: primaryColor,
-        brightness: Brightness.light,
-        primary: primaryColor,
-        secondary: secondaryColor,
-        surface: surfaceLight,
-        error: errorColor,
+      colorScheme: ColorScheme.light(
+        primary: AppColors.primary,
+        primaryContainer: AppColors.primaryLight,
+        secondary: AppColors.secondary,
+        secondaryContainer: AppColors.secondaryLight,
+        tertiary: AppColors.tertiary,
+        tertiaryContainer: AppColors.tertiaryLight,
+        surface: AppColors.backgroundWhite,
+        background: AppColors.backgroundLight,
+        error: AppColors.error,
+        onPrimary: AppColors.textOnPrimary,
+        onSecondary: AppColors.textOnPrimary,
+        onSurface: AppColors.textPrimary,
+        onBackground: AppColors.textPrimary,
+        onError: AppColors.textOnPrimary,
       ),
-      scaffoldBackgroundColor: backgroundLight,
+      scaffoldBackgroundColor: AppColors.backgroundLight,
       appBarTheme: const AppBarTheme(
         elevation: 0,
         centerTitle: true,
-        backgroundColor: primaryColor,
+        backgroundColor: AppColors.primary,
         foregroundColor: Colors.white,
         iconTheme: IconThemeData(color: Colors.white),
       ),
@@ -63,6 +44,8 @@ class AppTheme {
       ),
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(
+          backgroundColor: AppColors.primary,
+          foregroundColor: AppColors.textOnPrimary,
           minimumSize: const Size(
             UIConstants.minTouchTarget,
             UIConstants.minTouchTarget,
@@ -98,14 +81,15 @@ class AppTheme {
         ),
       ),
       floatingActionButtonTheme: FloatingActionButtonThemeData(
-        backgroundColor: primaryColor,
+        backgroundColor: AppColors.accentOrange,
+        foregroundColor: AppColors.textOnPrimary,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(UIConstants.mediumRadius),
         ),
       ),
       inputDecorationTheme: InputDecorationTheme(
         filled: true,
-        fillColor: surfaceLight,
+        fillColor: AppColors.backgroundWhite,
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(UIConstants.smallRadius),
         ),
@@ -119,43 +103,43 @@ class AppTheme {
         thickness: 1,
         color: Color(0xFFE0E0E0),
       ),
-      textTheme: const TextTheme(
+      textTheme: TextTheme(
         displayLarge: TextStyle(
           fontSize: 32,
           fontWeight: FontWeight.bold,
-          color: textPrimary,
+          color: AppColors.textPrimary,
         ),
         displayMedium: TextStyle(
           fontSize: 28,
           fontWeight: FontWeight.bold,
-          color: textPrimary,
+          color: AppColors.textPrimary,
         ),
         displaySmall: TextStyle(
           fontSize: 24,
           fontWeight: FontWeight.bold,
-          color: textPrimary,
+          color: AppColors.textPrimary,
         ),
         headlineMedium: TextStyle(
           fontSize: 20,
           fontWeight: FontWeight.w600,
-          color: textPrimary,
+          color: AppColors.textPrimary,
         ),
         headlineSmall: TextStyle(
           fontSize: 18,
           fontWeight: FontWeight.w600,
-          color: textPrimary,
+          color: AppColors.textPrimary,
         ),
         titleLarge: TextStyle(
           fontSize: 16,
           fontWeight: FontWeight.w500,
-          color: textPrimary,
+          color: AppColors.textPrimary,
         ),
-        bodyLarge: TextStyle(fontSize: 16, color: textPrimary),
-        bodyMedium: TextStyle(fontSize: 14, color: textSecondary),
+        bodyLarge: TextStyle(fontSize: 16, color: AppColors.textPrimary),
+        bodyMedium: TextStyle(fontSize: 14, color: AppColors.textSecondary),
         labelLarge: TextStyle(
           fontSize: 16,
           fontWeight: FontWeight.w500,
-          color: textPrimary,
+          color: AppColors.textPrimary,
         ),
       ),
     );
@@ -167,7 +151,7 @@ class AppTheme {
       useMaterial3: true,
       brightness: Brightness.dark,
       colorScheme: ColorScheme.fromSeed(
-        seedColor: primaryColor,
+        seedColor: AppColors.primary,
         brightness: Brightness.dark,
       ),
     );

@@ -5,11 +5,12 @@ import '../../../shared/providers/lessons_provider.dart';
 import '../../../shared/widgets/shimmer_loading.dart';
 import '../../../shared/widgets/animated_button.dart';
 import '../../../core/routing/custom_page_routes.dart';
+import '../../../core/theme/app_colors.dart';
 import '../widgets/animated_lesson_card.dart';
 import '../../progress/presentation/progress_page.dart';
 import '../../rewards/presentation/rewards_page.dart';
 
-/// Home screen showing list of available lessons
+/// Home screen showing list of available lessons with gradient AppBar
 class LessonsListPage extends ConsumerWidget {
   const LessonsListPage({super.key});
 
@@ -19,41 +20,58 @@ class LessonsListPage extends ConsumerWidget {
     final l10n = AppLocalizations.of(context)!;
 
     return Scaffold(
-      appBar: AppBar(
-        title: Image.asset(
-          'assets/images/app_logo_header.png',
-          height: 40,
-          fit: BoxFit.contain,
+      appBar: PreferredSize(
+        preferredSize: const Size.fromHeight(kToolbarHeight),
+        child: Container(
+          decoration: const BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+              colors: [
+                AppColors.primary,
+                AppColors.primaryDark,
+              ],
+            ),
+          ),
+          child: AppBar(
+            backgroundColor: Colors.transparent,
+            elevation: 0,
+            title: Image.asset(
+              'assets/images/app_logo_header.png',
+              height: 40,
+              fit: BoxFit.contain,
+            ),
+            centerTitle: true,
+            actions: [
+              AnimatedIconButton(
+                icon: Icons.analytics,
+                onPressed: () {
+                  Navigator.of(context).push(
+                    FadePageRoute<void>(builder: (context) => const ProgressPage()),
+                  );
+                },
+                tooltip: l10n.progressTitle,
+              ),
+              const SizedBox(width: 8),
+              AnimatedIconButton(
+                icon: Icons.emoji_events,
+                onPressed: () {
+                  Navigator.of(context).push(
+                    ScalePageRoute<void>(builder: (context) => const RewardsPage()),
+                  );
+                },
+                tooltip: l10n.myRewards,
+              ),
+              const SizedBox(width: 8),
+              IconButton(
+                icon: const Icon(Icons.settings),
+                onPressed: () {
+                  // TODO: Navigate to settings
+                },
+              ),
+            ],
+          ),
         ),
-        centerTitle: true,
-        actions: [
-          AnimatedIconButton(
-            icon: Icons.analytics,
-            onPressed: () {
-              Navigator.of(context).push(
-                FadePageRoute<void>(builder: (context) => const ProgressPage()),
-              );
-            },
-            tooltip: l10n.progressTitle,
-          ),
-          const SizedBox(width: 8),
-          AnimatedIconButton(
-            icon: Icons.emoji_events,
-            onPressed: () {
-              Navigator.of(context).push(
-                ScalePageRoute<void>(builder: (context) => const RewardsPage()),
-              );
-            },
-            tooltip: l10n.myRewards,
-          ),
-          const SizedBox(width: 8),
-          IconButton(
-            icon: const Icon(Icons.settings),
-            onPressed: () {
-              // TODO: Navigate to settings
-            },
-          ),
-        ],
       ),
       body: lessonsAsync.when(
         data: (lessons) {

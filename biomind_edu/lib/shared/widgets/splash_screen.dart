@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import '../../core/theme/app_colors.dart';
 
-/// Splash screen displayed while app is initializing
+/// Splash screen displayed while app is initializing with enhanced animations
 class SplashScreen extends StatefulWidget {
   final Future<void> Function() initializeApp;
   final Widget nextScreen;
@@ -16,39 +17,85 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen>
-    with SingleTickerProviderStateMixin {
-  late AnimationController _controller;
+    with TickerProviderStateMixin {
+  late AnimationController _fadeController;
+  late AnimationController _scaleController;
+  late AnimationController _rotationController;
+  late AnimationController _gradientController;
+
   late Animation<double> _fadeAnimation;
   late Animation<double> _scaleAnimation;
+  late Animation<double> _rotationAnimation;
 
   @override
   void initState() {
     super.initState();
 
-    // Setup animations
-    _controller = AnimationController(
-      duration: const Duration(milliseconds: 1500),
+    // Fade animation
+    _fadeController = AnimationController(
+      duration: const Duration(milliseconds: 800),
       vsync: this,
     );
 
+    // Scale animation with bounce
+    _scaleController = AnimationController(
+      duration: const Duration(milliseconds: 1200),
+      vsync: this,
+    );
+
+    // Rotation animation
+    _rotationController = AnimationController(
+      duration: const Duration(milliseconds: 1000),
+      vsync: this,
+    );
+
+    // Gradient background animation
+    _gradientController = AnimationController(
+      duration: const Duration(seconds: 3),
+      vsync: this,
+    )..repeat(reverse: true);
+
     _fadeAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
-      CurvedAnimation(
-        parent: _controller,
-        curve: const Interval(0.0, 0.5, curve: Curves.easeIn),
-      ),
+      CurvedAnimation(parent: _fadeController, curve: Curves.easeIn),
     );
 
-    _scaleAnimation = Tween<double>(begin: 0.8, end: 1.0).animate(
-      CurvedAnimation(
-        parent: _controller,
-        curve: const Interval(0.0, 0.5, curve: Curves.easeOutBack),
+    // Scale with bounce effect
+    _scaleAnimation = TweenSequence<double>([
+      TweenSequenceItem(
+        tween: Tween<double>(begin: 0.5, end: 1.2),
+        weight: 50,
       ),
-    );
+      TweenSequenceItem(
+        tween: Tween<double>(begin: 1.2, end: 1.0),
+        weight: 50,
+      ),
+    ]).animate(CurvedAnimation(
+      parent: _scaleController,
+      curve: Curves.elasticOut,
+    ));
 
-    // Start animation
-    _controller.forward();
+    // Subtle rotation
+    _rotationAnimation = TweenSequence<double>([
+      TweenSequenceItem(
+        tween: Tween<double>(begin: 0.0, end: 0.05),
+        weight: 50,
+      ),
+      TweenSequenceItem(
+        tween: Tween<double>(begin: 0.05, end: 0.0),
+        weight: 50,
+      ),
+    ]).animate(CurvedAnimation(
+      parent: _rotationController,
+      curve: Curves.easeInOut,
+    ));
 
-    // Initialize app and navigate
+    // Start animations
+    _fadeController.forward();
+    Future.delayed(const Duration(milliseconds: 200), () {
+      _scaleController.forward();
+      _rotationController.forward();
+    });
+
     _initializeAndNavigate();
   }
 
@@ -57,8 +104,9 @@ class _SplashScreenState extends State<SplashScreen>
       // Wait for initialization
       await widget.initializeApp();
 
-      // Wait for animation to finish
-      await _controller.forward();
+      // Wait for animations to finish
+      await _fadeController.forward();
+      await _scaleController.forward();
 
       // Wait a bit more to show the logo
       await Future<void>.delayed(const Duration(milliseconds: 500));
@@ -80,7 +128,6 @@ class _SplashScreenState extends State<SplashScreen>
       );
     } catch (e) {
       debugPrint('Error during initialization: $e');
-      // Still navigate even if there's an error
       if (mounted) {
         Navigator.of(context).pushReplacement(
           MaterialPageRoute<void>(builder: (_) => widget.nextScreen),
@@ -91,81 +138,134 @@ class _SplashScreenState extends State<SplashScreen>
 
   @override
   void dispose() {
-    _controller.dispose();
+    _fadeController.dispose();
+    _scaleController.dispose();
+    _rotationController.dispose();
+    _gradientController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFF7FBF1), // Light background
-      body: Center(
-        child: AnimatedBuilder(
-          animation: _controller,
-          builder: (context, child) {
-            return FadeTransition(
-              opacity: _fadeAnimation,
-              child: ScaleTransition(
-                scale: _scaleAnimation,
-                child: child,
+      body: AnimatedBuilder(
+        animation: _gradientController,
+        builder: (context, child) {
+          return Container(
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.lerp(
+                  Alignment.topLeft,
+                  Alignment.bottomLeft,
+                  _gradientController.value,
+                )!,
+                end: Alignment.lerp(
+                  Alignment.bottomRight,
+                  Alignment.topRight,
+                  _gradientController.value,
+                )!,
+                colors: const [
+                  Color(0xFFE3F2FD), // Light Blue
+                  Color(0xFFF3E5F5), // Light Purple
+                  Color(0xFFE0F2F1), // Light Teal
+                ],
               ),
-            );
-          },
+            ),
+            child: child,
+          );
+        },
+        child: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              // App Logo
-              Container(
-                width: 200,
-                height: 200,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(30),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withOpacity(0.1),
-                      blurRadius: 20,
-                      offset: const Offset(0, 10),
+              // Animated Logo
+              AnimatedBuilder(
+                animation: Listenable.merge([
+                  _fadeAnimation,
+                  _scaleAnimation,
+                  _rotationAnimation,
+                ]),
+                builder: (context, child) {
+                  return FadeTransition(
+                    opacity: _fadeAnimation,
+                    child: ScaleTransition(
+                      scale: _scaleAnimation,
+                      child: RotationTransition(
+                        turns: _rotationAnimation,
+                        child: child,
+                      ),
                     ),
-                  ],
-                ),
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(30),
-                  child: Image.asset(
-                    'assets/images/app_logo_splash.png',
-                    fit: BoxFit.contain,
+                  );
+                },
+                child: Container(
+                  width: 200,
+                  height: 200,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(30),
+                    boxShadow: [
+                      BoxShadow(
+                        color: AppColors.primary.withOpacity(0.3),
+                        blurRadius: 30,
+                        offset: const Offset(0, 10),
+                      ),
+                    ],
+                  ),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(30),
+                    child: Image.asset(
+                      'assets/images/app_logo_splash.png',
+                      fit: BoxFit.contain,
+                    ),
                   ),
                 ),
               ),
               const SizedBox(height: 32),
-              // App Name
-              const Text(
-                'BioMindEDU',
-                style: TextStyle(
-                  fontSize: 32,
-                  fontWeight: FontWeight.bold,
-                  color: Color(0xFF2E7D32), // Green
-                  letterSpacing: 1.2,
+              // App Name with gradient
+              FadeTransition(
+                opacity: _fadeAnimation,
+                child: ShaderMask(
+                  shaderCallback: (bounds) => LinearGradient(
+                    colors: [
+                      AppColors.primary,
+                      AppColors.secondary,
+                    ],
+                  ).createShader(bounds),
+                  child: const Text(
+                    'BioMindEDU',
+                    style: TextStyle(
+                      fontSize: 32,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                      letterSpacing: 1.2,
+                    ),
+                  ),
                 ),
               ),
               const SizedBox(height: 8),
               // Tagline
-              Text(
-                'Explore Biology!',
-                style: TextStyle(
-                  fontSize: 16,
-                  color: Colors.grey[600],
-                  letterSpacing: 0.5,
+              FadeTransition(
+                opacity: _fadeAnimation,
+                child: Text(
+                  'Explore Biology! 🔬✨',
+                  style: TextStyle(
+                    fontSize: 16,
+                    color: AppColors.textSecondary,
+                    letterSpacing: 0.5,
+                  ),
                 ),
               ),
               const SizedBox(height: 48),
               // Loading indicator
-              SizedBox(
-                width: 40,
-                height: 40,
-                child: CircularProgressIndicator(
-                  strokeWidth: 3,
-                  valueColor: AlwaysStoppedAnimation<Color>(
-                    const Color(0xFF4CAF50),
+              FadeTransition(
+                opacity: _fadeAnimation,
+                child: const SizedBox(
+                  width: 40,
+                  height: 40,
+                  child: CircularProgressIndicator(
+                    strokeWidth: 3,
+                    valueColor: AlwaysStoppedAnimation<Color>(
+                      AppColors.primary,
+                    ),
                   ),
                 ),
               ),
