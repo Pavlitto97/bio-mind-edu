@@ -43,6 +43,42 @@ String localizeKey(BuildContext context, String key) {
     case 'lessonsCellPartsCytoplasmDescription':
       return l10n.lessonsCellPartsCytoplasmDescription;
 
+    // Plant parts
+    case 'lessonsPlantPartsSeed':
+      return l10n.lessonsPlantPartsSeed;
+    case 'lessonsPlantPartsSeedDescription':
+      return l10n.lessonsPlantPartsSeedDescription;
+    case 'lessonsPlantPartsSprout':
+      return l10n.lessonsPlantPartsSprout;
+    case 'lessonsPlantPartsSproutDescription':
+      return l10n.lessonsPlantPartsSproutDescription;
+    case 'lessonsPlantPartsGrowth':
+      return l10n.lessonsPlantPartsGrowth;
+    case 'lessonsPlantPartsGrowthDescription':
+      return l10n.lessonsPlantPartsGrowthDescription;
+    case 'lessonsPlantPartsBloom':
+      return l10n.lessonsPlantPartsBloom;
+    case 'lessonsPlantPartsBloomDescription':
+      return l10n.lessonsPlantPartsBloomDescription;
+
+    // Heart parts
+    case 'lessonsHeartPartsLeftAtrium':
+      return l10n.lessonsHeartPartsLeftAtrium;
+    case 'lessonsHeartPartsLeftAtriumDescription':
+      return l10n.lessonsHeartPartsLeftAtriumDescription;
+    case 'lessonsHeartPartsLeftVentricle':
+      return l10n.lessonsHeartPartsLeftVentricle;
+    case 'lessonsHeartPartsLeftVentricleDescription':
+      return l10n.lessonsHeartPartsLeftVentricleDescription;
+    case 'lessonsHeartPartsRightAtrium':
+      return l10n.lessonsHeartPartsRightAtrium;
+    case 'lessonsHeartPartsRightAtriumDescription':
+      return l10n.lessonsHeartPartsRightAtriumDescription;
+    case 'lessonsHeartPartsRightVentricle':
+      return l10n.lessonsHeartPartsRightVentricle;
+    case 'lessonsHeartPartsRightVentricleDescription':
+      return l10n.lessonsHeartPartsRightVentricleDescription;
+
     default:
       return key;
   }

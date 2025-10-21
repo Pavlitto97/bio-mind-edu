@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../shared/models/lesson.dart';
+import '../../../shared/providers/deepgram_tts_provider.dart';
 
 /// Lesson Controls Overlay - Bottom controls for AR lesson
 ///
 /// Provides buttons for:
+/// - Replaying lesson introduction narration
 /// - Viewing annotations
 /// - Playing/pausing audio instructions
 /// - Completing lesson and moving to task
-class LessonControlsOverlay extends StatefulWidget {
+class LessonControlsOverlay extends ConsumerStatefulWidget {
   final Lesson lesson;
   final bool isArMode;
   final void Function(LessonAnnotation annotation) onAnnotationTap;
@@ -22,14 +25,18 @@ class LessonControlsOverlay extends StatefulWidget {
   });
 
   @override
-  State<LessonControlsOverlay> createState() => _LessonControlsOverlayState();
+  ConsumerState<LessonControlsOverlay> createState() =>
+      _LessonControlsOverlayState();
 }
 
-class _LessonControlsOverlayState extends State<LessonControlsOverlay> {
+class _LessonControlsOverlayState
+    extends ConsumerState<LessonControlsOverlay> {
   bool _showAnnotations = false;
 
   @override
   Widget build(BuildContext context) {
+    final ttsState = ref.watch(deepgramTtsStateProvider);
+
     return Container(
       decoration: BoxDecoration(
         gradient: LinearGradient(
@@ -52,6 +59,20 @@ class _LessonControlsOverlayState extends State<LessonControlsOverlay> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
+              // Replay introduction
+              _buildControlButton(
+                icon: ttsState.isSpeaking ? Icons.volume_up : Icons.replay,
+                label: 'Replay',
+                onPressed: ttsState.isSpeaking ? () {} : () {
+                  // Play lesson introduction using Deepgram
+                  ref.read(deepgramTtsStateProvider.notifier).speakIntro(
+                    context: context,
+                    lessonId: widget.lesson.id,
+                  );
+                },
+                isEnabled: !ttsState.isSpeaking,
+              ),
+
               // Annotations toggle
               _buildControlButton(
                 icon: _showAnnotations ? Icons.expand_more : Icons.info_outline,
@@ -61,6 +82,7 @@ class _LessonControlsOverlayState extends State<LessonControlsOverlay> {
                     _showAnnotations = !_showAnnotations;
                   });
                 },
+                isEnabled: true,
               ),
 
               // Continue to task
@@ -154,23 +176,35 @@ class _LessonControlsOverlayState extends State<LessonControlsOverlay> {
     required IconData icon,
     required String label,
     required VoidCallback onPressed,
+    bool isEnabled = true,
   }) {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
         Container(
           decoration: BoxDecoration(
-            color: Colors.white.withOpacity(0.15),
+            color: isEnabled 
+              ? Colors.white.withOpacity(0.15)
+              : Colors.white.withOpacity(0.05),
             shape: BoxShape.circle,
           ),
           child: IconButton(
-            icon: Icon(icon, color: Colors.white),
+            icon: Icon(
+              icon, 
+              color: isEnabled ? Colors.white : Colors.white.withOpacity(0.5),
+            ),
             iconSize: 28,
-            onPressed: onPressed,
+            onPressed: isEnabled ? onPressed : null,
           ),
         ),
         const SizedBox(height: 4),
-        Text(label, style: const TextStyle(color: Colors.white, fontSize: 12)),
+        Text(
+          label, 
+          style: TextStyle(
+            color: isEnabled ? Colors.white : Colors.white.withOpacity(0.5), 
+            fontSize: 12,
+          ),
+        ),
       ],
     );
   }

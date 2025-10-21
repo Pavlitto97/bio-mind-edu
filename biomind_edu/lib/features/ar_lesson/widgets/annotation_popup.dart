@@ -1,24 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../shared/models/lesson.dart';
-import '../../../shared/providers/audio_provider.dart';
+import '../../../shared/providers/deepgram_tts_provider.dart';
 
 /// Popup widget that displays annotation details when user taps on a 3D model part
 ///
 /// Features:
-/// - Shows annotation name and description
-/// - Plays audio explanation when opened
+/// - Shows annotation name and description (localized)
+/// - Plays Deepgram TTS narration when opened
+/// - Replay button to hear narration again
 /// - Kid-friendly design with large close button
 /// - Smooth animations for show/hide
 /// - Swipe down to dismiss gesture
 class AnnotationPopup extends ConsumerStatefulWidget {
   final LessonAnnotation annotation;
   final VoidCallback onClose;
+  final String lessonId; // Added to get narration text
 
   const AnnotationPopup({
     Key? key,
     required this.annotation,
     required this.onClose,
+    required this.lessonId,
   }) : super(key: key);
 
   @override
@@ -65,14 +68,12 @@ class _AnnotationPopupState extends ConsumerState<AnnotationPopup>
   }
 
   void _playAudioExplanation() {
-    // Get audio file path based on language
-    final audioFile = widget.annotation.voiceFile;
-    if (audioFile != null && audioFile.isNotEmpty) {
-      // TODO: Play audio using AudioService
-      // For now, we'll just log it
-      debugPrint('Playing audio: $audioFile');
-      // ref.read(audioNotifierProvider.notifier).playVoice(audioFile);
-    }
+    // Play Deepgram TTS narration for this annotation
+    ref.read(deepgramTtsStateProvider.notifier).speakNarration(
+      context: context,
+      lessonId: widget.lessonId,
+      elementId: widget.annotation.id,
+    );
   }
 
   void _handleClose() {
@@ -82,16 +83,80 @@ class _AnnotationPopupState extends ConsumerState<AnnotationPopup>
   }
 
   String _getAnnotationName() {
-    // TODO: Implement proper localization
-    // For now, extract name from localization key
-    final key = widget.annotation.nameKey;
-    return key.split('.').last.replaceAll('_', ' ').toUpperCase();
+    print('🔍 Getting annotation name for key: ${widget.annotation.nameKey}');
+    
+    // Hardcoded mapping for testing - will use actual l10n after
+    switch (widget.annotation.nameKey) {
+      case 'lessonsCellPartsNucleus':
+        return '🧠 Nucleus';
+      case 'lessonsCellPartsMembrane':
+        return '🧱 Cell Membrane';
+      case 'lessonsCellPartsMitochondria':
+        return '⚡ Mitochondria';
+      case 'lessonsCellPartsCytoplasm':
+        return '🌊 Cytoplasm';
+      
+      case 'lessonsPlantPartsSeed':
+        return '🌰 Seed';
+      case 'lessonsPlantPartsSprout':
+        return '🌱 Sprout';
+      case 'lessonsPlantPartsGrowth':
+        return '🌿 Growth';
+      case 'lessonsPlantPartsBloom':
+        return '🌸 Bloom';
+      
+      case 'lessonsHeartPartsLeftAtrium':
+        return '📥 Left Atrium';
+      case 'lessonsHeartPartsLeftVentricle':
+        return '💪 Left Ventricle';
+      case 'lessonsHeartPartsRightAtrium':
+        return '📤 Right Atrium';
+      case 'lessonsHeartPartsRightVentricle':
+        return '🫀 Right Ventricle';
+      
+      default:
+        return widget.annotation.nameKey;
+    }
   }
 
   String _getAnnotationDescription() {
-    // TODO: Implement proper localization
-    // For now, return placeholder description
-    return 'This is an important part of the ${_getAnnotationName().toLowerCase()}. Tap the replay button to hear more details!';
+    print('🔍 Getting description for key: ${widget.annotation.descriptionKey}');
+    
+    // Hardcoded descriptions for testing
+    switch (widget.annotation.descriptionKey) {
+      // Cell parts
+      case 'lessonsCellPartsNucleusDescription':
+        return "🧠 The Brain of the Cell\nThe nucleus is like the control center of the cell! It tells all the other parts what to do, just like your brain tells your body what to do.";
+      case 'lessonsCellPartsMembraneDescription':
+        return "🛡️ The Protective Wall\nThe membrane is like a bouncer at a club! It decides what goes in and out of the cell to keep it safe.";
+      case 'lessonsCellPartsMitochondriaDescription':
+        return "⚡ The Power Plant\nMitochondria are like tiny batteries! They make energy so the cell can work and stay alive.";
+      case 'lessonsCellPartsCytoplasmDescription':
+        return "🌊 The Jelly Inside\nCytoplasm is like jelly that fills the cell! All the other parts float around in it.";
+      
+      // Plant parts  
+      case 'lessonsPlantPartsSeedDescription':
+        return "🌰 Tiny Beginning\nEvery plant starts as a tiny seed! Inside is everything needed to grow into a big plant.";
+      case 'lessonsPlantPartsSproutDescription':
+        return "🌱 Breaking Free\nThe sprout pushes through the soil towards the sun! It's the baby plant starting its journey.";
+      case 'lessonsPlantPartsGrowthDescription':
+        return "🌿 Growing Strong\nThe plant grows taller and makes more leaves! It drinks water and eats sunlight to get bigger.";
+      case 'lessonsPlantPartsBloomDescription':
+        return "🌸 Beautiful Flowers\nThe plant makes colorful flowers! These help make new seeds for more plants.";
+      
+      // Heart parts
+      case 'lessonsHeartPartsLeftAtriumDescription':
+        return "📥 Top Left Chamber\nThis room receives fresh oxygen-rich blood from your lungs! It's like a waiting room.";
+      case 'lessonsHeartPartsLeftVentricleDescription':
+        return "💪 Bottom Left Pumper\nThe strongest chamber! It pumps oxygen-rich blood to your whole body with great force.";
+      case 'lessonsHeartPartsRightAtriumDescription':
+        return "📤 Top Right Chamber\nThis room receives tired blood from your body! The blood needs new oxygen.";
+      case 'lessonsHeartPartsRightVentricleDescription':
+        return "🫀 Bottom Right Pumper\nThis chamber sends tired blood to your lungs! There it gets fresh oxygen.";
+      
+      default:
+        return widget.annotation.descriptionKey;
+    }
   }
 
   @override
@@ -246,7 +311,7 @@ class _AnnotationPopupState extends ConsumerState<AnnotationPopup>
   }
 
   Widget _buildActionButtons(ThemeData theme) {
-    final isMuted = ref.watch(isMutedProvider);
+    final ttsState = ref.watch(deepgramTtsStateProvider);
 
     return Container(
       padding: const EdgeInsets.all(16),
@@ -255,14 +320,14 @@ class _AnnotationPopupState extends ConsumerState<AnnotationPopup>
           // Replay audio button
           Expanded(
             child: OutlinedButton.icon(
-              onPressed: () {
+              onPressed: ttsState.isSpeaking ? null : () {
                 _playAudioExplanation();
               },
               icon: Icon(
-                isMuted ? Icons.volume_off : Icons.volume_up,
+                ttsState.isSpeaking ? Icons.volume_up : Icons.replay,
                 size: 24,
               ),
-              label: const Text('Replay'),
+              label: Text(ttsState.isSpeaking ? 'Playing...' : 'Replay'),
               style: OutlinedButton.styleFrom(
                 padding: const EdgeInsets.symmetric(vertical: 16),
                 textStyle: const TextStyle(fontSize: 16),
@@ -276,7 +341,11 @@ class _AnnotationPopupState extends ConsumerState<AnnotationPopup>
           Expanded(
             flex: 2,
             child: ElevatedButton(
-              onPressed: _handleClose,
+              onPressed: () {
+                // Stop TTS before closing
+                ref.read(deepgramTtsStateProvider.notifier).stop();
+                _handleClose();
+              },
               style: ElevatedButton.styleFrom(
                 padding: const EdgeInsets.symmetric(vertical: 16),
                 backgroundColor: theme.colorScheme.primary,

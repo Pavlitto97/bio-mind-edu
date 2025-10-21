@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../shared/models/lesson.dart';
 import '../../../shared/providers/lessons_provider.dart';
 import '../../../shared/providers/audio_provider.dart';
+import '../../../shared/providers/deepgram_tts_provider.dart';
 import '../../../core/services/ar_manager.dart';
 import '../../../core/services/audio_service.dart';
 import '../widgets/ar_view_widget.dart';
@@ -62,9 +63,15 @@ class _ARLessonPageState extends ConsumerState<ARLessonPage> {
       }
 
       // Play welcome audio
-      // TODO: Play actual audio file from lesson
-      // final audioNotifier = ref.read(audioNotifierProvider.notifier);
-      // await audioNotifier.playVoice('welcome_${widget.lessonId}.mp3');
+      // Play intro narration via Deepgram TTS
+      if (mounted) {
+        // Initialize and play introduction
+        await ref.read(deepgramTtsStateProvider.notifier).initialize();
+        await ref.read(deepgramTtsStateProvider.notifier).speakIntro(
+          context: context,
+          lessonId: widget.lessonId,
+        );
+      }
 
       setState(() {
         _isLoading = false;
@@ -82,6 +89,13 @@ class _ARLessonPageState extends ConsumerState<ARLessonPage> {
     // Clean up AR session
     final arManager = ARManager();
     arManager.dispose();
+
+    // Stop TTS
+    try {
+      ref.read(deepgramTtsStateProvider.notifier).stop();
+    } catch (_) {
+      // Ignore errors during dispose
+    }
 
     // Stop any playing audio without touching Riverpod ref during dispose
     // Using the singleton AudioService directly avoids "ref after dispose" issues
@@ -315,6 +329,7 @@ class _ARLessonPageState extends ConsumerState<ARLessonPage> {
       barrierColor: Colors.transparent, // Use popup's own background
       builder: (context) => AnnotationPopup(
         annotation: annotation,
+        lessonId: widget.lessonId, // Pass lesson ID for TTS
         onClose: () {
           Navigator.of(context).pop();
         },
