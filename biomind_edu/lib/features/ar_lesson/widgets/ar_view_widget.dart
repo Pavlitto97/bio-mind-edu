@@ -27,7 +27,9 @@ class ARViewWidget extends StatefulWidget {
 
 class _ARViewWidgetState extends State<ARViewWidget> {
   bool _isModelLoaded = false;
+  bool _isLoading = true;
   String? _placementHint;
+  String? _errorMessage;
 
   @override
   void initState() {
@@ -37,12 +39,17 @@ class _ARViewWidgetState extends State<ARViewWidget> {
 
   Future<void> _loadModel() async {
     try {
-      // TODO: Implement actual 3D model loading
-      // For now, simulate loading delay
-      await Future<void>.delayed(const Duration(seconds: 2));
+      setState(() {
+        _isLoading = true;
+        _errorMessage = null;
+      });
+
+      // Simulate model loading delay
+      await Future<void>.delayed(const Duration(seconds: 1));
 
       setState(() {
         _isModelLoaded = true;
+        _isLoading = false;
         _placementHint = widget.isArSupported
             ? 'Tap to place model'
             : 'Swipe to rotate';
@@ -50,6 +57,10 @@ class _ARViewWidgetState extends State<ARViewWidget> {
 
       widget.onModelLoaded();
     } catch (e) {
+      setState(() {
+        _isLoading = false;
+        _errorMessage = 'Failed to load 3D model: $e';
+      });
       widget.onError('Failed to load 3D model: $e');
     }
   }
@@ -150,6 +161,7 @@ class _ARViewWidgetState extends State<ARViewWidget> {
 
   Widget _buildFallback3DView() {
     // Build model path from lesson's modelFileName
+    // For web, use absolute path from assets folder
     final modelPath = 'assets/3d_models/${widget.lesson.modelFileName}';
 
     return Stack(
@@ -160,32 +172,88 @@ class _ARViewWidgetState extends State<ARViewWidget> {
           alt: localizeKey(context, widget.lesson.titleKey),
           ar: false, // Disable AR button in fallback mode
           autoRotate: true,
-          autoRotateDelay: 0,
-          rotationPerSecond: '30deg',
+          autoRotateDelay: 1000,
+          rotationPerSecond: '20deg',
           cameraControls: true,
           touchAction: TouchAction.panY,
           disableZoom: false,
           backgroundColor: const Color(0xFF1A1A1A),
           loading: Loading.eager,
           reveal: Reveal.auto,
-          // Lighting
-          shadowIntensity: 0.7,
-          shadowSoftness: 0.5,
-          exposure: 1.0,
-          // Camera position
-          cameraOrbit: 'auto auto 3m',
-          minCameraOrbit: 'auto auto 2m',
-          maxCameraOrbit: 'auto auto 10m',
+          // Lighting - улучшенное освещение для лучшей видимости
+          shadowIntensity: 1.0,
+          shadowSoftness: 1.0,
+          exposure: 1.2,
+          // Camera position - ближе к модели
+          cameraOrbit: '0deg 75deg 2.5m',
+          minCameraOrbit: 'auto auto 1.5m',
+          maxCameraOrbit: 'auto auto 8m',
           // Field of view
           fieldOfView: '45deg',
           minFieldOfView: '25deg',
           maxFieldOfView: '75deg',
           // Interaction
           interpolationDecay: 200,
+          // Environment and lighting
+          environmentImage: 'neutral',
+          skyboxImage: null,
         ),
 
+        // Loading indicator
+        if (_isLoading)
+          Container(
+            color: Colors.black.withOpacity(0.7),
+            child: const Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  CircularProgressIndicator(
+                    valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                  ),
+                  SizedBox(height: 16),
+                  Text(
+                    'Loading 3D model...',
+                    style: TextStyle(color: Colors.white, fontSize: 16),
+                  ),
+                ],
+              ),
+            ),
+          ),
+
+        // Error message
+        if (_errorMessage != null)
+          Container(
+            color: Colors.black.withOpacity(0.8),
+            child: Center(
+              child: Padding(
+                padding: const EdgeInsets.all(24.0),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Icon(
+                      Icons.error_outline,
+                      color: Colors.red,
+                      size: 64,
+                    ),
+                    const SizedBox(height: 16),
+                    Text(
+                      _errorMessage!,
+                      style: const TextStyle(color: Colors.white, fontSize: 16),
+                      textAlign: TextAlign.center,
+                    ),
+                    const SizedBox(height: 24),
+                    ElevatedButton(
+                      onPressed: _loadModel,
+                      child: const Text('Retry'),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+
         // Touch gesture hint
-        if (_placementHint != null)
+        if (_placementHint != null && !_isLoading && _errorMessage == null)
           Positioned(
             bottom: 100,
             left: 0,
