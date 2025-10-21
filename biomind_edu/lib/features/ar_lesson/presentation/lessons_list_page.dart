@@ -27,10 +27,7 @@ class LessonsListPage extends ConsumerWidget {
             gradient: LinearGradient(
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,
-              colors: [
-                AppColors.primary,
-                AppColors.primaryDark,
-              ],
+              colors: [AppColors.primary, AppColors.primaryDark],
             ),
           ),
           child: AppBar(
@@ -47,7 +44,9 @@ class LessonsListPage extends ConsumerWidget {
                 icon: Icons.analytics,
                 onPressed: () {
                   Navigator.of(context).push(
-                    FadePageRoute<void>(builder: (context) => const ProgressPage()),
+                    FadePageRoute<void>(
+                      builder: (context) => const ProgressPage(),
+                    ),
                   );
                 },
                 tooltip: l10n.progressTitle,
@@ -57,7 +56,9 @@ class LessonsListPage extends ConsumerWidget {
                 icon: Icons.emoji_events,
                 onPressed: () {
                   Navigator.of(context).push(
-                    ScalePageRoute<void>(builder: (context) => const RewardsPage()),
+                    ScalePageRoute<void>(
+                      builder: (context) => const RewardsPage(),
+                    ),
                   );
                 },
                 tooltip: l10n.myRewards,

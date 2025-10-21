@@ -13,13 +13,13 @@ final localStorageServiceProvider = Provider<LocalStorageService>((ref) {
 final lessonsProvider = FutureProvider<List<Lesson>>((ref) async {
   final storage = ref.watch(localStorageServiceProvider);
   final allLessons = SampleLessonData.allLessons;
-  
+
   // Check each lesson's prerequisites and update lock status
   final updatedLessons = <Lesson>[];
-  
+
   for (final lesson in allLessons) {
     bool shouldLock = false;
-    
+
     // Check if all prerequisites are completed
     if (lesson.prerequisites.isNotEmpty) {
       for (final prereqId in lesson.prerequisites) {
@@ -31,11 +31,11 @@ final lessonsProvider = FutureProvider<List<Lesson>>((ref) async {
         }
       }
     }
-    
+
     // Create updated lesson with correct lock status
     updatedLessons.add(lesson.copyWith(isLocked: shouldLock));
   }
-  
+
   return updatedLessons;
 });
 

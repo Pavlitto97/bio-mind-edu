@@ -58,7 +58,11 @@ class DraggableTaskItem extends StatelessWidget {
           children: [
             // Icon or image
             if (item.iconName != null)
-              Icon(_getIconData(item.iconName!), size: 48, color: theme.colorScheme.primary)
+              Icon(
+                _getIconData(item.iconName!),
+                size: 48,
+                color: theme.colorScheme.primary,
+              )
             else if (item.imagePath != null)
               Image.asset(
                 item.imagePath!,
@@ -74,7 +78,11 @@ class DraggableTaskItem extends StatelessWidget {
                 },
               )
             else
-              Icon(Icons.drag_indicator, size: 48, color: theme.colorScheme.primary),
+              Icon(
+                Icons.drag_indicator,
+                size: 48,
+                color: theme.colorScheme.primary,
+              ),
 
             const SizedBox(height: 4),
 

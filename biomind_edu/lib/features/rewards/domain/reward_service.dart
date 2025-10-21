@@ -48,17 +48,17 @@ class RewardService {
 
   /// Get all rewards
   List<Reward> getAllRewards() {
-  return _rewardsBox?.values.toList() ?? const [];
+    return _rewardsBox?.values.toList() ?? const [];
   }
 
   /// Get unlocked rewards
   List<Reward> getUnlockedRewards() {
-  return _rewardsBox?.values.where((r) => r.isUnlocked).toList() ?? const [];
+    return _rewardsBox?.values.where((r) => r.isUnlocked).toList() ?? const [];
   }
 
   /// Get locked rewards
   List<Reward> getLockedRewards() {
-  return _rewardsBox?.values.where((r) => !r.isUnlocked).toList() ?? const [];
+    return _rewardsBox?.values.where((r) => !r.isUnlocked).toList() ?? const [];
   }
 
   /// Check if a reward is unlocked
@@ -69,7 +69,7 @@ class RewardService {
 
   /// Unlock a reward
   Future<bool> unlockReward(String rewardId) async {
-  final reward = _rewardsBox?.get(rewardId);
+    final reward = _rewardsBox?.get(rewardId);
     if (reward == null) return false;
 
     if (reward.isUnlocked) {
@@ -81,7 +81,7 @@ class RewardService {
       isUnlocked: true,
       unlockedAt: DateTime.now(),
     );
-  await _rewardsBox!.put(rewardId, unlockedReward);
+    await _rewardsBox!.put(rewardId, unlockedReward);
 
     // Update user profile
     await _incrementUserRewards(rewardId);
@@ -96,7 +96,7 @@ class RewardService {
     if (reward != null) {
       final unlocked = await unlockReward(reward.id);
       if (unlocked) {
-  return _rewardsBox!.get(reward.id);
+        return _rewardsBox!.get(reward.id);
       }
     }
 
@@ -116,7 +116,7 @@ class RewardService {
 
   /// Get user profile
   UserProfile? getUserProfile() {
-  return _userProfileBox?.get('default_user');
+    return _userProfileBox?.get('default_user');
   }
 
   /// Update user profile with new stats
@@ -141,7 +141,7 @@ class RewardService {
       lastActiveAt: DateTime.now(),
     );
 
-  await _userProfileBox!.put('default_user', updatedProfile);
+    await _userProfileBox!.put('default_user', updatedProfile);
   }
 
   /// Internal: Increment user rewards count
@@ -157,17 +157,17 @@ class RewardService {
       lastActiveAt: DateTime.now(),
     );
 
-  await _userProfileBox!.put('default_user', updatedProfile);
+    await _userProfileBox!.put('default_user', updatedProfile);
   }
 
   /// Get reward by ID
   Reward? getRewardById(String rewardId) {
-  return _rewardsBox?.get(rewardId);
+    return _rewardsBox?.get(rewardId);
   }
 
   /// Get total rewards count
   int getTotalRewardsCount() {
-  return _rewardsBox?.length ?? 0;
+    return _rewardsBox?.length ?? 0;
   }
 
   /// Get unlocked rewards count

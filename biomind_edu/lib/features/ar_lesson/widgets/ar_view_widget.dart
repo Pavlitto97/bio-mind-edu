@@ -151,7 +151,7 @@ class _ARViewWidgetState extends State<ARViewWidget> {
   Widget _buildFallback3DView() {
     // Build model path from lesson's modelFileName
     final modelPath = 'assets/3d_models/${widget.lesson.modelFileName}';
-    
+
     return Stack(
       children: [
         // 3D Model Viewer using model_viewer_plus

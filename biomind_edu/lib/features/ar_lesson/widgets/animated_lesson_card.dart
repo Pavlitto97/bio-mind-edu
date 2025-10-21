@@ -41,7 +41,7 @@ class _AnimatedLessonCardState extends ConsumerState<AnimatedLessonCard>
   late AnimationController _controller;
   late Animation<double> _scaleAnimation;
   late Animation<Offset> _slideAnimation;
-  
+
   late AnimationController _shimmerController;
   late Animation<double> _shimmerAnimation;
 
@@ -70,13 +70,9 @@ class _AnimatedLessonCardState extends ConsumerState<AnimatedLessonCard>
       duration: const Duration(milliseconds: 2000),
     );
 
-    _shimmerAnimation = Tween<double>(
-      begin: -2.0,
-      end: 2.0,
-    ).animate(CurvedAnimation(
-      parent: _shimmerController,
-      curve: Curves.easeInOut,
-    ));
+    _shimmerAnimation = Tween<double>(begin: -2.0, end: 2.0).animate(
+      CurvedAnimation(parent: _shimmerController, curve: Curves.easeInOut),
+    );
 
     // Start entrance animation
     _controller.forward();
@@ -99,7 +95,7 @@ class _AnimatedLessonCardState extends ConsumerState<AnimatedLessonCard>
 
     // Check if this lesson is newly unlocked
     final isNewlyUnlocked = newlyUnlockedLessons.contains(widget.lessonId);
-    
+
     // Start shimmer animation if newly unlocked
     if (isNewlyUnlocked && !_shimmerController.isAnimating) {
       _shimmerController.repeat();
@@ -150,8 +146,8 @@ class _AnimatedLessonCardState extends ConsumerState<AnimatedLessonCard>
               side: isNewlyUnlocked
                   ? BorderSide(color: AppColors.accentOrange, width: 2)
                   : isCompleted
-                      ? BorderSide(color: AppColors.success, width: 2)
-                      : BorderSide.none,
+                  ? BorderSide(color: AppColors.success, width: 2)
+                  : BorderSide.none,
             ),
             child: InkWell(
               onTap: widget.isLocked ? null : widget.onTap,
@@ -198,15 +194,26 @@ class _AnimatedLessonCardState extends ConsumerState<AnimatedLessonCard>
                                         end: Alignment.bottomRight,
                                         stops: [
                                           0.0,
-                                          (_shimmerAnimation.value - 0.3).clamp(0.0, 1.0),
-                                          _shimmerAnimation.value.clamp(0.0, 1.0),
-                                          (_shimmerAnimation.value + 0.3).clamp(0.0, 1.0),
+                                          (_shimmerAnimation.value - 0.3).clamp(
+                                            0.0,
+                                            1.0,
+                                          ),
+                                          _shimmerAnimation.value.clamp(
+                                            0.0,
+                                            1.0,
+                                          ),
+                                          (_shimmerAnimation.value + 0.3).clamp(
+                                            0.0,
+                                            1.0,
+                                          ),
                                           1.0,
                                         ],
                                         colors: [
                                           Colors.transparent,
                                           Colors.transparent,
-                                          AppColors.accentOrange.withOpacity(0.3),
+                                          AppColors.accentOrange.withOpacity(
+                                            0.3,
+                                          ),
                                           Colors.transparent,
                                           Colors.transparent,
                                         ],
@@ -244,7 +251,8 @@ class _AnimatedLessonCardState extends ConsumerState<AnimatedLessonCard>
                                     borderRadius: BorderRadius.circular(12),
                                     boxShadow: [
                                       BoxShadow(
-                                        color: AppColors.accentOrange.withOpacity(0.5),
+                                        color: AppColors.accentOrange
+                                            .withOpacity(0.5),
                                         blurRadius: 8,
                                         spreadRadius: 2,
                                       ),
@@ -273,7 +281,9 @@ class _AnimatedLessonCardState extends ConsumerState<AnimatedLessonCard>
                               ),
 
                             // Completion badge
-                            if (isCompleted && !widget.isLocked && !isNewlyUnlocked)
+                            if (isCompleted &&
+                                !widget.isLocked &&
+                                !isNewlyUnlocked)
                               Positioned(
                                 top: 8,
                                 right: 8,

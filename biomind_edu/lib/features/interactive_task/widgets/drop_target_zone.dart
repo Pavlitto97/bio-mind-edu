@@ -56,11 +56,13 @@ class _DropTargetZoneState extends State<DropTargetZone> {
           height: height,
           decoration: BoxDecoration(
             color: Colors.transparent,
-            border: _isHovering ? Border.all(
-              color: theme.colorScheme.primary,
-              width: 3,
-              strokeAlign: BorderSide.strokeAlignInside,
-            ) : null,
+            border: _isHovering
+                ? Border.all(
+                    color: theme.colorScheme.primary,
+                    width: 3,
+                    strokeAlign: BorderSide.strokeAlignInside,
+                  )
+                : null,
             borderRadius: isCircle ? null : BorderRadius.circular(12),
             shape: isCircle ? BoxShape.circle : BoxShape.rectangle,
           ),
@@ -94,13 +96,15 @@ class _DropTargetZoneState extends State<DropTargetZone> {
                       ),
                     ),
                   ),
-                
+
                 // Success aura/glow effect when occupied
                 if (widget.isOccupied && widget.target.imagePath != null)
                   Positioned.fill(
                     child: Container(
                       decoration: BoxDecoration(
-                        borderRadius: isCircle ? null : BorderRadius.circular(12),
+                        borderRadius: isCircle
+                            ? null
+                            : BorderRadius.circular(12),
                         shape: isCircle ? BoxShape.circle : BoxShape.rectangle,
                         boxShadow: [
                           BoxShadow(
@@ -117,7 +121,7 @@ class _DropTargetZoneState extends State<DropTargetZone> {
                       ),
                     ),
                   ),
-                
+
                 // Label (only when not occupied and no image)
                 if (!widget.isOccupied && widget.target.imagePath == null)
                   _buildLabel(theme),

@@ -7,7 +7,7 @@ class NewlyUnlockedNotifier extends StateNotifier<Set<String>> {
   /// Mark a lesson as newly unlocked (for highlighting)
   void markAsNewlyUnlocked(String lessonId) {
     state = {...state, lessonId};
-    
+
     // Auto-remove after 10 seconds
     Future.delayed(const Duration(seconds: 10), () {
       if (mounted) {
@@ -30,5 +30,5 @@ class NewlyUnlockedNotifier extends StateNotifier<Set<String>> {
 /// Provider for newly unlocked lessons
 final newlyUnlockedProvider =
     StateNotifierProvider<NewlyUnlockedNotifier, Set<String>>((ref) {
-  return NewlyUnlockedNotifier();
-});
+      return NewlyUnlockedNotifier();
+    });

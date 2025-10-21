@@ -8,7 +8,7 @@ class GradientContainer extends StatelessWidget {
   final AlignmentGeometry end;
   final BorderRadius? borderRadius;
   final EdgeInsetsGeometry? padding;
-  
+
   const GradientContainer({
     super.key,
     required this.child,
@@ -18,17 +18,13 @@ class GradientContainer extends StatelessWidget {
     this.borderRadius,
     this.padding,
   });
-  
+
   @override
   Widget build(BuildContext context) {
     return Container(
       padding: padding,
       decoration: BoxDecoration(
-        gradient: LinearGradient(
-          colors: colors,
-          begin: begin,
-          end: end,
-        ),
+        gradient: LinearGradient(colors: colors, begin: begin, end: end),
         borderRadius: borderRadius,
       ),
       child: child,
@@ -44,7 +40,7 @@ class AnimatedGradientContainer extends StatefulWidget {
   final Curve curve;
   final BorderRadius? borderRadius;
   final EdgeInsetsGeometry? padding;
-  
+
   const AnimatedGradientContainer({
     super.key,
     required this.child,
@@ -54,30 +50,29 @@ class AnimatedGradientContainer extends StatefulWidget {
     this.borderRadius,
     this.padding,
   });
-  
+
   @override
-  State<AnimatedGradientContainer> createState() => _AnimatedGradientContainerState();
+  State<AnimatedGradientContainer> createState() =>
+      _AnimatedGradientContainerState();
 }
 
 class _AnimatedGradientContainerState extends State<AnimatedGradientContainer>
     with SingleTickerProviderStateMixin {
   late AnimationController _controller;
-  
+
   @override
   void initState() {
     super.initState();
-    _controller = AnimationController(
-      duration: widget.duration,
-      vsync: this,
-    )..repeat(reverse: true);
+    _controller = AnimationController(duration: widget.duration, vsync: this)
+      ..repeat(reverse: true);
   }
-  
+
   @override
   void dispose() {
     _controller.dispose();
     super.dispose();
   }
-  
+
   @override
   Widget build(BuildContext context) {
     return AnimatedBuilder(

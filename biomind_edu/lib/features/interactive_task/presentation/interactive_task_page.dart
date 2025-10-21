@@ -159,7 +159,7 @@ class _InteractiveTaskPageState extends ConsumerState<InteractiveTaskPage> {
         minCorrectToPass: 2,
       );
     }
-    
+
     // Default: Cell task
     return const InteractiveTask(
       id: 'cell_drag_drop',
@@ -370,7 +370,7 @@ class _InteractiveTaskPageState extends ConsumerState<InteractiveTaskPage> {
 
   void _showCompletionDialog(TaskResult result) {
     final stars = _calculateStars(result);
-    
+
     showDialog<void>(
       context: context,
       barrierDismissible: false,
@@ -406,11 +406,18 @@ class _InteractiveTaskPageState extends ConsumerState<InteractiveTaskPage> {
                 decoration: BoxDecoration(
                   color: const Color(0xFFE3F2FD), // Light Blue
                   borderRadius: BorderRadius.circular(12),
-                  border: Border.all(color: const Color(0xFF2196F3), width: 2), // Blue
+                  border: Border.all(
+                    color: const Color(0xFF2196F3),
+                    width: 2,
+                  ), // Blue
                 ),
                 child: Column(
                   children: [
-                    const Icon(Icons.emoji_events, color: Colors.amber, size: 48),
+                    const Icon(
+                      Icons.emoji_events,
+                      color: Colors.amber,
+                      size: 48,
+                    ),
                     const SizedBox(height: 8),
                     const Text(
                       '🏆 Achievement Unlocked!',
@@ -423,7 +430,10 @@ class _InteractiveTaskPageState extends ConsumerState<InteractiveTaskPage> {
                     const SizedBox(height: 4),
                     Text(
                       'Next lesson unlocked!',
-                      style: TextStyle(fontSize: 14, color: Colors.grey.shade700),
+                      style: TextStyle(
+                        fontSize: 14,
+                        color: Colors.grey.shade700,
+                      ),
                     ),
                   ],
                 ),
@@ -500,7 +510,7 @@ class _InteractiveTaskPageState extends ConsumerState<InteractiveTaskPage> {
   void _navigateBack() {
     // Mark next lesson as newly unlocked for highlighting
     _markNextLessonAsUnlocked();
-    
+
     // Log current lesson progress to verify it was saved
     final storage = LocalStorageService();
     final progress = storage.getProgress(widget.lessonId);
@@ -508,10 +518,10 @@ class _InteractiveTaskPageState extends ConsumerState<InteractiveTaskPage> {
     debugPrint('  Lesson ID: ${widget.lessonId}');
     debugPrint('  Task Completed: ${progress?.taskCompleted}');
     debugPrint('  Status: ${progress?.status}');
-    
+
     // Invalidate lessons provider to refresh unlock status
     ref.invalidate(lessonsProvider);
-    
+
     // Return to the home screen (pop until we reach the lessons list)
     Navigator.of(context).popUntil((route) => route.isFirst);
   }
@@ -526,11 +536,13 @@ class _InteractiveTaskPageState extends ConsumerState<InteractiveTaskPage> {
 
     // Find current lesson index
     final currentIndex = lessons.indexWhere((l) => l.id == widget.lessonId);
-    
+
     // If there's a next lesson, mark it as newly unlocked
     if (currentIndex >= 0 && currentIndex < lessons.length - 1) {
       final nextLesson = lessons[currentIndex + 1];
-      ref.read(newlyUnlockedProvider.notifier).markAsNewlyUnlocked(nextLesson.id);
+      ref
+          .read(newlyUnlockedProvider.notifier)
+          .markAsNewlyUnlocked(nextLesson.id);
     }
   }
 
@@ -707,7 +719,7 @@ class _InteractiveTaskPageState extends ConsumerState<InteractiveTaskPage> {
           if (isCorrect) {
             final targetId = _userAnswers[item.id];
             final target = _task!.targets.firstWhere((t) => t.id == targetId);
-            
+
             return Positioned(
               left: target.position[0],
               top: target.position[1],
