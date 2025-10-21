@@ -38,6 +38,9 @@ jobs:
           cd biomind_edu
           flutter build web --release --base-href /bio-mind-edu/
       
+      - name: Add .nojekyll file
+        run: touch biomind_edu/build/web/.nojekyll
+      
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
