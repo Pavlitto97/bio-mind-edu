@@ -132,7 +132,7 @@ class SampleLessonData {
     titleKey: 'lessonsHeartTitle',
     descriptionKey: 'lessonsHeartDescription',
     difficulty: LessonDifficulty.intermediate,
-    modelFileName: 'heart_model.glb',
+    modelFileName: '3d+heart+model.glb',
     voiceFiles: {
       'en': [
         'heart_intro_en.mp3',
