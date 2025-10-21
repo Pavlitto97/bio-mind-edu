@@ -80,17 +80,21 @@ class DraggableTaskItem extends StatelessWidget {
             if (item.iconName != null)
               Icon(_getIconData(item.iconName!), size: 48, color: borderColor)
             else if (item.imagePath != null)
-              Image.asset(
-                item.imagePath!,
-                width: 60,
-                height: 60,
-                errorBuilder: (context, error, stackTrace) {
-                  return Icon(
-                    Icons.image_not_supported,
-                    size: 48,
-                    color: Colors.grey,
-                  );
-                },
+              ClipRRect(
+                borderRadius: BorderRadius.circular(8),
+                child: Image.asset(
+                  item.imagePath!,
+                  width: 70,
+                  height: 70,
+                  fit: BoxFit.contain,
+                  errorBuilder: (context, error, stackTrace) {
+                    return Icon(
+                      Icons.image_not_supported,
+                      size: 48,
+                      color: Colors.grey,
+                    );
+                  },
+                ),
               )
             else
               Icon(Icons.drag_indicator, size: 48, color: borderColor),
@@ -103,7 +107,7 @@ class DraggableTaskItem extends StatelessWidget {
               child: Text(
                 _getItemLabel(),
                 style: TextStyle(
-                  fontSize: 12,
+                  fontSize: 11,
                   fontWeight: FontWeight.bold,
                   color: borderColor,
                 ),

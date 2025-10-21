@@ -65,9 +65,68 @@ class _DropTargetZoneState extends State<DropTargetZone> {
             shape: isCircle ? BoxShape.circle : BoxShape.rectangle,
           ),
           child: Center(
-            child: widget.isOccupied
-                ? Icon(Icons.check_circle, color: Colors.green[600], size: 48)
-                : _buildLabel(theme),
+            child: Stack(
+              alignment: Alignment.center,
+              children: [
+                // Background image (dark/grayscale when empty, colored when occupied)
+                if (widget.target.imagePath != null)
+                  AnimatedOpacity(
+                    duration: const Duration(milliseconds: 300),
+                    opacity: widget.isOccupied ? 1.0 : 0.7,
+                    child: ColorFiltered(
+                      colorFilter: widget.isOccupied
+                          ? const ColorFilter.mode(
+                              Colors.transparent,
+                              BlendMode.multiply,
+                            )
+                          : ColorFilter.mode(
+                              Colors.black.withOpacity(0.7),
+                              BlendMode.saturation,
+                            ),
+                      child: Image.asset(
+                        widget.target.imagePath!,
+                        width: width * 0.8,
+                        height: height * 0.8,
+                        fit: BoxFit.contain,
+                        errorBuilder: (context, error, stackTrace) {
+                          return Icon(
+                            Icons.image_not_supported,
+                            size: 48,
+                            color: Colors.grey,
+                          );
+                        },
+                      ),
+                    ),
+                  ),
+                
+                // Success aura/glow effect when occupied
+                if (widget.isOccupied && widget.target.imagePath != null)
+                  Positioned.fill(
+                    child: Container(
+                      decoration: BoxDecoration(
+                        borderRadius: isCircle ? null : BorderRadius.circular(12),
+                        shape: isCircle ? BoxShape.circle : BoxShape.rectangle,
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.green.withOpacity(0.6),
+                            blurRadius: 20,
+                            spreadRadius: 5,
+                          ),
+                          BoxShadow(
+                            color: Colors.yellow.withOpacity(0.4),
+                            blurRadius: 30,
+                            spreadRadius: 10,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                
+                // Label (only when not occupied and no image)
+                if (!widget.isOccupied && widget.target.imagePath == null)
+                  _buildLabel(theme),
+              ],
+            ),
           ),
         );
       },

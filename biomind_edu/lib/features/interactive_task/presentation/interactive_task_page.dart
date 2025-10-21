@@ -98,6 +98,69 @@ class _InteractiveTaskPageState extends ConsumerState<InteractiveTaskPage> {
   /// Create a mock interactive task for testing
   /// TODO: Remove this when proper task loading is implemented
   InteractiveTask _createMockTask() {
+    // Return different tasks based on taskId
+    if (widget.taskId == 'task_plant_parts') {
+      return const InteractiveTask(
+        id: 'plant_drag_drop',
+        titleKey: 'tasks.plant.drag_drop.title',
+        instructionKey: 'tasks.plant.drag_drop.instruction',
+        type: TaskType.dragDrop,
+        items: [
+          TaskItem(
+            id: 'roots',
+            labelKey: 'tasks.plant.items.roots',
+            iconName: 'grass',
+            color: '#8B4513',
+            initialPosition: [50, 500],
+          ),
+          TaskItem(
+            id: 'stem',
+            labelKey: 'tasks.plant.items.stem',
+            iconName: 'height',
+            color: '#4CAF50',
+            initialPosition: [170, 500],
+          ),
+          TaskItem(
+            id: 'leaves',
+            labelKey: 'tasks.plant.items.leaves',
+            iconName: 'eco',
+            color: '#66BB6A',
+            initialPosition: [290, 500],
+          ),
+        ],
+        targets: [
+          TaskTarget(
+            id: 'roots_zone',
+            labelKey: 'Roots',
+            position: [100, 350],
+            size: [120, 80],
+            shape: 'rectangle',
+          ),
+          TaskTarget(
+            id: 'stem_zone',
+            labelKey: 'Stem',
+            position: [100, 200],
+            size: [80, 120],
+            shape: 'rectangle',
+          ),
+          TaskTarget(
+            id: 'leaves_zone',
+            labelKey: 'Leaves',
+            position: [150, 100],
+            size: [100, 80],
+            shape: 'circle',
+          ),
+        ],
+        correctMatches: {
+          'roots': 'roots_zone',
+          'stem': 'stem_zone',
+          'leaves': 'leaves_zone',
+        },
+        minCorrectToPass: 2,
+      );
+    }
+    
+    // Default: Cell task
     return const InteractiveTask(
       id: 'cell_drag_drop',
       titleKey: 'tasks.cell.drag_drop.title',
@@ -106,22 +169,22 @@ class _InteractiveTaskPageState extends ConsumerState<InteractiveTaskPage> {
       items: [
         TaskItem(
           id: 'nucleus',
-          labelKey: 'tasks.cell.items.nucleus',
-          iconName: 'circle',
+          labelKey: 'NUCLEUS',
+          imagePath: 'assets/images/nucleus.png',
           color: '#FF5722',
           initialPosition: [50, 500],
         ),
         TaskItem(
           id: 'mitochondria',
-          labelKey: 'tasks.cell.items.mitochondria',
-          iconName: 'biotech',
+          labelKey: 'MITOCHONDRIA',
+          imagePath: 'assets/images/mitochondria.png',
           color: '#4CAF50',
           initialPosition: [170, 500],
         ),
         TaskItem(
           id: 'membrane',
-          labelKey: 'tasks.cell.items.membrane',
-          iconName: 'circle',
+          labelKey: 'MEMBRANE',
+          imagePath: 'assets/images/membrane.png',
           color: '#2196F3',
           initialPosition: [290, 500],
         ),
@@ -129,21 +192,24 @@ class _InteractiveTaskPageState extends ConsumerState<InteractiveTaskPage> {
       targets: [
         TaskTarget(
           id: 'nucleus_zone',
-          labelKey: 'Nucleus',
+          labelKey: 'CENTER',
+          imagePath: 'assets/images/nucleus.png',
           position: [100, 150],
           size: [100, 100],
           shape: 'circle',
         ),
         TaskTarget(
           id: 'mitochondria_zone',
-          labelKey: 'Mitochondria',
+          labelKey: 'ENERGY',
+          imagePath: 'assets/images/mitochondria.png',
           position: [220, 200],
           size: [100, 100],
           shape: 'rectangle',
         ),
         TaskTarget(
           id: 'membrane_zone',
-          labelKey: 'Membrane',
+          labelKey: 'OUTER LAYER',
+          imagePath: 'assets/images/membrane.png',
           position: [100, 300],
           size: [200, 100],
           shape: 'rectangle',
