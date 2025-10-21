@@ -325,7 +325,7 @@ class _ARLessonPageState extends ConsumerState<ARLessonPage> {
   void _handleTaskComplete() {
     // Get the lesson to access its interactiveTaskId
     final lesson = ref.read(lessonByIdProvider(widget.lessonId)).value;
-    
+
     if (lesson != null) {
       // Navigate to interactive task screen with both taskId and lessonId
       Navigator.of(context).pushNamed(
