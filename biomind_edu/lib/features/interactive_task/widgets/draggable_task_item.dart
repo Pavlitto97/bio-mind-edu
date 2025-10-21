@@ -34,29 +34,15 @@ class DraggableTaskItem extends StatelessWidget {
   }) {
     final theme = Theme.of(context);
 
-    Color backgroundColor;
-    Color borderColor;
-
-    if (isCorrect) {
-      backgroundColor = Colors.green[100]!;
-      borderColor = Colors.green[600]!;
-    } else if (isIncorrect) {
-      backgroundColor = Colors.red[100]!;
-      borderColor = Colors.red[600]!;
-    } else {
-      backgroundColor = theme.colorScheme.surface;
-      borderColor = theme.colorScheme.primary;
-    }
-
     return Opacity(
       opacity: isGhost ? 0.3 : 1.0,
       child: Container(
         width: 100,
         height: 100,
         decoration: BoxDecoration(
-          color: backgroundColor,
-          border: Border.all(color: borderColor, width: 3),
+          color: Colors.transparent,
           borderRadius: BorderRadius.circular(12),
+          border: null,
           boxShadow: isDragging
               ? [
                   BoxShadow(
@@ -65,39 +51,30 @@ class DraggableTaskItem extends StatelessWidget {
                     offset: const Offset(0, 6),
                   ),
                 ]
-              : [
-                  BoxShadow(
-                    color: Colors.black.withOpacity(0.1),
-                    blurRadius: 4,
-                    offset: const Offset(0, 2),
-                  ),
-                ],
+              : null,
         ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             // Icon or image
             if (item.iconName != null)
-              Icon(_getIconData(item.iconName!), size: 48, color: borderColor)
+              Icon(_getIconData(item.iconName!), size: 48, color: theme.colorScheme.primary)
             else if (item.imagePath != null)
-              ClipRRect(
-                borderRadius: BorderRadius.circular(8),
-                child: Image.asset(
-                  item.imagePath!,
-                  width: 70,
-                  height: 70,
-                  fit: BoxFit.contain,
-                  errorBuilder: (context, error, stackTrace) {
-                    return Icon(
-                      Icons.image_not_supported,
-                      size: 48,
-                      color: Colors.grey,
-                    );
-                  },
-                ),
+              Image.asset(
+                item.imagePath!,
+                width: 90,
+                height: 90,
+                fit: BoxFit.contain,
+                errorBuilder: (context, error, stackTrace) {
+                  return Icon(
+                    Icons.image_not_supported,
+                    size: 48,
+                    color: Colors.grey,
+                  );
+                },
               )
             else
-              Icon(Icons.drag_indicator, size: 48, color: borderColor),
+              Icon(Icons.drag_indicator, size: 48, color: theme.colorScheme.primary),
 
             const SizedBox(height: 4),
 
@@ -109,7 +86,7 @@ class DraggableTaskItem extends StatelessWidget {
                 style: TextStyle(
                   fontSize: 11,
                   fontWeight: FontWeight.bold,
-                  color: borderColor,
+                  color: theme.colorScheme.primary,
                 ),
                 textAlign: TextAlign.center,
                 maxLines: 2,

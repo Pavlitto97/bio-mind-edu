@@ -55,12 +55,12 @@ class _DropTargetZoneState extends State<DropTargetZone> {
           width: width,
           height: height,
           decoration: BoxDecoration(
-            color: _getBackgroundColor(theme),
-            border: Border.all(
-              color: _getBorderColor(theme),
-              width: _isHovering ? 4 : 2,
+            color: Colors.transparent,
+            border: _isHovering ? Border.all(
+              color: theme.colorScheme.primary,
+              width: 3,
               strokeAlign: BorderSide.strokeAlignInside,
-            ),
+            ) : null,
             borderRadius: isCircle ? null : BorderRadius.circular(12),
             shape: isCircle ? BoxShape.circle : BoxShape.rectangle,
           ),
@@ -68,21 +68,17 @@ class _DropTargetZoneState extends State<DropTargetZone> {
             child: Stack(
               alignment: Alignment.center,
               children: [
-                // Background image (dark/grayscale when empty, colored when occupied)
+                // Background image (lighter when empty, colored when occupied)
                 if (widget.target.imagePath != null)
-                  AnimatedOpacity(
-                    duration: const Duration(milliseconds: 300),
-                    opacity: widget.isOccupied ? 1.0 : 0.7,
-                    child: ColorFiltered(
-                      colorFilter: widget.isOccupied
-                          ? const ColorFilter.mode(
-                              Colors.transparent,
-                              BlendMode.multiply,
-                            )
-                          : ColorFilter.mode(
-                              Colors.black.withOpacity(0.7),
-                              BlendMode.saturation,
-                            ),
+                  Container(
+                    decoration: BoxDecoration(
+                      color: const Color(0xFFF7FBF1),
+                      borderRadius: isCircle ? null : BorderRadius.circular(12),
+                      shape: isCircle ? BoxShape.circle : BoxShape.rectangle,
+                    ),
+                    child: AnimatedOpacity(
+                      duration: const Duration(milliseconds: 300),
+                      opacity: widget.isOccupied ? 1.0 : 0.3,
                       child: Image.asset(
                         widget.target.imagePath!,
                         width: width * 0.8,
@@ -131,26 +127,6 @@ class _DropTargetZoneState extends State<DropTargetZone> {
         );
       },
     );
-  }
-
-  Color _getBackgroundColor(ThemeData theme) {
-    if (widget.isOccupied) {
-      return Colors.green[50]!;
-    } else if (_isHovering) {
-      return theme.colorScheme.primaryContainer.withOpacity(0.5);
-    } else {
-      return theme.colorScheme.surface.withOpacity(0.3);
-    }
-  }
-
-  Color _getBorderColor(ThemeData theme) {
-    if (widget.isOccupied) {
-      return Colors.green[600]!;
-    } else if (_isHovering) {
-      return theme.colorScheme.primary;
-    } else {
-      return theme.colorScheme.outline;
-    }
   }
 
   Widget _buildLabel(ThemeData theme) {
