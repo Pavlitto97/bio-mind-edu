@@ -1,0 +1,8 @@
+This folder should contain lesson thumbnails used on the lessons list page.
+
+Expected files (placeholders acceptable for development):
+- cell_thumbnail.png
+- plant_thumbnail.png
+- heart_thumbnail.png
+
+Add real images later. During development, you can replace these with simple colored squares.
