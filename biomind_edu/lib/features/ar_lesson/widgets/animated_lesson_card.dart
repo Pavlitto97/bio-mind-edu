@@ -327,16 +327,21 @@ class _AnimatedLessonCardState extends ConsumerState<AnimatedLessonCard>
                       Expanded(
                         flex: 2,
                         child: Container(
-                          padding: const EdgeInsets.all(12),
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 10,
+                            vertical: 8,
+                          ),
                           decoration: BoxDecoration(color: theme.cardColor),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisSize: MainAxisSize.min,
                             children: [
                               // Title
                               Text(
                                 _getLocalizedTitle(),
                                 style: theme.textTheme.titleMedium?.copyWith(
                                   fontWeight: FontWeight.bold,
+                                  fontSize: 14,
                                   color: widget.isLocked
                                       ? Colors.grey
                                       : theme.textTheme.titleMedium?.color,
@@ -345,18 +350,21 @@ class _AnimatedLessonCardState extends ConsumerState<AnimatedLessonCard>
                                 overflow: TextOverflow.ellipsis,
                               ),
 
-                              const SizedBox(height: 4),
+                              const SizedBox(height: 2),
 
                               // Description
-                              Text(
-                                _getLocalizedDescription(),
-                                style: theme.textTheme.bodySmall?.copyWith(
-                                  color: widget.isLocked
-                                      ? Colors.grey
-                                      : theme.textTheme.bodySmall?.color,
+                              Flexible(
+                                child: Text(
+                                  _getLocalizedDescription(),
+                                  style: theme.textTheme.bodySmall?.copyWith(
+                                    fontSize: 11,
+                                    color: widget.isLocked
+                                        ? Colors.grey
+                                        : theme.textTheme.bodySmall?.color,
+                                  ),
+                                  maxLines: 2,
+                                  overflow: TextOverflow.ellipsis,
                                 ),
-                                maxLines: 2,
-                                overflow: TextOverflow.ellipsis,
                               ),
 
                               const Spacer(),
@@ -365,7 +373,7 @@ class _AnimatedLessonCardState extends ConsumerState<AnimatedLessonCard>
                               Row(
                                 children: [
                                   _buildDifficultyChip(context),
-                                  const SizedBox(width: 8),
+                                  const SizedBox(width: 6),
                                   if (progressValue > 0)
                                     Expanded(
                                       child: _buildProgressBar(progressValue),

@@ -9,12 +9,14 @@ class DraggableTaskItem extends StatelessWidget {
   final TaskItem item;
   final bool isCorrect;
   final bool isIncorrect;
+  final double size;
 
   const DraggableTaskItem({
     super.key,
     required this.item,
     this.isCorrect = false,
     this.isIncorrect = false,
+    this.size = 100.0,
   });
 
   @override
@@ -33,15 +35,18 @@ class DraggableTaskItem extends StatelessWidget {
     bool isGhost = false,
   }) {
     final theme = Theme.of(context);
+    final imageSize = size * 0.85;
+    final iconSize = size * 0.45;
+    final fontSize = (size * 0.11).clamp(9.0, 13.0);
 
     return Opacity(
       opacity: isGhost ? 0.3 : 1.0,
       child: Container(
-        width: 100,
-        height: 100,
+        width: size,
+        height: size,
         decoration: BoxDecoration(
           color: Colors.transparent,
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(size * 0.12),
           border: null,
           boxShadow: isDragging
               ? [
@@ -60,19 +65,19 @@ class DraggableTaskItem extends StatelessWidget {
             if (item.iconName != null)
               Icon(
                 _getIconData(item.iconName!),
-                size: 48,
+                size: iconSize,
                 color: theme.colorScheme.primary,
               )
             else if (item.imagePath != null)
               Image.asset(
                 item.imagePath!,
-                width: 90,
-                height: 90,
+                width: imageSize,
+                height: imageSize,
                 fit: BoxFit.contain,
                 errorBuilder: (context, error, stackTrace) {
                   return Icon(
                     Icons.image_not_supported,
-                    size: 48,
+                    size: iconSize,
                     color: Colors.grey,
                   );
                 },
@@ -80,19 +85,19 @@ class DraggableTaskItem extends StatelessWidget {
             else
               Icon(
                 Icons.drag_indicator,
-                size: 48,
+                size: iconSize,
                 color: theme.colorScheme.primary,
               ),
 
-            const SizedBox(height: 4),
+            SizedBox(height: size * 0.04),
 
             // Label
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 4),
+              padding: EdgeInsets.symmetric(horizontal: size * 0.04),
               child: Text(
                 _getItemLabel(),
                 style: TextStyle(
-                  fontSize: 11,
+                  fontSize: fontSize,
                   fontWeight: FontWeight.bold,
                   color: theme.colorScheme.primary,
                 ),

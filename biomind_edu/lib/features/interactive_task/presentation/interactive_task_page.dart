@@ -8,10 +8,13 @@ import '../../../shared/providers/newly_unlocked_achievements_provider.dart';
 import '../../../shared/providers/lessons_provider.dart';
 import '../../../shared/data/sample_lesson_data.dart';
 import '../../../core/services/local_storage_service.dart';
+import '../../../core/services/audio_service.dart';
 import '../../../features/rewards/domain/achievement_service.dart';
+import '../../../features/rewards/domain/reward_service.dart';
 import '../widgets/draggable_task_item.dart';
 import '../widgets/drop_target_zone.dart';
 import 'dart:async';
+import 'dart:math';
 
 /// Interactive Task Screen - Drag and Drop Task Implementation
 ///
@@ -61,6 +64,10 @@ class _InteractiveTaskPageState extends ConsumerState<InteractiveTaskPage> {
   // Start time for completion tracking
   DateTime? _startTime;
 
+  // Randomized order for items and targets
+  List<TaskItem> _shuffledItems = [];
+  List<TaskTarget> _shuffledTargets = [];
+
   @override
   void initState() {
     super.initState();
@@ -82,6 +89,10 @@ class _InteractiveTaskPageState extends ConsumerState<InteractiveTaskPage> {
         _task = task;
         _isLoading = false;
         _startTime = DateTime.now();
+
+        // Shuffle items and targets for random order
+        _shuffledItems = List.from(task.items)..shuffle(Random());
+        _shuffledTargets = List.from(task.targets)..shuffle(Random());
 
         // Start timer if task has time limit
         if (task.timeLimitSeconds != null) {
@@ -382,8 +393,8 @@ class _InteractiveTaskPageState extends ConsumerState<InteractiveTaskPage> {
       });
       _playErrorFeedback();
 
-      // Remove incorrect answer after brief delay
-      Future.delayed(const Duration(milliseconds: 1500), () {
+      // Show X icon briefly, then remove incorrect answer
+      Future.delayed(const Duration(milliseconds: 800), () {
         if (mounted) {
           setState(() {
             _userAnswers.remove(itemId);
@@ -397,7 +408,8 @@ class _InteractiveTaskPageState extends ConsumerState<InteractiveTaskPage> {
   void _playSuccessFeedback() {
     // Play success audio
     debugPrint('Playing success audio');
-    // ref.read(audioNotifierProvider.notifier).playSfx('success.mp3');
+    final audioService = AudioService();
+    audioService.playSfx('success.mp3');
 
     // Provide success haptic feedback
     HapticFeedback.mediumImpact();
@@ -406,7 +418,8 @@ class _InteractiveTaskPageState extends ConsumerState<InteractiveTaskPage> {
   void _playErrorFeedback() {
     // Play error audio
     debugPrint('Playing error audio');
-    // ref.read(audioNotifierProvider.notifier).playSfx('error.mp3');
+    final audioService = AudioService();
+    audioService.playSfx('error.mp3');
 
     // Provide error haptic feedback
     HapticFeedback.vibrate();
@@ -446,6 +459,10 @@ class _InteractiveTaskPageState extends ConsumerState<InteractiveTaskPage> {
     try {
       final progressService = ref.read(progressServiceProvider);
       final achievementService = ref.read(achievementServiceProvider);
+      final rewardService = ref.read(rewardServiceProvider);
+
+      // Calculate stars earned
+      final starsEarned = _calculateStars(result);
 
       // Update lesson progress with task completion
       await progressService.updateLessonProgress(
@@ -454,6 +471,12 @@ class _InteractiveTaskPageState extends ConsumerState<InteractiveTaskPage> {
         timeSpentSeconds: result.timeTakenSeconds,
         attempts: 1,
       );
+
+      // Add stars to user profile
+      if (starsEarned > 0) {
+        await rewardService.updateUserStats(starsEarned: starsEarned);
+        debugPrint('⭐ Added $starsEarned stars to Total Stars');
+      }
 
       // Refresh progress provider
       ref.read(progressNotifierProvider.notifier).refresh();
@@ -493,7 +516,7 @@ class _InteractiveTaskPageState extends ConsumerState<InteractiveTaskPage> {
       debugPrint('  Errors: $_errorCount');
       debugPrint('  Accuracy: ${accuracyPercent.toStringAsFixed(1)}%');
       debugPrint('  Passed: ${result.isPassed}');
-      debugPrint('  Stars: ${_calculateStars(result)}');
+      debugPrint('  Stars: $starsEarned');
       debugPrint(
         '  New Achievements: ${allNewAchievements.map((a) => a.name).join(", ")}',
       );
@@ -514,6 +537,13 @@ class _InteractiveTaskPageState extends ConsumerState<InteractiveTaskPage> {
   void _showCompletionDialog(TaskResult result) {
     final stars = _calculateStars(result);
     final newAchievements = ref.read(newlyUnlockedAchievementsProvider);
+
+    // Play victory music if passed
+    if (result.isPassed) {
+      final audioService = AudioService();
+      audioService.playSfx('victory.mp3');
+      debugPrint('🏆 Playing victory music');
+    }
 
     showDialog<void>(
       context: context,
@@ -721,6 +751,12 @@ class _InteractiveTaskPageState extends ConsumerState<InteractiveTaskPage> {
       _incorrectItems.clear();
       _startTime = DateTime.now();
 
+      // Re-shuffle items and targets
+      if (_task != null) {
+        _shuffledItems = List.from(_task!.items)..shuffle(Random());
+        _shuffledTargets = List.from(_task!.targets)..shuffle(Random());
+      }
+
       if (_task?.timeLimitSeconds != null) {
         _remainingSeconds = _task!.timeLimitSeconds!;
         _startTimer();
@@ -773,6 +809,7 @@ class _InteractiveTaskPageState extends ConsumerState<InteractiveTaskPage> {
   @override
   void dispose() {
     _timer?.cancel();
+    // Don't stop background music - it should continue playing across all scenes
     super.dispose();
   }
 
@@ -918,103 +955,201 @@ class _InteractiveTaskPageState extends ConsumerState<InteractiveTaskPage> {
   }
 
   Widget _buildTaskArea() {
-    return Stack(
-      children: [
-        // Drop target zones
-        ..._task!.targets.map((target) {
-          return Positioned(
-            left: target.position[0],
-            top: target.position[1],
-            child: DropTargetZone(
-              target: target,
-              isOccupied: _userAnswers.values.contains(target.id),
-              onAccept: (itemId) => _handleItemDropped(itemId, target.id),
-            ),
-          );
-        }),
-
-        // Draggable items
-        ..._task!.items.map((item) {
-          final isPlaced = _userAnswers.containsKey(item.id);
-          final isCorrect = _correctItems.contains(item.id);
-          final isIncorrect = _incorrectItems.contains(item.id);
-
-          // If correctly placed, show item in the target zone
-          if (isCorrect) {
-            final targetId = _userAnswers[item.id];
-            final target = _task!.targets.firstWhere((t) => t.id == targetId);
-
-            return Positioned(
-              left: target.position[0],
-              top: target.position[1],
-              child: Opacity(
-                opacity: 0.9,
-                child: Container(
-                  width: 120,
-                  height: 120,
-                  alignment: Alignment.center,
-                  child: DraggableTaskItem(
-                    item: item,
-                    isCorrect: isCorrect,
-                    isIncorrect: false,
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final screenWidth = constraints.maxWidth;
+        final screenHeight = constraints.maxHeight;
+        
+        // Calculate item size based on screen width
+        final itemSize = (screenWidth * 0.15).clamp(60.0, 100.0);
+        final targetSize = (screenWidth * 0.18).clamp(70.0, 110.0);
+        
+        // Reserve space for buttons at bottom (increased to 80px)
+        final buttonAreaHeight = 80.0;
+        final topPadding = 20.0;
+        final usableHeight = screenHeight - buttonAreaHeight - topPadding;
+        
+        return ClipRect(
+          child: Stack(
+            children: [
+              // Drop target zones (using shuffled targets)
+              ..._shuffledTargets.asMap().entries.map((entry) {
+                final index = entry.key;
+                final target = entry.value;
+                
+                // Calculate responsive positions
+                final numTargets = _shuffledTargets.length;
+                final spacing = screenWidth / (numTargets + 1);
+                final targetX = (spacing * (index + 1) - targetSize / 2).clamp(5.0, screenWidth - targetSize - 5);
+                final targetY = (topPadding + usableHeight * 0.15).clamp(topPadding, usableHeight * 0.3);
+                
+                return Positioned(
+                  left: targetX,
+                  top: targetY,
+                  child: DropTargetZone(
+                    target: target,
+                    size: targetSize,
+                    isOccupied: _userAnswers.values.contains(target.id),
+                    onAccept: (itemId) => _handleItemDropped(itemId, target.id),
                   ),
-                ),
-              ),
-            );
-          }
+                );
+              }),
 
-          // If incorrectly placed, hide temporarily and show back at initial position
-          if (isIncorrect) {
-            return const SizedBox.shrink();
-          }
+              // Draggable items (using shuffled items)
+              ..._shuffledItems.asMap().entries.map((entry) {
+                final index = entry.key;
+                final item = entry.value;
+                final isCorrect = _correctItems.contains(item.id);
+                final isIncorrect = _incorrectItems.contains(item.id);
 
-          // Show item at initial position if not placed or if placement was wrong
-          if (!isPlaced || isIncorrect) {
-            return Positioned(
-              left: item.initialPosition[0],
-              top: item.initialPosition[1],
-              child: DraggableTaskItem(
-                item: item,
-                isCorrect: false,
-                isIncorrect: isIncorrect,
-              ),
-            );
-          }
+                // If correctly placed, show item in the target zone
+                if (isCorrect) {
+                  final targetId = _userAnswers[item.id];
+                  final targetIndex = _shuffledTargets.indexWhere((t) => t.id == targetId);
+                  
+                  if (targetIndex >= 0) {
+                    final numTargets = _shuffledTargets.length;
+                    final spacing = screenWidth / (numTargets + 1);
+                    final targetX = (spacing * (targetIndex + 1) - targetSize / 2).clamp(5.0, screenWidth - targetSize - 5);
+                    final targetY = (topPadding + usableHeight * 0.15).clamp(topPadding, usableHeight * 0.3);
 
-          return const SizedBox.shrink();
-        }),
-      ],
+                    return Positioned(
+                      left: targetX,
+                      top: targetY,
+                      child: Opacity(
+                        opacity: 0.9,
+                        child: SizedBox(
+                          width: targetSize,
+                          height: targetSize,
+                          child: DraggableTaskItem(
+                            item: item,
+                            size: itemSize,
+                            isCorrect: isCorrect,
+                            isIncorrect: false,
+                          ),
+                        ),
+                      ),
+                    );
+                  }
+                }
+
+                // Show item at initial position (always visible unless correctly placed)
+                if (!isCorrect) {
+                  // Calculate responsive initial positions for draggable items
+                  final numItems = _shuffledItems.length;
+                  final spacing = screenWidth / (numItems + 1);
+                  final itemX = (spacing * (index + 1) - itemSize / 2).clamp(5.0, screenWidth - itemSize - 5);
+                  
+                  // Position items in bottom area, well above buttons
+                  final itemY = (usableHeight - itemSize - 10).clamp(
+                    targetSize + 70,
+                    usableHeight - itemSize - 10,
+                  );
+                  
+                  return Positioned(
+                    left: itemX,
+                    top: itemY,
+                    child: Stack(
+                      alignment: Alignment.center,
+                      children: [
+                        DraggableTaskItem(
+                          item: item,
+                          size: itemSize,
+                          isCorrect: false,
+                          isIncorrect: isIncorrect,
+                        ),
+                        // Show red X icon if incorrectly placed
+                        if (isIncorrect)
+                          TweenAnimationBuilder<double>(
+                            tween: Tween(begin: 0.0, end: 1.0),
+                            duration: const Duration(milliseconds: 300),
+                            curve: Curves.elasticOut,
+                            builder: (context, scale, child) {
+                              return Transform.scale(
+                                scale: scale,
+                                child: Container(
+                                  width: itemSize * 0.5,
+                                  height: itemSize * 0.5,
+                                  decoration: BoxDecoration(
+                                    color: Colors.red.withOpacity(0.95),
+                                    shape: BoxShape.circle,
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.red.withOpacity(0.6),
+                                        blurRadius: 16,
+                                        spreadRadius: 3,
+                                      ),
+                                    ],
+                                  ),
+                                  child: Icon(
+                                    Icons.close,
+                                    color: Colors.white,
+                                    size: itemSize * 0.35,
+                                    weight: 700,
+                                  ),
+                                ),
+                              );
+                            },
+                          ),
+                      ],
+                    ),
+                  );
+                }
+
+                return const SizedBox.shrink();
+              }),
+            ],
+          ),
+        );
+      },
     );
   }
 
   Widget _buildActionButtons() {
-    return Padding(
-      padding: const EdgeInsets.all(16),
-      child: Row(
-        children: [
-          Expanded(
-            child: OutlinedButton.icon(
-              onPressed: _showHintDialog,
-              icon: const Icon(Icons.lightbulb_outline, size: 24),
-              label: const Text('Hint', style: TextStyle(fontSize: 18)),
-              style: OutlinedButton.styleFrom(
-                padding: const EdgeInsets.symmetric(vertical: 16),
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final screenWidth = constraints.maxWidth;
+        final isSmallScreen = screenWidth < 400;
+        
+        return Padding(
+          padding: EdgeInsets.all(isSmallScreen ? 8.0 : 16.0),
+          child: Row(
+            children: [
+              Expanded(
+                child: OutlinedButton.icon(
+                  onPressed: _showHintDialog,
+                  icon: Icon(Icons.lightbulb_outline, size: isSmallScreen ? 18 : 24),
+                  label: Text(
+                    'Hint', 
+                    style: TextStyle(fontSize: isSmallScreen ? 14 : 18),
+                  ),
+                  style: OutlinedButton.styleFrom(
+                    padding: EdgeInsets.symmetric(
+                      vertical: isSmallScreen ? 10 : 16,
+                    ),
+                  ),
+                ),
               ),
-            ),
-          ),
-          const SizedBox(width: 12),
-          Expanded(
-            child: OutlinedButton.icon(
-              onPressed: _retryTask,
-              icon: const Icon(Icons.refresh, size: 24),
-              label: const Text('Reset', style: TextStyle(fontSize: 18)),
-              style: OutlinedButton.styleFrom(
-                padding: const EdgeInsets.symmetric(vertical: 16),
+              SizedBox(width: isSmallScreen ? 8 : 12),
+              Expanded(
+                child: OutlinedButton.icon(
+                  onPressed: _retryTask,
+                  icon: Icon(Icons.refresh, size: isSmallScreen ? 18 : 24),
+                  label: Text(
+                    'Reset', 
+                    style: TextStyle(fontSize: isSmallScreen ? 14 : 18),
+                  ),
+                  style: OutlinedButton.styleFrom(
+                    padding: EdgeInsets.symmetric(
+                      vertical: isSmallScreen ? 10 : 16,
+                    ),
+                  ),
+                ),
               ),
-            ),
+            ],
           ),
-        ],
-      ),
+        );
+      },
     );
   }
 
@@ -1071,9 +1206,19 @@ class _InteractiveTaskPageState extends ConsumerState<InteractiveTaskPage> {
   }
 
   String _getTaskTitle() {
-    // TODO: Implement localization
-    return _task?.titleKey.split('.').last.replaceAll('_', ' ').toUpperCase() ??
-        'Interactive Task';
+    // Get lesson-specific title
+    switch (widget.lessonId) {
+      case 'cell':
+        return 'Cell Structure';
+      case 'plant':
+        return 'Plant Life';
+      case 'heart':
+        return 'Human Heart';
+      default:
+        // Fallback: parse from titleKey
+        return _task?.titleKey.split('.').last.replaceAll('_', ' ').toUpperCase() ??
+            'Interactive Task';
+    }
   }
 
   String _getTaskInstruction() {

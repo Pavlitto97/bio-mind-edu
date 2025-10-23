@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Responsive Interactive Task Test</title>
+    <script src="https://cdn.jsdelivr.net/npm/@playwright/test@latest/lib/index.js"></script>
+</head>
+<body>
+    <h1>Testing Interactive Task Responsiveness</h1>
+    <div id="test-results"></div>
+
+    <script type="module">
+        // This will be run by Playwright
+        const devices = [
+            { name: 'iPhone SE', width: 375, height: 667 },
+            { name: 'Pixel 7', width: 412, height: 915 },
+            { name: 'iPad Mini', width: 768, height: 1024 },
+            { name: 'Desktop', width: 1920, height: 1080 }
+        ];
+
+        async function testResponsiveness() {
+            const results = document.getElementById('test-results');
+            
+            for (const device of devices) {
+                const testDiv = document.createElement('div');
+                testDiv.innerHTML = `<h2>Testing ${device.name} (${device.width}x${device.height})</h2>`;
+                results.appendChild(testDiv);
+            }
+        }
+
+        testResponsiveness();
+    </script>
+</body>
+</html>

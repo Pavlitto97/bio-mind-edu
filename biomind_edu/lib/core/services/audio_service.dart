@@ -72,28 +72,69 @@ class AudioService {
     }
   }
 
-  /// Play voice instruction
+  /// Play voice instruction (with background music ducking)
   Future<void> playVoice(String audioFile, {String? locale}) async {
     try {
       await stopVoice();
 
+      // Duck background music to 30% volume
+      await _duckBackgroundMusic();
+
       final String path = _getVoicePath(audioFile, locale);
       await _voicePlayer.play(AssetSource(path));
+      
+      // Restore music when voice completes
+      _voicePlayer.onPlayerComplete.first.then((_) {
+        _restoreBackgroundMusic();
+      });
     } catch (e) {
       if (kDebugMode) {
         print('Failed to play voice: $e');
       }
+      // Restore music even if voice fails
+      await _restoreBackgroundMusic();
     }
   }
 
-  /// Play sound effect
+  /// Play sound effect (with background music ducking)
   Future<void> playSfx(String audioFile) async {
     try {
+      // Duck background music to 30% volume
+      await _duckBackgroundMusic();
+      
       final String path = _getSfxPath(audioFile);
       await _sfxPlayer.play(AssetSource(path));
+      
+      // Restore music when SFX completes
+      _sfxPlayer.onPlayerComplete.first.then((_) {
+        _restoreBackgroundMusic();
+      });
     } catch (e) {
       if (kDebugMode) {
         print('Failed to play SFX: $e');
+      }
+      // Restore music even if SFX fails
+      await _restoreBackgroundMusic();
+    }
+  }
+
+  /// Duck background music to 30% volume
+  Future<void> _duckBackgroundMusic() async {
+    if (_musicState == AudioState.playing && !_isMuted) {
+      await _musicPlayer.setVolume(_musicVolume * 0.3);
+      if (kDebugMode) {
+        print('🔉 Background music ducked to 30%');
+      }
+    }
+  }
+
+  /// Restore background music to original volume
+  Future<void> _restoreBackgroundMusic() async {
+    if (!_isMuted) {
+      await Future<void>.delayed(const Duration(milliseconds: 500));
+      await _musicPlayer.setVolume(_musicVolume);
+      if (kDebugMode) {
+        print('🔊 Background music restored to 100%');
       }
     }
   }
@@ -219,12 +260,14 @@ class AudioService {
 
   /// Get SFX path
   String _getSfxPath(String audioFile) {
-    return '${AudioConstants.audioPath}${AudioConstants.soundEffects}$audioFile';
+    // For now, use simple path directly from assets/audio/
+    return 'audio/$audioFile';
   }
 
   /// Get music path
   String _getMusicPath(String audioFile) {
-    return '${AudioConstants.audioPath}${AudioConstants.backgroundMusic}$audioFile';
+    // For now, use simple path directly from assets/audio/
+    return 'audio/$audioFile';
   }
 
   /// Map PlayerState to AudioState

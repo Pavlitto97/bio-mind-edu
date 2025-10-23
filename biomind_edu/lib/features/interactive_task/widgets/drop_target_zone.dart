@@ -9,12 +9,14 @@ class DropTargetZone extends StatefulWidget {
   final TaskTarget target;
   final bool isOccupied;
   final void Function(String itemId) onAccept;
+  final double size;
 
   const DropTargetZone({
     super.key,
     required this.target,
     required this.isOccupied,
     required this.onAccept,
+    this.size = 100.0,
   });
 
   @override
@@ -27,9 +29,11 @@ class _DropTargetZoneState extends State<DropTargetZone> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final width = widget.target.size[0];
-    final height = widget.target.size[1];
+    final width = widget.size;
+    final height = widget.size;
     final isCircle = widget.target.shape == 'circle';
+    final borderRadius = width * 0.12;
+    final fontSize = (width * 0.12).clamp(10.0, 16.0);
 
     return DragTarget<String>(
       onWillAcceptWithDetails: (data) {
@@ -63,7 +67,7 @@ class _DropTargetZoneState extends State<DropTargetZone> {
                     strokeAlign: BorderSide.strokeAlignInside,
                   )
                 : null,
-            borderRadius: isCircle ? null : BorderRadius.circular(12),
+            borderRadius: isCircle ? null : BorderRadius.circular(borderRadius),
             shape: isCircle ? BoxShape.circle : BoxShape.rectangle,
           ),
           child: Center(
@@ -75,7 +79,7 @@ class _DropTargetZoneState extends State<DropTargetZone> {
                   Container(
                     decoration: BoxDecoration(
                       color: const Color(0xFFF7FBF1),
-                      borderRadius: isCircle ? null : BorderRadius.circular(12),
+                      borderRadius: isCircle ? null : BorderRadius.circular(borderRadius),
                       shape: isCircle ? BoxShape.circle : BoxShape.rectangle,
                     ),
                     child: AnimatedOpacity(
@@ -89,7 +93,7 @@ class _DropTargetZoneState extends State<DropTargetZone> {
                         errorBuilder: (context, error, stackTrace) {
                           return Icon(
                             Icons.image_not_supported,
-                            size: 48,
+                            size: width * 0.4,
                             color: Colors.grey,
                           );
                         },
@@ -104,7 +108,7 @@ class _DropTargetZoneState extends State<DropTargetZone> {
                       decoration: BoxDecoration(
                         borderRadius: isCircle
                             ? null
-                            : BorderRadius.circular(12),
+                            : BorderRadius.circular(borderRadius),
                         shape: isCircle ? BoxShape.circle : BoxShape.rectangle,
                         boxShadow: [
                           BoxShadow(
@@ -124,7 +128,7 @@ class _DropTargetZoneState extends State<DropTargetZone> {
 
                 // Label (only when not occupied and no image)
                 if (!widget.isOccupied && widget.target.imagePath == null)
-                  _buildLabel(theme),
+                  _buildLabel(theme, fontSize),
               ],
             ),
           ),
@@ -133,17 +137,17 @@ class _DropTargetZoneState extends State<DropTargetZone> {
     );
   }
 
-  Widget _buildLabel(ThemeData theme) {
+  Widget _buildLabel(ThemeData theme, double fontSize) {
     if (widget.target.labelKey == null || widget.target.labelKey!.isEmpty) {
       return const SizedBox.shrink();
     }
 
     return Padding(
-      padding: const EdgeInsets.all(8),
+      padding: EdgeInsets.all(widget.size * 0.08),
       child: Text(
         _getTargetLabel(),
         style: TextStyle(
-          fontSize: 14,
+          fontSize: fontSize,
           fontWeight: FontWeight.bold,
           color: theme.colorScheme.onSurface.withOpacity(0.6),
         ),

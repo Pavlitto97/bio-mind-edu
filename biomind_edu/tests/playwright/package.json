@@ -1,0 +1,14 @@
+{
+  "name": "biomind-edu-playwright-tests",
+  "version": "1.0.0",
+  "description": "Playwright tests for BioMind EDU responsive design",
+  "scripts": {
+    "test": "playwright test",
+    "test:headed": "playwright test --headed",
+    "test:ui": "playwright test --ui",
+    "test:report": "playwright show-report"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.40.0"
+  }
+}

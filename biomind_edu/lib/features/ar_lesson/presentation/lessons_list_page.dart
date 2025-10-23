@@ -88,47 +88,87 @@ class LessonsListPage extends ConsumerWidget {
             );
           }
 
-          return GridView.builder(
-            padding: const EdgeInsets.all(16),
-            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 2,
-              childAspectRatio: 0.8,
-              crossAxisSpacing: 16,
-              mainAxisSpacing: 16,
-            ),
-            itemCount: lessons.length,
-            itemBuilder: (context, index) {
-              final lesson = lessons[index];
-              return AnimatedLessonCard(
-                lessonId: lesson.id,
-                titleKey: lesson.titleKey,
-                descriptionKey: lesson.descriptionKey,
-                thumbnailPath: lesson.thumbnailPath,
-                difficulty: lesson.difficulty,
-                status: lesson.status,
-                isLocked: lesson.isLocked,
-                index: index,
-                onTap: () {
-                  // Navigate to AR lesson screen
-                  Navigator.of(
-                    context,
-                  ).pushNamed('/ar-lesson', arguments: lesson.id);
+          return LayoutBuilder(
+            builder: (context, constraints) {
+              // Adaptive aspect ratio based on screen width
+              final screenWidth = constraints.maxWidth;
+              double aspectRatio;
+              
+              if (screenWidth < 400) {
+                // Very narrow mobile screens (iPhone SE)
+                aspectRatio = 0.65;
+              } else if (screenWidth < 600) {
+                // Normal mobile screens
+                aspectRatio = 0.75;
+              } else if (screenWidth < 900) {
+                // Tablets and medium screens
+                aspectRatio = 0.85;
+              } else {
+                // Desktop and large screens
+                aspectRatio = 0.95;
+              }
+              
+              return GridView.builder(
+                padding: const EdgeInsets.all(16),
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2,
+                  childAspectRatio: aspectRatio,
+                  crossAxisSpacing: 12,
+                  mainAxisSpacing: 12,
+                ),
+                itemCount: lessons.length,
+                itemBuilder: (context, index) {
+                  final lesson = lessons[index];
+                  return AnimatedLessonCard(
+                    lessonId: lesson.id,
+                    titleKey: lesson.titleKey,
+                    descriptionKey: lesson.descriptionKey,
+                    thumbnailPath: lesson.thumbnailPath,
+                    difficulty: lesson.difficulty,
+                    status: lesson.status,
+                    isLocked: lesson.isLocked,
+                    index: index,
+                    onTap: () {
+                      // Navigate to AR lesson screen
+                      Navigator.of(
+                        context,
+                      ).pushNamed('/ar-lesson', arguments: lesson.id);
+                    },
+                  );
                 },
               );
             },
           );
         },
-        loading: () => GridView.builder(
-          padding: const EdgeInsets.all(16),
-          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 2,
-            childAspectRatio: 0.8,
-            crossAxisSpacing: 16,
-            mainAxisSpacing: 16,
-          ),
-          itemCount: 6,
-          itemBuilder: (context, index) {
-            return const SkeletonCard(height: 200);
+        loading: () => LayoutBuilder(
+          builder: (context, constraints) {
+            // Same adaptive aspect ratio logic
+            final screenWidth = constraints.maxWidth;
+            double aspectRatio;
+            
+            if (screenWidth < 400) {
+              aspectRatio = 0.65;
+            } else if (screenWidth < 600) {
+              aspectRatio = 0.75;
+            } else if (screenWidth < 900) {
+              aspectRatio = 0.85;
+            } else {
+              aspectRatio = 0.95;
+            }
+            
+            return GridView.builder(
+              padding: const EdgeInsets.all(16),
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 2,
+                childAspectRatio: aspectRatio,
+                crossAxisSpacing: 12,
+                mainAxisSpacing: 12,
+              ),
+              itemCount: 6,
+              itemBuilder: (context, index) {
+                return const SkeletonCard(height: 200);
+              },
+            );
           },
         ),
         error: (error, stack) => Center(

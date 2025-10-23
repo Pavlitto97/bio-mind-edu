@@ -5,6 +5,7 @@ import 'package:hive_flutter/hive_flutter.dart';
 
 import 'app.dart';
 import 'core/services/local_storage_service.dart';
+import 'core/services/audio_service.dart';
 import 'features/rewards/data/models/reward_model.dart';
 import 'features/profile/data/models/user_profile_model.dart';
 import 'features/rewards/domain/reward_service.dart';
@@ -59,6 +60,12 @@ Future<void> _initializeApp() async {
     // Initialize Reward Service
     final rewardService = RewardService();
     await rewardService.initialize();
+
+    // Initialize Audio Service and start background music
+    final audioService = AudioService();
+    await audioService.initialize();
+    await audioService.playMusic('background_music_main.mp3');
+    debugPrint('🎵 Background music started');
 
     // Initialize sample lesson data for testing
     // TODO: Remove when actual lesson content is ready
