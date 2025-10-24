@@ -38,11 +38,6 @@ jobs:
           cd biomind_edu
           flutter pub get
       
-      - name: Generate code
-        run: |
-          cd biomind_edu
-          flutter pub run build_runner build --delete-conflicting-outputs || echo "Code generation completed with warnings"
-      
       - name: Generate localizations
         run: |
           cd biomind_edu
@@ -51,7 +46,7 @@ jobs:
       - name: Build web
         run: |
           cd biomind_edu
-          flutter build web --release --base-href /bio-mind-edu/
+          flutter build web --release --base-href /bio-mind-edu/ --no-tree-shake-icons
       
       - name: Add .nojekyll file
         run: touch biomind_edu/build/web/.nojekyll
