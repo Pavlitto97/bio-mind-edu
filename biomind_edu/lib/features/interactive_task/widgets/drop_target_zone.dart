@@ -79,7 +79,8 @@ class _DropTargetZoneState extends State<DropTargetZone> {
                   Container(
                     decoration: BoxDecoration(
                       color: const Color(0xFFF7FBF1),
-                      borderRadius: isCircle ? null : BorderRadius.circular(borderRadius),
+                      borderRadius:
+                          isCircle ? null : BorderRadius.circular(borderRadius),
                       shape: isCircle ? BoxShape.circle : BoxShape.rectangle,
                     ),
                     child: AnimatedOpacity(

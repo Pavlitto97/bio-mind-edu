@@ -82,7 +82,7 @@ class AudioService {
 
       final String path = _getVoicePath(audioFile, locale);
       await _voicePlayer.play(AssetSource(path));
-      
+
       // Restore music when voice completes
       _voicePlayer.onPlayerComplete.first.then((_) {
         _restoreBackgroundMusic();
@@ -101,10 +101,10 @@ class AudioService {
     try {
       // Duck background music to 30% volume
       await _duckBackgroundMusic();
-      
+
       final String path = _getSfxPath(audioFile);
       await _sfxPlayer.play(AssetSource(path));
-      
+
       // Restore music when SFX completes
       _sfxPlayer.onPlayerComplete.first.then((_) {
         _restoreBackgroundMusic();

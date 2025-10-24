@@ -93,7 +93,7 @@ class LessonsListPage extends ConsumerWidget {
               // Adaptive aspect ratio based on screen width
               final screenWidth = constraints.maxWidth;
               double aspectRatio;
-              
+
               if (screenWidth < 400) {
                 // Very narrow mobile screens (iPhone SE)
                 aspectRatio = 0.65;
@@ -107,7 +107,7 @@ class LessonsListPage extends ConsumerWidget {
                 // Desktop and large screens
                 aspectRatio = 0.95;
               }
-              
+
               return GridView.builder(
                 padding: const EdgeInsets.all(16),
                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
@@ -145,7 +145,7 @@ class LessonsListPage extends ConsumerWidget {
             // Same adaptive aspect ratio logic
             final screenWidth = constraints.maxWidth;
             double aspectRatio;
-            
+
             if (screenWidth < 400) {
               aspectRatio = 0.65;
             } else if (screenWidth < 600) {
@@ -155,7 +155,7 @@ class LessonsListPage extends ConsumerWidget {
             } else {
               aspectRatio = 0.95;
             }
-            
+
             return GridView.builder(
               padding: const EdgeInsets.all(16),
               gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(

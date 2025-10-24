@@ -485,16 +485,16 @@ class _InteractiveTaskPageState extends ConsumerState<InteractiveTaskPage> {
       final accuracyPercent = (result.correctCount / result.totalCount) * 100;
       final hasErrors = _errorCount > 0;
 
-      final unlockedAchievements = await achievementService
-          .checkSpeedAchievements(
-            timeSpentSeconds: result.timeTakenSeconds,
-            hasErrors: hasErrors,
-            accuracyPercent: accuracyPercent,
-          );
+      final unlockedAchievements =
+          await achievementService.checkSpeedAchievements(
+        timeSpentSeconds: result.timeTakenSeconds,
+        hasErrors: hasErrors,
+        accuracyPercent: accuracyPercent,
+      );
 
       // Check completion achievements
-      final completionAchievements = await achievementService
-          .checkCompletionAchievements();
+      final completionAchievements =
+          await achievementService.checkCompletionAchievements();
 
       // Combine all newly unlocked achievements
       final allNewAchievements = [
@@ -571,8 +571,8 @@ class _InteractiveTaskPageState extends ConsumerState<InteractiveTaskPage> {
                   color: result.timeTakenSeconds <= 20
                       ? Colors.green
                       : result.timeTakenSeconds <= 30
-                      ? Colors.orange
-                      : Colors.grey,
+                          ? Colors.orange
+                          : Colors.grey,
                   fontWeight: result.timeTakenSeconds <= 20
                       ? FontWeight.bold
                       : FontWeight.normal,
@@ -879,8 +879,8 @@ class _InteractiveTaskPageState extends ConsumerState<InteractiveTaskPage> {
             child: Text(
               _getTaskInstruction(),
               style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                color: Theme.of(context).colorScheme.onPrimaryContainer,
-              ),
+                    color: Theme.of(context).colorScheme.onPrimaryContainer,
+                  ),
             ),
           ),
         ],
@@ -934,9 +934,9 @@ class _InteractiveTaskPageState extends ConsumerState<InteractiveTaskPage> {
               Text(
                 '$correct / $total',
                 style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                  fontWeight: FontWeight.bold,
-                  color: Theme.of(context).colorScheme.primary,
-                ),
+                      fontWeight: FontWeight.bold,
+                      color: Theme.of(context).colorScheme.primary,
+                    ),
               ),
             ],
           ),
@@ -959,16 +959,16 @@ class _InteractiveTaskPageState extends ConsumerState<InteractiveTaskPage> {
       builder: (context, constraints) {
         final screenWidth = constraints.maxWidth;
         final screenHeight = constraints.maxHeight;
-        
+
         // Calculate item size based on screen width
         final itemSize = (screenWidth * 0.15).clamp(60.0, 100.0);
         final targetSize = (screenWidth * 0.18).clamp(70.0, 110.0);
-        
+
         // Reserve space for buttons at bottom (increased to 80px)
         final buttonAreaHeight = 80.0;
         final topPadding = 20.0;
         final usableHeight = screenHeight - buttonAreaHeight - topPadding;
-        
+
         return ClipRect(
           child: Stack(
             children: [
@@ -976,13 +976,15 @@ class _InteractiveTaskPageState extends ConsumerState<InteractiveTaskPage> {
               ..._shuffledTargets.asMap().entries.map((entry) {
                 final index = entry.key;
                 final target = entry.value;
-                
+
                 // Calculate responsive positions
                 final numTargets = _shuffledTargets.length;
                 final spacing = screenWidth / (numTargets + 1);
-                final targetX = (spacing * (index + 1) - targetSize / 2).clamp(5.0, screenWidth - targetSize - 5);
-                final targetY = (topPadding + usableHeight * 0.15).clamp(topPadding, usableHeight * 0.3);
-                
+                final targetX = (spacing * (index + 1) - targetSize / 2)
+                    .clamp(5.0, screenWidth - targetSize - 5);
+                final targetY = (topPadding + usableHeight * 0.15)
+                    .clamp(topPadding, usableHeight * 0.3);
+
                 return Positioned(
                   left: targetX,
                   top: targetY,
@@ -1005,13 +1007,17 @@ class _InteractiveTaskPageState extends ConsumerState<InteractiveTaskPage> {
                 // If correctly placed, show item in the target zone
                 if (isCorrect) {
                   final targetId = _userAnswers[item.id];
-                  final targetIndex = _shuffledTargets.indexWhere((t) => t.id == targetId);
-                  
+                  final targetIndex =
+                      _shuffledTargets.indexWhere((t) => t.id == targetId);
+
                   if (targetIndex >= 0) {
                     final numTargets = _shuffledTargets.length;
                     final spacing = screenWidth / (numTargets + 1);
-                    final targetX = (spacing * (targetIndex + 1) - targetSize / 2).clamp(5.0, screenWidth - targetSize - 5);
-                    final targetY = (topPadding + usableHeight * 0.15).clamp(topPadding, usableHeight * 0.3);
+                    final targetX =
+                        (spacing * (targetIndex + 1) - targetSize / 2)
+                            .clamp(5.0, screenWidth - targetSize - 5);
+                    final targetY = (topPadding + usableHeight * 0.15)
+                        .clamp(topPadding, usableHeight * 0.3);
 
                     return Positioned(
                       left: targetX,
@@ -1038,14 +1044,15 @@ class _InteractiveTaskPageState extends ConsumerState<InteractiveTaskPage> {
                   // Calculate responsive initial positions for draggable items
                   final numItems = _shuffledItems.length;
                   final spacing = screenWidth / (numItems + 1);
-                  final itemX = (spacing * (index + 1) - itemSize / 2).clamp(5.0, screenWidth - itemSize - 5);
-                  
+                  final itemX = (spacing * (index + 1) - itemSize / 2)
+                      .clamp(5.0, screenWidth - itemSize - 5);
+
                   // Position items in bottom area, well above buttons
                   final itemY = (usableHeight - itemSize - 10).clamp(
                     targetSize + 70,
                     usableHeight - itemSize - 10,
                   );
-                  
+
                   return Positioned(
                     left: itemX,
                     top: itemY,
@@ -1110,7 +1117,7 @@ class _InteractiveTaskPageState extends ConsumerState<InteractiveTaskPage> {
       builder: (context, constraints) {
         final screenWidth = constraints.maxWidth;
         final isSmallScreen = screenWidth < 400;
-        
+
         return Padding(
           padding: EdgeInsets.all(isSmallScreen ? 8.0 : 16.0),
           child: Row(
@@ -1118,9 +1125,10 @@ class _InteractiveTaskPageState extends ConsumerState<InteractiveTaskPage> {
               Expanded(
                 child: OutlinedButton.icon(
                   onPressed: _showHintDialog,
-                  icon: Icon(Icons.lightbulb_outline, size: isSmallScreen ? 18 : 24),
+                  icon: Icon(Icons.lightbulb_outline,
+                      size: isSmallScreen ? 18 : 24),
                   label: Text(
-                    'Hint', 
+                    'Hint',
                     style: TextStyle(fontSize: isSmallScreen ? 14 : 18),
                   ),
                   style: OutlinedButton.styleFrom(
@@ -1136,7 +1144,7 @@ class _InteractiveTaskPageState extends ConsumerState<InteractiveTaskPage> {
                   onPressed: _retryTask,
                   icon: Icon(Icons.refresh, size: isSmallScreen ? 18 : 24),
                   label: Text(
-                    'Reset', 
+                    'Reset',
                     style: TextStyle(fontSize: isSmallScreen ? 14 : 18),
                   ),
                   style: OutlinedButton.styleFrom(
@@ -1216,7 +1224,11 @@ class _InteractiveTaskPageState extends ConsumerState<InteractiveTaskPage> {
         return 'Human Heart';
       default:
         // Fallback: parse from titleKey
-        return _task?.titleKey.split('.').last.replaceAll('_', ' ').toUpperCase() ??
+        return _task?.titleKey
+                .split('.')
+                .last
+                .replaceAll('_', ' ')
+                .toUpperCase() ??
             'Interactive Task';
     }
   }

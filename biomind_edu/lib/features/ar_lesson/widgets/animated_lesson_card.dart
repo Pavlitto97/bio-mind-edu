@@ -146,8 +146,8 @@ class _AnimatedLessonCardState extends ConsumerState<AnimatedLessonCard>
               side: isNewlyUnlocked
                   ? BorderSide(color: AppColors.accentOrange, width: 2)
                   : isCompleted
-                  ? BorderSide(color: AppColors.success, width: 2)
-                  : BorderSide.none,
+                      ? BorderSide(color: AppColors.success, width: 2)
+                      : BorderSide.none,
             ),
             child: InkWell(
               onTap: widget.isLocked ? null : widget.onTap,
