@@ -9,7 +9,8 @@ export default defineConfig({
   reporter: 'html',
   
   use: {
-    baseURL: 'http://localhost:8080',
+    // Use production URL for testing deployed app
+    baseURL: process.env.TEST_URL || 'https://pavlitto97.github.io/bio-mind-edu/',
     trace: 'on-first-retry',
     screenshot: 'only-on-failure',
   },
@@ -38,10 +39,11 @@ export default defineConfig({
     },
   ],
 
-  webServer: {
-    command: 'cd ../.. && flutter run -d chrome --web-port=8080',
-    url: 'http://localhost:8080',
-    reuseExistingServer: !process.env.CI,
-    timeout: 120000,
-  },
+  // Disable webServer when testing production
+  // webServer: {
+  //   command: 'cd ../.. && flutter run -d chrome --web-port=8080',
+  //   url: 'http://localhost:8080',
+  //   reuseExistingServer: !process.env.CI,
+  //   timeout: 120000,
+  // },
 });

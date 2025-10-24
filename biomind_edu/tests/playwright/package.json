@@ -4,11 +4,15 @@
   "description": "Playwright tests for BioMind EDU responsive design",
   "scripts": {
     "test": "playwright test",
+    "test:ios": "playwright test --project='iPhone SE'",
+    "test:fixes": "playwright test ios_fixes.spec.js --project='iPhone SE'",
     "test:headed": "playwright test --headed",
     "test:ui": "playwright test --ui",
-    "test:report": "playwright show-report"
+    "test:debug": "playwright test --debug",
+    "report": "playwright show-report"
   },
   "devDependencies": {
-    "@playwright/test": "^1.40.0"
+    "@playwright/test": "^1.40.0",
+    "@types/node": "^20.10.0"
   }
 }

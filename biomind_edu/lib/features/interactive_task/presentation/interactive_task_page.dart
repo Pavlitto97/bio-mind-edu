@@ -851,7 +851,25 @@ class _InteractiveTaskPageState extends ConsumerState<InteractiveTaskPage> {
 
   PreferredSizeWidget _buildAppBar() {
     return AppBar(
-      title: Text(_getTaskTitle()),
+      title: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Text(
+            _getLessonTitle(),
+            style: const TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          Text(
+            _getTaskTitle(),
+            style: const TextStyle(
+              fontSize: 14,
+              fontWeight: FontWeight.normal,
+            ),
+          ),
+        ],
+      ),
       centerTitle: true,
       actions: [
         IconButton(
@@ -1213,15 +1231,29 @@ class _InteractiveTaskPageState extends ConsumerState<InteractiveTaskPage> {
     );
   }
 
-  String _getTaskTitle() {
+  String _getLessonTitle() {
     // Get lesson-specific title
     switch (widget.lessonId) {
       case 'cell':
         return 'Cell Structure';
       case 'plant':
-        return 'Plant Life';
+        return 'Plant Life Cycle';
       case 'heart':
         return 'Human Heart';
+      default:
+        return 'Lesson';
+    }
+  }
+
+  String _getTaskTitle() {
+    // Get task subtitle
+    switch (widget.lessonId) {
+      case 'cell':
+        return 'Interactive Task';
+      case 'plant':
+        return 'Interactive Task';
+      case 'heart':
+        return 'Interactive Task';
       default:
         // Fallback: parse from titleKey
         return _task?.titleKey

@@ -27,6 +27,7 @@ class ARViewWidget extends StatefulWidget {
 
 class _ARViewWidgetState extends State<ARViewWidget> {
   bool _isLoading = true;
+  String? _placementHint;
   String? _errorMessage;
 
   @override
@@ -47,6 +48,9 @@ class _ARViewWidgetState extends State<ARViewWidget> {
 
       setState(() {
         _isLoading = false;
+        _placementHint = widget.isArSupported
+            ? 'Tap to place model'
+            : 'Swipe to rotate';
       });
 
       widget.onModelLoaded();
@@ -69,8 +73,8 @@ class _ARViewWidgetState extends State<ARViewWidget> {
   }
 
   Widget _buildARView() {
-    // On mobile web, use ModelViewer as fallback since ar_flutter_plugin
-    // is not available yet. This provides better UX than empty placeholder.
+    // For web, fallback to 3D viewer since AR is not fully supported
+    // This provides a better user experience than showing a placeholder
     return _buildFallback3DView();
   }
 
@@ -167,8 +171,8 @@ class _ARViewWidgetState extends State<ARViewWidget> {
             ),
           ),
 
-        // Touch gesture hint - show "Swipe to rotate" instruction
-        if (!_isLoading && _errorMessage == null)
+        // Touch gesture hint
+        if (_placementHint != null && !_isLoading && _errorMessage == null)
           Positioned(
             bottom: 100,
             left: 0,
@@ -183,14 +187,14 @@ class _ARViewWidgetState extends State<ARViewWidget> {
                   color: Colors.black.withOpacity(0.7),
                   borderRadius: BorderRadius.circular(24),
                 ),
-                child: const Row(
+                child: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    Icon(Icons.swipe, color: Colors.white, size: 20),
-                    SizedBox(width: 8),
+                    const Icon(Icons.swipe, color: Colors.white, size: 20),
+                    const SizedBox(width: 8),
                     Text(
-                      'Swipe to rotate',
-                      style: TextStyle(color: Colors.white, fontSize: 16),
+                      _placementHint!,
+                      style: const TextStyle(color: Colors.white, fontSize: 16),
                     ),
                   ],
                 ),

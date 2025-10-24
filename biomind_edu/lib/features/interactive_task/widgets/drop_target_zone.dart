@@ -59,20 +59,27 @@ class _DropTargetZoneState extends State<DropTargetZone> {
           width: width,
           height: height,
           decoration: BoxDecoration(
-            color: widget.isOccupied
-                ? const Color(0xFFF7FBF1)
+            // Add visible background
+            color: _isHovering 
+                ? theme.colorScheme.primary.withOpacity(0.2)
                 : Colors.grey.withOpacity(0.15),
             border: Border.all(
               color: _isHovering
                   ? theme.colorScheme.primary
-                  : widget.isOccupied
-                      ? Colors.green
-                      : Colors.grey.withOpacity(0.4),
-              width: _isHovering ? 3 : 2,
+                  : Colors.grey.withOpacity(0.5),
+              width: _isHovering ? 4 : 3,
               strokeAlign: BorderSide.strokeAlignInside,
             ),
             borderRadius: isCircle ? null : BorderRadius.circular(borderRadius),
             shape: isCircle ? BoxShape.circle : BoxShape.rectangle,
+            // Add subtle shadow for depth
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.1),
+                blurRadius: 4,
+                offset: const Offset(0, 2),
+              ),
+            ],
           ),
           child: Center(
             child: Stack(
@@ -82,14 +89,16 @@ class _DropTargetZoneState extends State<DropTargetZone> {
                 if (widget.target.imagePath != null)
                   Container(
                     decoration: BoxDecoration(
-                      color: const Color(0xFFF7FBF1),
+                      color: widget.isOccupied 
+                          ? const Color(0xFFF7FBF1)
+                          : Colors.white.withOpacity(0.5),
                       borderRadius:
                           isCircle ? null : BorderRadius.circular(borderRadius),
                       shape: isCircle ? BoxShape.circle : BoxShape.rectangle,
                     ),
                     child: AnimatedOpacity(
                       duration: const Duration(milliseconds: 300),
-                      opacity: widget.isOccupied ? 1.0 : 0.3,
+                      opacity: widget.isOccupied ? 1.0 : 0.4,
                       child: Image.asset(
                         widget.target.imagePath!,
                         width: width * 0.8,
@@ -134,6 +143,14 @@ class _DropTargetZoneState extends State<DropTargetZone> {
                 // Label (only when not occupied and no image)
                 if (!widget.isOccupied && widget.target.imagePath == null)
                   _buildLabel(theme, fontSize),
+                  
+                // Placeholder icon when no image and not occupied
+                if (!widget.isOccupied && widget.target.imagePath == null)
+                  Icon(
+                    Icons.add_circle_outline,
+                    size: width * 0.3,
+                    color: Colors.grey.withOpacity(0.4),
+                  ),
               ],
             ),
           ),

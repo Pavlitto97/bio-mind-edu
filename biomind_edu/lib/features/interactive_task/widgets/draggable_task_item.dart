@@ -39,41 +39,51 @@ class DraggableTaskItem extends StatelessWidget {
     final iconSize = size * 0.45;
     final fontSize = (size * 0.11).clamp(9.0, 13.0);
 
+    // Parse color from hex string if provided
+    Color itemColor = theme.colorScheme.primary;
+    if (item.color != null && item.color!.startsWith('#')) {
+      try {
+        final colorString = item.color!.replaceFirst('#', '');
+        itemColor = Color(int.parse('FF$colorString', radix: 16));
+      } catch (e) {
+        // Use default if parsing fails
+      }
+    }
+
     return Opacity(
       opacity: isGhost ? 0.3 : 1.0,
       child: Container(
         width: size,
         height: size,
         decoration: BoxDecoration(
-          color: isCorrect
-              ? Colors.green.withOpacity(0.2)
-              : isIncorrect
-                  ? Colors.red.withOpacity(0.2)
-                  : Colors.white,
+          // Use a visible background with gradient
+          gradient: LinearGradient(
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+            colors: [
+              itemColor.withOpacity(0.8),
+              itemColor.withOpacity(0.6),
+            ],
+          ),
           borderRadius: BorderRadius.circular(size * 0.12),
           border: Border.all(
-            color: isCorrect
-                ? Colors.green
-                : isIncorrect
-                    ? Colors.red
-                    : theme.colorScheme.primary.withOpacity(0.3),
-            width: 2,
+            color: Colors.white.withOpacity(0.8),
+            width: 3,
           ),
-          boxShadow: isDragging
-              ? [
-                  BoxShadow(
-                    color: Colors.black.withOpacity(0.3),
-                    blurRadius: 12,
-                    offset: const Offset(0, 6),
-                  ),
-                ]
-              : [
-                  BoxShadow(
-                    color: Colors.black.withOpacity(0.1),
-                    blurRadius: 4,
-                    offset: const Offset(0, 2),
-                  ),
-                ],
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(isDragging ? 0.4 : 0.2),
+              blurRadius: isDragging ? 16 : 8,
+              offset: Offset(0, isDragging ? 8 : 4),
+              spreadRadius: isDragging ? 2 : 0,
+            ),
+            // Inner highlight
+            BoxShadow(
+              color: Colors.white.withOpacity(0.3),
+              blurRadius: 6,
+              offset: const Offset(0, -2),
+            ),
+          ],
         ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -83,40 +93,61 @@ class DraggableTaskItem extends StatelessWidget {
               Icon(
                 _getIconData(item.iconName!),
                 size: iconSize,
-                color: theme.colorScheme.primary,
+                color: Colors.white,
               )
             else if (item.imagePath != null)
-              Image.asset(
-                item.imagePath!,
-                width: imageSize,
-                height: imageSize,
-                fit: BoxFit.contain,
-                errorBuilder: (context, error, stackTrace) {
-                  return Icon(
-                    Icons.image_not_supported,
-                    size: iconSize,
-                    color: Colors.grey,
-                  );
-                },
+              Container(
+                padding: EdgeInsets.all(size * 0.05),
+                decoration: BoxDecoration(
+                  color: Colors.white.withOpacity(0.2),
+                  borderRadius: BorderRadius.circular(size * 0.08),
+                ),
+                child: Image.asset(
+                  item.imagePath!,
+                  width: imageSize * 0.7,
+                  height: imageSize * 0.7,
+                  fit: BoxFit.contain,
+                  errorBuilder: (context, error, stackTrace) {
+                    return Icon(
+                      Icons.image_not_supported,
+                      size: iconSize,
+                      color: Colors.white70,
+                    );
+                  },
+                ),
               )
             else
               Icon(
                 Icons.drag_indicator,
                 size: iconSize,
-                color: theme.colorScheme.primary,
+                color: Colors.white,
               ),
 
             SizedBox(height: size * 0.04),
 
             // Label
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: size * 0.04),
+            Container(
+              padding: EdgeInsets.symmetric(
+                horizontal: size * 0.06,
+                vertical: size * 0.02,
+              ),
+              decoration: BoxDecoration(
+                color: Colors.black.withOpacity(0.3),
+                borderRadius: BorderRadius.circular(size * 0.06),
+              ),
               child: Text(
                 _getItemLabel(),
                 style: TextStyle(
                   fontSize: fontSize,
                   fontWeight: FontWeight.bold,
-                  color: theme.colorScheme.primary,
+                  color: Colors.white,
+                  shadows: [
+                    Shadow(
+                      color: Colors.black.withOpacity(0.5),
+                      offset: const Offset(1, 1),
+                      blurRadius: 2,
+                    ),
+                  ],
                 ),
                 textAlign: TextAlign.center,
                 maxLines: 2,
