@@ -27,6 +27,12 @@ jobs:
         with:
           channel: 'stable'
       
+      - name: Prepare build environment
+        run: |
+          cd biomind_edu
+          mkdir -p assets/animations
+          echo "# Environment file for CI/CD" > .env
+      
       - name: Get dependencies
         run: |
           cd biomind_edu
