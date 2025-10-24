@@ -38,6 +38,11 @@ jobs:
           cd biomind_edu
           flutter pub get
       
+      - name: Generate localizations
+        run: |
+          cd biomind_edu
+          flutter gen-l10n || echo "Localizations generation skipped"
+      
       - name: Build web
         run: |
           cd biomind_edu
