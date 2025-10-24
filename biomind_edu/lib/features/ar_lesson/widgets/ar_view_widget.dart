@@ -26,9 +26,7 @@ class ARViewWidget extends StatefulWidget {
 }
 
 class _ARViewWidgetState extends State<ARViewWidget> {
-  bool _isModelLoaded = false;
   bool _isLoading = true;
-  String? _placementHint;
   String? _errorMessage;
 
   @override
@@ -48,11 +46,7 @@ class _ARViewWidgetState extends State<ARViewWidget> {
       await Future<void>.delayed(const Duration(seconds: 1));
 
       setState(() {
-        _isModelLoaded = true;
         _isLoading = false;
-        _placementHint = widget.isArSupported
-            ? 'Tap to place model'
-            : 'Swipe to rotate';
       });
 
       widget.onModelLoaded();
@@ -75,88 +69,9 @@ class _ARViewWidgetState extends State<ARViewWidget> {
   }
 
   Widget _buildARView() {
-    return Stack(
-      children: [
-        // AR Camera View
-        // TODO: Integrate ar_flutter_plugin ARView when available
-        Container(
-          color: Colors.black,
-          child: Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Icon(
-                  Icons.camera_alt,
-                  size: 100,
-                  color: Colors.white.withOpacity(0.3),
-                ),
-                const SizedBox(height: 16),
-                Text(
-                  'AR View Placeholder',
-                  style: TextStyle(
-                    color: Colors.white.withOpacity(0.7),
-                    fontSize: 18,
-                  ),
-                ),
-                const SizedBox(height: 8),
-                Text(
-                  'Requires ar_flutter_plugin',
-                  style: TextStyle(
-                    color: Colors.white.withOpacity(0.5),
-                    fontSize: 14,
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ),
-
-        // Placement hint
-        if (_placementHint != null)
-          Positioned(
-            bottom: 100,
-            left: 0,
-            right: 0,
-            child: Center(
-              child: Container(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 24,
-                  vertical: 12,
-                ),
-                decoration: BoxDecoration(
-                  color: Colors.black.withOpacity(0.7),
-                  borderRadius: BorderRadius.circular(24),
-                ),
-                child: Text(
-                  _placementHint!,
-                  style: const TextStyle(color: Colors.white, fontSize: 16),
-                ),
-              ),
-            ),
-          ),
-
-        // AR plane detection indicator
-        if (!_isModelLoaded)
-          Center(
-            child: Container(
-              width: 200,
-              height: 200,
-              decoration: BoxDecoration(
-                border: Border.all(
-                  color: Colors.white.withOpacity(0.5),
-                  width: 2,
-                ),
-                borderRadius: BorderRadius.circular(16),
-              ),
-              child: Icon(
-                Icons.crop_free,
-                size: 100,
-                color: Colors.white.withOpacity(0.5),
-              ),
-            ),
-          ),
-      ],
-    );
+    // On mobile web, use ModelViewer as fallback since ar_flutter_plugin
+    // is not available yet. This provides better UX than empty placeholder.
+    return _buildFallback3DView();
   }
 
   Widget _buildFallback3DView() {
@@ -252,8 +167,8 @@ class _ARViewWidgetState extends State<ARViewWidget> {
             ),
           ),
 
-        // Touch gesture hint
-        if (_placementHint != null && !_isLoading && _errorMessage == null)
+        // Touch gesture hint - show "Swipe to rotate" instruction
+        if (!_isLoading && _errorMessage == null)
           Positioned(
             bottom: 100,
             left: 0,
@@ -268,14 +183,14 @@ class _ARViewWidgetState extends State<ARViewWidget> {
                   color: Colors.black.withOpacity(0.7),
                   borderRadius: BorderRadius.circular(24),
                 ),
-                child: Row(
+                child: const Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    const Icon(Icons.swipe, color: Colors.white, size: 20),
-                    const SizedBox(width: 8),
+                    Icon(Icons.swipe, color: Colors.white, size: 20),
+                    SizedBox(width: 8),
                     Text(
-                      _placementHint!,
-                      style: const TextStyle(color: Colors.white, fontSize: 16),
+                      'Swipe to rotate',
+                      style: TextStyle(color: Colors.white, fontSize: 16),
                     ),
                   ],
                 ),

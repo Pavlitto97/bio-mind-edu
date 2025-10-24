@@ -45,9 +45,20 @@ class DraggableTaskItem extends StatelessWidget {
         width: size,
         height: size,
         decoration: BoxDecoration(
-          color: Colors.transparent,
+          color: isCorrect
+              ? Colors.green.withOpacity(0.2)
+              : isIncorrect
+                  ? Colors.red.withOpacity(0.2)
+                  : Colors.white,
           borderRadius: BorderRadius.circular(size * 0.12),
-          border: null,
+          border: Border.all(
+            color: isCorrect
+                ? Colors.green
+                : isIncorrect
+                    ? Colors.red
+                    : theme.colorScheme.primary.withOpacity(0.3),
+            width: 2,
+          ),
           boxShadow: isDragging
               ? [
                   BoxShadow(
@@ -56,7 +67,13 @@ class DraggableTaskItem extends StatelessWidget {
                     offset: const Offset(0, 6),
                   ),
                 ]
-              : null,
+              : [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.1),
+                    blurRadius: 4,
+                    offset: const Offset(0, 2),
+                  ),
+                ],
         ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,

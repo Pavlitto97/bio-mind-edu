@@ -59,14 +59,18 @@ class _DropTargetZoneState extends State<DropTargetZone> {
           width: width,
           height: height,
           decoration: BoxDecoration(
-            color: Colors.transparent,
-            border: _isHovering
-                ? Border.all(
-                    color: theme.colorScheme.primary,
-                    width: 3,
-                    strokeAlign: BorderSide.strokeAlignInside,
-                  )
-                : null,
+            color: widget.isOccupied
+                ? const Color(0xFFF7FBF1)
+                : Colors.grey.withOpacity(0.15),
+            border: Border.all(
+              color: _isHovering
+                  ? theme.colorScheme.primary
+                  : widget.isOccupied
+                      ? Colors.green
+                      : Colors.grey.withOpacity(0.4),
+              width: _isHovering ? 3 : 2,
+              strokeAlign: BorderSide.strokeAlignInside,
+            ),
             borderRadius: isCircle ? null : BorderRadius.circular(borderRadius),
             shape: isCircle ? BoxShape.circle : BoxShape.rectangle,
           ),
