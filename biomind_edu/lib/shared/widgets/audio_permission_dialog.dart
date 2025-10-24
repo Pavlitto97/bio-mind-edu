@@ -36,7 +36,7 @@ class AudioPermissionDialog extends ConsumerWidget {
 
             // Title
             Text(
-              'Увімкнути звук?',
+              'Enable Audio?',
               style: Theme.of(context).textTheme.headlineSmall?.copyWith(
                     fontWeight: FontWeight.bold,
                   ),
@@ -46,7 +46,7 @@ class AudioPermissionDialog extends ConsumerWidget {
 
             // Description
             Text(
-              'Для кращого досвіду навчання ми використовуємо голосові інструкції та звукові ефекти.',
+              'For the best learning experience, we use voice instructions and sound effects.',
               style: Theme.of(context).textTheme.bodyMedium,
               textAlign: TextAlign.center,
             ),
@@ -66,7 +66,7 @@ class AudioPermissionDialog extends ConsumerWidget {
                         borderRadius: BorderRadius.circular(12),
                       ),
                     ),
-                    child: const Text('Без звуку'),
+                    child: const Text('Silent Mode'),
                   ),
                 ),
                 const SizedBox(width: 12),
@@ -74,7 +74,14 @@ class AudioPermissionDialog extends ConsumerWidget {
                   child: ElevatedButton(
                     onPressed: () async {
                       final audioService = AudioService();
-                      await audioService.initializeAudioContext();
+                      // Initialize audio context (required for web browsers)
+                      final initialized = await audioService.initializeAudioContext();
+                      
+                      if (initialized) {
+                        // Start background music after context is initialized
+                        await audioService.playMusic('background_music_main.mp3');
+                      }
+                      
                       if (context.mounted) {
                         Navigator.of(context).pop(true);
                       }
@@ -85,7 +92,7 @@ class AudioPermissionDialog extends ConsumerWidget {
                         borderRadius: BorderRadius.circular(12),
                       ),
                     ),
-                    child: const Text('Увімкнути звук'),
+                    child: const Text('Enable Audio'),
                   ),
                 ),
               ],

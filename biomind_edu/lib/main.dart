@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -64,8 +65,15 @@ Future<void> _initializeApp() async {
     // Initialize Audio Service and start background music
     final audioService = AudioService();
     await audioService.initialize();
-    await audioService.playMusic('background_music_main.mp3');
-    debugPrint('🎵 Background music started');
+    
+    // On web, don't auto-play music (browser autoplay policy)
+    // Music will start after user interaction via AudioPermissionDialog
+    if (!kIsWeb) {
+      await audioService.playMusic('background_music_main.mp3');
+      debugPrint('🎵 Background music started');
+    } else {
+      debugPrint('🌐 Web platform: music will start after user interaction');
+    }
 
     // Initialize sample lesson data for testing
     // TODO: Remove when actual lesson content is ready
