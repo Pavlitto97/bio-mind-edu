@@ -33,7 +33,8 @@ class _DropTargetZoneState extends State<DropTargetZone> {
     final height = widget.size;
     final isCircle = widget.target.shape == 'circle';
     final borderRadius = width * 0.12;
-    final fontSize = (width * 0.12).clamp(10.0, 16.0);
+    // Smaller font size to fit longer text like "MITOCHONDRIA"
+    final fontSize = (width * 0.10).clamp(9.0, 14.0);
 
     return DragTarget<String>(
       onWillAcceptWithDetails: (data) {

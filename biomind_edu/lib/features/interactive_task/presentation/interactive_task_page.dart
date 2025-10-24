@@ -968,7 +968,8 @@ class _InteractiveTaskPageState extends ConsumerState<InteractiveTaskPage> {
 
         // Calculate item size based on screen width - smaller for small screens
         final itemSize = (screenWidth * 0.18).clamp(50.0, 80.0);
-        final targetSize = (screenWidth * 0.20).clamp(60.0, 90.0);
+        // Increased target size to fit longer text like "MITOCHONDRIA"
+        final targetSize = (screenWidth * 0.22).clamp(70.0, 110.0);
 
         // Reserve space for buttons at bottom
         final buttonAreaHeight = 70.0;
