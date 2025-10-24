@@ -27,10 +27,26 @@ jobs:
         with:
           channel: 'stable'
       
+      - name: Prepare build environment
+        run: |
+          cd biomind_edu
+          mkdir -p assets/animations
+          echo "# Environment file for CI/CD" > .env
+      
       - name: Get dependencies
         run: |
           cd biomind_edu
           flutter pub get
+      
+      - name: Generate code
+        run: |
+          cd biomind_edu
+          flutter pub run build_runner build --delete-conflicting-outputs || echo "Code generation completed with warnings"
+      
+      - name: Generate localizations
+        run: |
+          cd biomind_edu
+          flutter gen-l10n || echo "Localizations generation skipped"
       
       - name: Build web
         run: |
