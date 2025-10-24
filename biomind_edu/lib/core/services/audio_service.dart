@@ -40,6 +40,9 @@ class AudioService {
   /// Mute state
   bool _isMuted = false;
 
+  /// Audio context initialized (for web browsers autoplay policy)
+  bool _audioContextInitialized = false;
+
   /// Initialize audio service
   Future<void> initialize() async {
     try {
@@ -71,6 +74,37 @@ class AudioService {
       }
     }
   }
+
+  /// Initialize audio context for web browsers (bypasses autoplay policy)
+  /// Should be called after user interaction (button click)
+  Future<bool> initializeAudioContext() async {
+    if (_audioContextInitialized) {
+      return true;
+    }
+
+    try {
+      // Play a silent sound to initialize audio context
+      await _sfxPlayer.setVolume(0.0);
+      await _sfxPlayer.play(AssetSource('audio/background_music_main.mp3'));
+      await Future<void>.delayed(const Duration(milliseconds: 100));
+      await _sfxPlayer.stop();
+      await _sfxPlayer.setVolume(_sfxVolume);
+
+      _audioContextInitialized = true;
+      if (kDebugMode) {
+        print('✅ Audio context initialized successfully');
+      }
+      return true;
+    } catch (e) {
+      if (kDebugMode) {
+        print('❌ Failed to initialize audio context: $e');
+      }
+      return false;
+    }
+  }
+
+  /// Check if audio context is initialized
+  bool get isAudioContextInitialized => _audioContextInitialized;
 
   /// Play voice instruction (with background music ducking)
   Future<void> playVoice(String audioFile, {String? locale}) async {

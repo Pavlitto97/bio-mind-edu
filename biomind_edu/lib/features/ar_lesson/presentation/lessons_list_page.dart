@@ -1,21 +1,56 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../../shared/providers/lessons_provider.dart';
 import '../../../shared/widgets/shimmer_loading.dart';
 import '../../../shared/widgets/animated_button.dart';
+import '../../../shared/widgets/audio_permission_dialog.dart';
 import '../../../core/routing/custom_page_routes.dart';
 import '../../../core/theme/app_colors.dart';
+import '../../../core/services/audio_service.dart';
 import '../widgets/animated_lesson_card.dart';
 import '../../progress/presentation/progress_page.dart';
 import '../../rewards/presentation/rewards_page.dart';
 
 /// Home screen showing list of available lessons with gradient AppBar
-class LessonsListPage extends ConsumerWidget {
+class LessonsListPage extends ConsumerStatefulWidget {
   const LessonsListPage({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<LessonsListPage> createState() => _LessonsListPageState();
+}
+
+class _LessonsListPageState extends ConsumerState<LessonsListPage> {
+  bool _audioPermissionChecked = false;
+
+  @override
+  void initState() {
+    super.initState();
+    // Show audio permission dialog on web after first frame
+    if (kIsWeb) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        _checkAudioPermission();
+      });
+    }
+  }
+
+  Future<void> _checkAudioPermission() async {
+    if (_audioPermissionChecked) return;
+    _audioPermissionChecked = true;
+
+    final audioService = AudioService();
+    
+    // Check if audio context is already initialized
+    if (!audioService.isAudioContextInitialized) {
+      if (mounted) {
+        await AudioPermissionDialog.show(context);
+      }
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final lessonsAsync = ref.watch(lessonsProvider);
     final l10n = AppLocalizations.of(context)!;
 

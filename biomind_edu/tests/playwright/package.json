@@ -6,6 +6,7 @@
     "test": "playwright test",
     "test:ios": "playwright test --project='iPhone SE'",
     "test:fixes": "playwright test ios_fixes.spec.js --project='iPhone SE'",
+    "test:local": "TEST_URL=http://localhost:8080 playwright test local_iphone_test.spec.js --project='iPhone SE'",
     "test:headed": "playwright test --headed",
     "test:ui": "playwright test --ui",
     "test:debug": "playwright test --debug",
