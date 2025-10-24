@@ -851,24 +851,12 @@ class _InteractiveTaskPageState extends ConsumerState<InteractiveTaskPage> {
 
   PreferredSizeWidget _buildAppBar() {
     return AppBar(
-      title: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Text(
-            _getLessonTitle(),
-            style: const TextStyle(
-              fontSize: 20,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          Text(
-            _getTaskTitle(),
-            style: const TextStyle(
-              fontSize: 14,
-              fontWeight: FontWeight.normal,
-            ),
-          ),
-        ],
+      title: Text(
+        _getLessonTitle(),
+        style: const TextStyle(
+          fontSize: 22,
+          fontWeight: FontWeight.bold,
+        ),
       ),
       centerTitle: true,
       actions: [
@@ -978,14 +966,24 @@ class _InteractiveTaskPageState extends ConsumerState<InteractiveTaskPage> {
         final screenWidth = constraints.maxWidth;
         final screenHeight = constraints.maxHeight;
 
-        // Calculate item size based on screen width
-        final itemSize = (screenWidth * 0.15).clamp(60.0, 100.0);
-        final targetSize = (screenWidth * 0.18).clamp(70.0, 110.0);
+        // Calculate item size based on screen width - smaller for small screens
+        final itemSize = (screenWidth * 0.18).clamp(50.0, 80.0);
+        final targetSize = (screenWidth * 0.20).clamp(60.0, 90.0);
 
-        // Reserve space for buttons at bottom (increased to 80px)
-        final buttonAreaHeight = 80.0;
-        final topPadding = 20.0;
+        // Reserve space for buttons at bottom
+        final buttonAreaHeight = 70.0;
+        final topPadding = 10.0;
         final usableHeight = screenHeight - buttonAreaHeight - topPadding;
+
+        // Calculate spacing based on number of items
+        final numTargets = _shuffledTargets.length;
+        final numItems = _shuffledItems.length;
+        
+        // Target zones in upper area (20-35% of usable height)
+        final targetAreaY = usableHeight * 0.25;
+        
+        // Draggable items in middle area (55-70% of usable height)
+        final itemAreaY = usableHeight * 0.62;
 
         return ClipRect(
           child: Stack(
@@ -995,17 +993,14 @@ class _InteractiveTaskPageState extends ConsumerState<InteractiveTaskPage> {
                 final index = entry.key;
                 final target = entry.value;
 
-                // Calculate responsive positions
-                final numTargets = _shuffledTargets.length;
+                // Horizontal spacing for targets
                 final spacing = screenWidth / (numTargets + 1);
                 final targetX = (spacing * (index + 1) - targetSize / 2)
                     .clamp(5.0, screenWidth - targetSize - 5);
-                final targetY = (topPadding + usableHeight * 0.15)
-                    .clamp(topPadding, usableHeight * 0.3);
 
                 return Positioned(
                   left: targetX,
-                  top: targetY,
+                  top: targetAreaY,
                   child: DropTargetZone(
                     target: target,
                     size: targetSize,
@@ -1029,17 +1024,14 @@ class _InteractiveTaskPageState extends ConsumerState<InteractiveTaskPage> {
                       _shuffledTargets.indexWhere((t) => t.id == targetId);
 
                   if (targetIndex >= 0) {
-                    final numTargets = _shuffledTargets.length;
                     final spacing = screenWidth / (numTargets + 1);
                     final targetX =
                         (spacing * (targetIndex + 1) - targetSize / 2)
                             .clamp(5.0, screenWidth - targetSize - 5);
-                    final targetY = (topPadding + usableHeight * 0.15)
-                        .clamp(topPadding, usableHeight * 0.3);
 
                     return Positioned(
                       left: targetX,
-                      top: targetY,
+                      top: targetAreaY,
                       child: Opacity(
                         opacity: 0.9,
                         child: SizedBox(
@@ -1059,21 +1051,14 @@ class _InteractiveTaskPageState extends ConsumerState<InteractiveTaskPage> {
 
                 // Show item at initial position (always visible unless correctly placed)
                 if (!isCorrect) {
-                  // Calculate responsive initial positions for draggable items
-                  final numItems = _shuffledItems.length;
+                  // Horizontal spacing for items
                   final spacing = screenWidth / (numItems + 1);
                   final itemX = (spacing * (index + 1) - itemSize / 2)
                       .clamp(5.0, screenWidth - itemSize - 5);
 
-                  // Position items in bottom area, well above buttons
-                  final itemY = (usableHeight - itemSize - 10).clamp(
-                    targetSize + 70,
-                    usableHeight - itemSize - 10,
-                  );
-
                   return Positioned(
                     left: itemX,
-                    top: itemY,
+                    top: itemAreaY,
                     child: Stack(
                       alignment: Alignment.center,
                       children: [
@@ -1242,26 +1227,6 @@ class _InteractiveTaskPageState extends ConsumerState<InteractiveTaskPage> {
         return 'Human Heart';
       default:
         return 'Lesson';
-    }
-  }
-
-  String _getTaskTitle() {
-    // Get task subtitle
-    switch (widget.lessonId) {
-      case 'cell':
-        return 'Interactive Task';
-      case 'plant':
-        return 'Interactive Task';
-      case 'heart':
-        return 'Interactive Task';
-      default:
-        // Fallback: parse from titleKey
-        return _task?.titleKey
-                .split('.')
-                .last
-                .replaceAll('_', ' ')
-                .toUpperCase() ??
-            'Interactive Task';
     }
   }
 
