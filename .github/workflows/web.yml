@@ -46,7 +46,7 @@ jobs:
       - name: Build web
         run: |
           cd biomind_edu
-          flutter build web --release --base-href /bio-mind-edu/ --no-tree-shake-icons
+          flutter build web --release --base-href /bio-mind-edu/ --no-tree-shake-icons --target lib/main_simple.dart
       
       - name: Add .nojekyll file
         run: touch biomind_edu/build/web/.nojekyll
