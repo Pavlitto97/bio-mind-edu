@@ -118,20 +118,6 @@ class _AnimatedLessonCardState extends ConsumerState<AnimatedLessonCard>
 
     final isCompleted = progress?.status == 'completed';
 
-    // Calculate progress percentage
-    double progressValue = 0.0;
-    if (progress != null) {
-      if (progress.status == 'completed') {
-        progressValue = 1.0;
-      } else if (progress.status == 'in_progress') {
-        // Calculate based on task and test completion
-        int completedSteps = 0;
-        if (progress.taskCompleted) completedSteps++;
-        if (progress.testCompleted) completedSteps++;
-        progressValue = completedSteps / 2.0;
-      }
-    }
-
     return SlideTransition(
       position: _slideAnimation,
       child: ScaleTransition(
@@ -369,17 +355,8 @@ class _AnimatedLessonCardState extends ConsumerState<AnimatedLessonCard>
 
                               const Spacer(),
 
-                              // Bottom row: difficulty + progress
-                              Row(
-                                children: [
-                                  _buildDifficultyChip(context),
-                                  const SizedBox(width: 6),
-                                  if (progressValue > 0)
-                                    Expanded(
-                                      child: _buildProgressBar(progressValue),
-                                    ),
-                                ],
-                              ),
+                              // Bottom row: difficulty
+                              _buildDifficultyChip(context),
                             ],
                           ),
                         ),
@@ -473,28 +450,6 @@ class _AnimatedLessonCardState extends ConsumerState<AnimatedLessonCard>
           ),
         ],
       ),
-    );
-  }
-
-  Widget _buildProgressBar(double progress) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        ClipRRect(
-          borderRadius: BorderRadius.circular(4),
-          child: LinearProgressIndicator(
-            value: progress,
-            minHeight: 6,
-            backgroundColor: Colors.grey.shade300,
-            valueColor: const AlwaysStoppedAnimation<Color>(Colors.blue),
-          ),
-        ),
-        const SizedBox(height: 2),
-        Text(
-          '${(progress * 100).toInt()}%',
-          style: TextStyle(fontSize: 10, color: Colors.grey.shade600),
-        ),
-      ],
     );
   }
 }
