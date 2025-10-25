@@ -17,6 +17,13 @@ import 'shared/widgets/splash_screen.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
+  // Set up global error handlers
+  FlutterError.onError = (FlutterErrorDetails details) {
+    FlutterError.presentError(details);
+    debugPrint('Flutter Error: ${details.exception}');
+    debugPrint('Stack trace: ${details.stack}');
+  };
+
   runApp(
     ProviderScope(
       child: MaterialApp(
@@ -64,15 +71,23 @@ Future<void> _initializeApp() async {
 
     // Initialize Audio Service and start background music
     final audioService = AudioService();
-    await audioService.initialize();
-    
-    // On web, don't auto-play music (browser autoplay policy)
-    // Music will start after user interaction via AudioPermissionDialog
-    if (!kIsWeb) {
-      await audioService.playMusic('background_music_main.mp3');
-      debugPrint('🎵 Background music started');
-    } else {
-      debugPrint('🌐 Web platform: music will start after user interaction');
+    try {
+      await audioService.initialize();
+      
+      // On web, don't auto-play music (browser autoplay policy)
+      // Music will start after user interaction via AudioPermissionDialog
+      if (!kIsWeb) {
+        try {
+          await audioService.playMusic('background_music_main.mp3');
+          debugPrint('🎵 Background music started');
+        } catch (musicError) {
+          debugPrint('⚠️ Failed to start background music (non-critical): $musicError');
+        }
+      } else {
+        debugPrint('🌐 Web platform: music will start after user interaction');
+      }
+    } catch (audioError) {
+      debugPrint('⚠️ Audio service initialization failed (non-critical): $audioError');
     }
 
     // Initialize sample lesson data for testing

@@ -73,17 +73,33 @@ class AudioPermissionDialog extends ConsumerWidget {
                 Expanded(
                   child: ElevatedButton(
                     onPressed: () async {
-                      final audioService = AudioService();
-                      // Initialize audio context (required for web browsers)
-                      final initialized = await audioService.initializeAudioContext();
-                      
-                      if (initialized) {
-                        // Start background music after context is initialized
-                        await audioService.playMusic('background_music_main.mp3');
-                      }
-                      
-                      if (context.mounted) {
-                        Navigator.of(context).pop(true);
+                      try {
+                        final audioService = AudioService();
+                        
+                        // Initialize audio context (required for web browsers)
+                        final initialized = await audioService.initializeAudioContext();
+                        
+                        if (initialized) {
+                          // Start background music after context is initialized
+                          try {
+                            await audioService.playMusic('background_music_main.mp3');
+                          } catch (musicError) {
+                            // If music fails, still continue - don't crash the app
+                            if (context.mounted) {
+                              debugPrint('Background music failed to load, but continuing: $musicError');
+                            }
+                          }
+                        }
+                        
+                        if (context.mounted) {
+                          Navigator.of(context).pop(true);
+                        }
+                      } catch (e) {
+                        // If anything fails, still close dialog and continue
+                        debugPrint('Audio initialization error (non-critical): $e');
+                        if (context.mounted) {
+                          Navigator.of(context).pop(false);
+                        }
                       }
                     },
                     style: ElevatedButton.styleFrom(

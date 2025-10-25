@@ -85,9 +85,19 @@ class AudioService {
     try {
       // Play a silent sound to initialize audio context
       await _sfxPlayer.setVolume(0.0);
-      await _sfxPlayer.play(AssetSource('audio/background_music_main.mp3'));
-      await Future<void>.delayed(const Duration(milliseconds: 100));
-      await _sfxPlayer.stop();
+      
+      // Try to play a short silent sound
+      try {
+        await _sfxPlayer.play(AssetSource('audio/background_music_main.mp3'));
+        await Future<void>.delayed(const Duration(milliseconds: 100));
+        await _sfxPlayer.stop();
+      } catch (playError) {
+        // If play fails, that's okay - context might still be initialized
+        if (kDebugMode) {
+          print('⚠️ Silent play failed (expected on some platforms): $playError');
+        }
+      }
+      
       await _sfxPlayer.setVolume(_sfxVolume);
 
       _audioContextInitialized = true;
@@ -99,6 +109,8 @@ class AudioService {
       if (kDebugMode) {
         print('❌ Failed to initialize audio context: $e');
       }
+      // Mark as initialized anyway to prevent repeated attempts
+      _audioContextInitialized = true;
       return false;
     }
   }
