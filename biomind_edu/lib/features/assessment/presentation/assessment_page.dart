@@ -1,4 +1,3 @@
-import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../shared/models/assessment.dart';
@@ -24,8 +23,6 @@ class _AssessmentPageState extends ConsumerState<AssessmentPage> {
   late AssessmentTest _test;
   int _currentQuestionIndex = 0;
   Map<String, List<String>> _userAnswers = {};
-  Timer? _timer;
-  int _elapsedSeconds = 0;
   bool _showResults = false;
   late TestResult _testResult;
 
@@ -33,27 +30,11 @@ class _AssessmentPageState extends ConsumerState<AssessmentPage> {
   void initState() {
     super.initState();
     _test = _createMockTest();
-    _startTimer();
   }
 
   @override
   void dispose() {
-    _timer?.cancel();
     super.dispose();
-  }
-
-  void _startTimer() {
-    _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
-      setState(() {
-        _elapsedSeconds++;
-      });
-
-      // Check time limit if set
-      if (_test.timeLimitSeconds != null &&
-          _elapsedSeconds >= _test.timeLimitSeconds!) {
-        _finishTest();
-      }
-    });
   }
 
   void _handleAnswer(String questionId, List<String> answerIds) {
@@ -81,8 +62,6 @@ class _AssessmentPageState extends ConsumerState<AssessmentPage> {
   }
 
   void _finishTest() {
-    _timer?.cancel();
-
     // Calculate results
     int correctCount = 0;
     int totalPoints = 0;
@@ -122,7 +101,7 @@ class _AssessmentPageState extends ConsumerState<AssessmentPage> {
       totalCount: _test.questions.length,
       score: score,
       isPassed: isPassed,
-      timeTakenSeconds: _elapsedSeconds,
+      timeTakenSeconds: 0, // Time tracking removed from assessment
       completedAt: DateTime.now(),
       questionResults: questionResults,
     );
@@ -140,12 +119,6 @@ class _AssessmentPageState extends ConsumerState<AssessmentPage> {
       if (sortedA[i] != sortedB[i]) return false;
     }
     return true;
-  }
-
-  String _formatTime(int seconds) {
-    final minutes = seconds ~/ 60;
-    final remainingSeconds = seconds % 60;
-    return '${minutes.toString().padLeft(2, '0')}:${remainingSeconds.toString().padLeft(2, '0')}';
   }
 
   AssessmentTest _createMockTest() {
@@ -312,10 +285,8 @@ class _AssessmentPageState extends ConsumerState<AssessmentPage> {
           setState(() {
             _currentQuestionIndex = 0;
             _userAnswers = {};
-            _elapsedSeconds = 0;
             _showResults = false;
           });
-          _startTimer();
         },
         onClose: () {
           Navigator.of(context).pop();
@@ -331,24 +302,6 @@ class _AssessmentPageState extends ConsumerState<AssessmentPage> {
       appBar: AppBar(
         title: Text(_test.titleKey),
         centerTitle: true,
-        actions: [
-          // Timer display
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
-            child: Center(
-              child: Row(
-                children: [
-                  const Icon(Icons.timer, size: 20),
-                  const SizedBox(width: 4),
-                  Text(
-                    _formatTime(_elapsedSeconds),
-                    style: Theme.of(context).textTheme.titleMedium,
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ],
       ),
       body: Column(
         children: [
